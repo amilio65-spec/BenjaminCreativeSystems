@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDS Pre-Read Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:'Montserrat',sans-serif;background:#0a1526;color:#fff;-webkit-font-smoothing:antialiased}
+#app{display:flex;height:100vh}
+
+/* ── Editor Panel ── */
+#editor-panel{width:390px;flex-shrink:0;background:#0f1d31;border-right:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;height:100vh}
+#editor-header{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;background:#17283f;flex-shrink:0;gap:12px}
+.editor-brand-row{display:flex;align-items:center;gap:10px}
+.editor-brand{width:28px;height:28px;border-radius:6px;background:#FF6B35;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;letter-spacing:0.02em;color:#000;flex-shrink:0}
+.editor-title{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#888}
+#export-btn{background:#FF6B35;color:#fff;border:none;border-radius:9999px;padding:7px 16px;font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;font-family:'Montserrat',sans-serif;transition:background 0.15s;flex-shrink:0;white-space:nowrap}
+#export-btn:hover{background:#ff8659}
+#editor-subtitle{padding:8px 18px;font-size:10px;line-height:1.5;color:#666;background:#132338;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
+#editor-body{flex:1;min-height:0;overflow-y:auto;padding:12px 10px;background:#0a1526;display:flex;flex-direction:column;gap:12px}
+#editor-body::-webkit-scrollbar{width:3px}
+#editor-body::-webkit-scrollbar-track{background:transparent}
+#editor-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+
+/* ── Page Blocks (sections) ── */
+.page-block{border:1px solid rgba(255,255,255,0.12);border-radius:12px;background:#132338;box-shadow:0 3px 14px rgba(0,0,0,0.35);overflow:hidden;flex-shrink:0}
+.page-header{display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer;user-select:none;background:#1c2e48;transition:background 0.1s;border-bottom:1px solid rgba(255,255,255,0.09)}
+.page-header:hover{background:#22374f}
+.page-num-badge{font-size:9px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;color:#888;background:rgba(255,255,255,0.09);border-radius:3px;padding:2px 6px;flex-shrink:0;min-width:26px;text-align:center}
+.page-type-badge{font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#FF6B35;background:rgba(255,107,53,0.14);border-radius:3px;padding:2px 6px;flex-shrink:0}
+.page-type-badge.neutral{color:#888;background:rgba(255,255,255,0.08)}
+.page-label{flex:1;font-size:12px;font-weight:700;color:rgba(255,255,255,0.9)}
+.page-fixed-badge{font-size:8px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;color:#555;padding:2px 5px;border-radius:2px;flex-shrink:0}
+.page-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.page-move-btn{background:none;border:none;color:rgba(255,255,255,0.3);font-size:11px;cursor:pointer;padding:2px 4px;line-height:1;border-radius:3px;transition:color 0.12s,background 0.12s;font-family:inherit}
+.page-move-btn:hover{color:#FF6B35;background:rgba(255,107,53,0.1)}
+.page-move-btn:disabled{opacity:0.2;cursor:default;pointer-events:none}
+.page-remove-btn{background:none;border:none;color:rgba(255,255,255,0.25);font-size:14px;cursor:pointer;padding:1px 4px;line-height:1;border-radius:3px;transition:color 0.12s;font-family:inherit}
+.page-remove-btn:hover{color:#ff7070}
+.chevron{font-size:9px;color:#555;flex-shrink:0;transition:transform 0.15s;margin-left:2px}
+.chevron.open{transform:rotate(90deg)}
+.page-fields{padding:14px 14px 14px;display:flex;flex-direction:column;gap:10px;background:#101f34}
+.page-fields.collapsed{display:none}
+.page-fields>*{flex-shrink:0}
+.comps-section-label{font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#666;margin:2px 0 -2px;display:block}
+
+/* ── Variant selector ── */
+.variant-row{display:flex;gap:4px;flex-wrap:wrap}
+.variant-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:rgba(255,255,255,0.5);font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 8px;cursor:pointer;font-family:inherit;transition:all 0.12s}
+.variant-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
+.variant-btn.on{background:rgba(255,107,53,0.2);border-color:rgba(255,107,53,0.5);color:#FF6B35}
+
+/* ── Fields ── */
+.field-group{display:flex;flex-direction:column;gap:4px}
+.field-label{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#555}
+.field-input{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;padding:7px 10px;width:100%;transition:border-color 0.2s;outline:none}
+.field-input:focus{border-color:rgba(255,107,53,0.6)}
+.field-rta{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;padding:7px 10px;width:100%;min-height:52px;line-height:1.6;cursor:text;word-break:break-word;white-space:pre-wrap;outline:none;transition:border-color 0.2s}
+.field-rta:focus{border-color:rgba(255,107,53,0.6)}
+.field-rta:empty::before{content:'Type here…';color:#444;pointer-events:none}
+.field-rta.rta-sm{min-height:32px;font-size:16px;font-weight:800}
+.field-hint{font-size:9px;color:#444;font-style:italic}
+.field-sep{height:1px;background:rgba(255,255,255,0.05);margin:2px 0}
+.field-row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* ── Cards / list-style sub-editors (cards, steps, stats) ── */
+.cards-list,.steps-list-edit{display:flex;flex-direction:column;gap:7px}
+.card-item,.step-item-edit{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:7px;padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.card-item-head{display:flex;align-items:center;justify-content:space-between}
+.card-badge{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#FF6B35}
+.card-rm{background:none;border:none;color:#444;cursor:pointer;font-size:14px;line-height:1;padding:2px 5px;border-radius:4px;font-family:inherit;transition:color 0.12s}
+.card-rm:hover{color:#ff7070}
+.add-card-btn,.add-step-btn,.add-item-btn{background:rgba(255,107,53,0.06);border:1px dashed rgba(255,107,53,0.25);border-radius:6px;color:#FF6B35;cursor:pointer;font-size:10px;font-weight:700;letter-spacing:0.04em;padding:6px;width:100%;font-family:inherit;transition:all 0.12s;margin-top:2px}
+.add-card-btn:hover,.add-step-btn:hover,.add-item-btn:hover{background:rgba(255,107,53,0.12);border-color:rgba(255,107,53,0.45)}
+
+/* ── Component blocks ── */
+.comps-list{display:flex;flex-direction:column;gap:10px;margin-bottom:4px;padding-left:10px;border-left:2px solid rgba(255,107,53,0.15)}
+.comp-block{background:#1a2c46;border:1px solid rgba(255,255,255,0.13);border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.3)}
+.comp-header{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:rgba(255,107,53,0.08);border-bottom:1px solid rgba(255,255,255,0.08);border-left:2px solid rgba(255,107,53,0.5)}
+.comp-type-label{font-size:9.5px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.65)}
+.comp-actions{display:flex;align-items:center;gap:2px}
+.comp-move{background:none;border:none;color:rgba(255,255,255,0.2);font-size:11px;cursor:pointer;padding:2px 4px;line-height:1;border-radius:3px;transition:color 0.12s,background 0.12s;font-family:inherit}
+.comp-move:hover{color:#FF6B35;background:rgba(255,107,53,0.1)}
+.comp-move:disabled{opacity:0.2;cursor:default;pointer-events:none}
+.comp-remove{background:none;border:none;color:rgba(255,255,255,0.2);font-size:13px;cursor:pointer;padding:1px 4px;line-height:1;border-radius:3px;transition:color 0.12s;font-family:inherit}
+.comp-remove:hover{color:#ff7070}
+.comp-fields{padding:8px 10px 10px;display:flex;flex-direction:column;gap:7px}
+.empty-page-hint{text-align:center;padding:20px 12px;font-size:11px;color:#444;font-style:italic;border:1px dashed rgba(255,255,255,0.07);border-radius:6px}
+
+/* ── Add component ── */
+.add-comp-trigger{display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 12px;background:rgba(255,107,53,0.06);border:1px dashed rgba(255,107,53,0.22);border-radius:6px;color:#FF6B35;font-size:10px;font-weight:600;cursor:pointer;width:100%;font-family:'Montserrat',sans-serif;transition:all 0.15s;letter-spacing:.02em}
+.add-comp-trigger:hover{background:rgba(255,107,53,0.14);border-color:rgba(255,107,53,0.5)}
+.add-comp-panel{padding:6px 0 2px}
+.add-comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.add-comp-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:5px;color:rgba(255,255,255,0.6);font-size:9px;padding:7px 8px;text-align:left;cursor:pointer;transition:all 0.12s;font-family:'Montserrat',sans-serif;line-height:1.3}
+.add-comp-item:hover{background:rgba(255,107,53,0.1);border-color:rgba(255,107,53,0.3);color:#fff}
+.add-comp-item strong{display:block;font-size:9px;font-weight:700;color:rgba(255,255,255,0.8);margin-bottom:2px}
+.add-comp-item span{font-size:8px;color:#555}
+
+/* ── Add page ── */
+.add-page-trigger{display:flex;align-items:center;justify-content:center;gap:6px;margin:10px 12px 8px;padding:9px 14px;background:rgba(255,107,53,0.10);border:1px dashed rgba(255,107,53,0.35);border-radius:7px;color:#FF6B35;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;letter-spacing:.02em;width:calc(100% - 24px)}
+.add-page-trigger:hover{background:rgba(255,107,53,0.18);border-color:rgba(255,107,53,0.6)}
+
+/* ── Preview Pane ── */
+#preview-pane{flex:1;background:#0b1620;display:flex;flex-direction:column;overflow:hidden}
+#preview-toolbar{background:#17283f;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.preview-dots{display:flex;gap:5px}
+.preview-dots span{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.12)}
+.preview-dots span:first-child{background:#ff5f57}
+.preview-dots span:nth-child(2){background:#febc2e}
+.preview-dots span:last-child{background:#28c840}
+.preview-url-bar{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:5px;padding:5px 12px;font-size:11px;color:#555;font-family:'Montserrat',sans-serif;text-align:center}
+#preview-frame{flex:1;border:none;width:100%;background:#0b1620}
+
+/* ── RTA Toolbar ── */
+#rta-toolbar{position:fixed;z-index:9999;background:#17283f;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:4px 6px;display:flex;align-items:center;gap:2px;box-shadow:0 4px 24px rgba(0,0,0,0.7);opacity:0;pointer-events:none;transition:opacity 0.12s;white-space:nowrap}
+#rta-toolbar.visible{opacity:1;pointer-events:all}
+.rta-btn{background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;font-size:11px;font-weight:700;font-family:'Montserrat',sans-serif;padding:4px 7px;border-radius:4px;line-height:1;transition:all 0.1s}
+.rta-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
+.rta-sep{width:1px;height:16px;background:rgba(255,255,255,0.1);margin:0 3px;flex-shrink:0}
+.rta-color{width:14px;height:14px;border-radius:50%;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:border-color 0.1s;outline:none;display:inline-block}
+.rta-color:hover{border-color:rgba(255,255,255,0.5)}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="editor-panel">
+    <div id="editor-header">
+      <div class="editor-brand-row">
+        <div class="editor-brand"><svg viewBox="0 0 40 40" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><polygon points="20,4 34,12 34,28 20,36 6,28 6,12" fill="none" stroke="#000" stroke-width="2.4"/><circle cx="20" cy="20" r="3" fill="#000"/></svg></div>
+        <span class="editor-title">Pre-Read Builder</span>
+      </div>
+      <button id="export-btn" title="Downloads a self-contained HTML file">↓ Export HTML</button>
+    </div>
+    <div id="editor-subtitle">Add and arrange sections — the preview on the right updates automatically. Click Export HTML when you're ready to share the pre-read.</div>
+    <div id="editor-body"></div>
+  </div>
+  <div id="preview-pane">
+    <div id="preview-toolbar">
+      <div class="preview-dots"><span></span><span></span><span></span></div>
+      <div class="preview-url-bar">pre-read-export.html — Live Preview</div>
+    </div>
+    <iframe id="preview-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+  </div>
+</div>
+
+<div id="rta-toolbar">
+  <button class="rta-btn" data-fmt="bold" title="Bold"><b>B</b></button>
+  <button class="rta-btn" data-fmt="italic" title="Italic"><i>I</i></button>
+  <button class="rta-btn" data-fmt="clear" title="Clear formatting">R</button>
+  <div class="rta-sep"></div>
+  <button class="rta-color" data-fmt="color" data-color="#ffffff" style="background:#fff" title="White"></button>
+  <button class="rta-color" data-fmt="color" data-color="#FF6B35" style="background:#FF6B35" title="Orange"></button>
+  <button class="rta-color" data-fmt="color" data-color="#888888" style="background:#888" title="Muted"></button>
+  <button class="rta-color" data-fmt="color" data-color="#000000" style="background:#111;border:2px solid rgba(255,255,255,0.15)" title="Black"></button>
+</div>
+
+<script>
+/* ============================================================
+   FONTS
+   ============================================================ */
+
+const FONTS_HTML = `<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&family=Archivo:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">`;
+
+/* ============================================================
+   PRE-READ CSS
+   (tokens + components copied verbatim from
+   Templates/pre-read-template.html — Blacfox Design System v3)
+   ============================================================ */
+
+const PAGE_CSS = `
+:root {
+
+  /* ── TIER 1: COLOR PRIMITIVES ── */
+  --color-black:        #000000;
+  --color-grey-950:     #0a0a0a;
+  --color-grey-900:     #111111;
+  --color-grey-800:     #1a1a1a;
+  --color-grey-700:     #262626;
+  --color-grey-500:     #555555;
+  --color-grey-400:     #888888;
+  --color-grey-200:     #cccccc;
+  --color-grey-100:     #e0e0e0;
+  --color-white:        #ffffff;
+
+  --blue-deep:  #123059;
+  --blue-base:  #2255A4;
+  --blue-mid:   #2E63B8;
+  --line-white: #EAF2F8;
+  --line-dim:   rgba(234,242,248,0.35);
+  --grid-line:  rgba(234,242,248,0.08);
+
+  --color-orange-600:   #D9541F;
+  --color-orange-500:   #FF6B35;
+  --color-orange-400:   #FF8B5C;
+  --color-orange-300:   #FFAB8A;
+  --color-orange-glow:  rgba(255,107,53,0.45);
+
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+  --space-30:  120px;
+
+  --radius-sm:   4px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  --font-family-base:  'JetBrains Mono', monospace;
+  --font-family-body:  'Archivo', sans-serif;
+
+  --font-size-2xs:  9px;
+  --font-size-xs:   10px;
+  --font-size-sm:   11px;
+  --font-size-base: 12px;
+  --font-size-md:   13px;
+  --font-size-lg:   14px;
+  --font-size-xl:   15px;
+  --font-size-2xl:  16px;
+  --font-size-3xl:  17px;
+  --font-size-4xl:  18px;
+  --font-size-5xl:  clamp(18px, 2.2vw, 28px);
+  --font-size-6xl:  clamp(26px, 3.2vw, 44px);
+  --font-size-7xl:  clamp(32px, 4vw, 54px);
+  --font-size-8xl:  clamp(36px, 4.5vw, 64px);
+  --font-size-hero: clamp(40px, 5.5vw, 80px);
+
+  --font-weight-regular:   400;
+  --font-weight-medium:    500;
+  --font-weight-semibold:  600;
+  --font-weight-bold:      700;
+  --font-weight-extrabold: 800;
+  --font-weight-black:     900;
+
+  --leading-tight:   1.0;
+  --leading-snug:    1.1;
+  --leading-normal:  1.3;
+  --leading-relaxed: 1.65;
+  --leading-loose:   1.75;
+
+  --tracking-tighter: -0.04em;
+  --tracking-tight:   -0.03em;
+  --tracking-snug:    -0.02em;
+  --tracking-normal:  -0.01em;
+  --tracking-wide:    0.08em;
+  --tracking-wider:   0.10em;
+  --tracking-widest:  0.14em;
+  --tracking-label:   0.18em;
+
+  --duration-fast:   0.15s;
+  --duration-base:   0.2s;
+  --duration-slow:   0.3s;
+  --duration-slower: 0.45s;
+  --duration-reveal: 0.7s;
+  --ease-base:       ease;
+  --ease-spring:     cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out:        cubic-bezier(0.4, 0, 0.2, 1);
+
+  --border-subtle:   rgba(234,242,248,0.06);
+  --border-default:  rgba(234,242,248,0.10);
+  --border-moderate: rgba(234,242,248,0.18);
+  --border-strong:   rgba(234,242,248,0.28);
+  --border-accent:   rgba(255,107,53,0.30);
+  --border-accent-strong: rgba(255,107,53,0.50);
+
+  --shadow-btn-primary:
+    0 4px 22px rgba(255,107,53,0.32),
+    inset 0 1.5px 0 rgba(255,185,110,0.45),
+    inset 0 -1px 0 rgba(100,28,0,0.22);
+  --shadow-btn-primary-hover:
+    0 8px 36px rgba(255,107,53,0.44),
+    inset 0 1.5px 0 rgba(255,190,115,0.55),
+    inset 0 -1px 0 rgba(100,28,0,0.28);
+  --shadow-btn-ghost:
+    0 2px 14px rgba(0,0,0,0.22),
+    inset 0 1.5px 0 rgba(255,255,255,0.14),
+    inset 0 -1px 0 rgba(0,0,0,0.08);
+  --shadow-btn-white:
+    0 4px 20px rgba(0,0,0,0.16),
+    inset 0 1.5px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(0,0,0,0.06);
+
+  --pattern-orange-grid:
+    linear-gradient(rgba(234,242,248,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(234,242,248,0.08) 1px, transparent 1px);
+  --pattern-black-grid:
+    linear-gradient(rgba(234,242,248,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(234,242,248,0.08) 1px, transparent 1px);
+  --pattern-grid-size:    64px 64px;
+  --pattern-grid-size-sm: 32px 32px;
+
+  --surface-page:      var(--blue-base);
+  --surface-elevated:  var(--blue-mid);
+  --surface-card:      transparent;
+  --surface-inset:     rgba(18,48,89,0.4);
+  --surface-overlay:   rgba(0,0,0,0.75);
+  --surface-hero:      var(--blue-mid);
+  --surface-cta:       var(--blue-mid);
+
+  --text-primary:    var(--line-white);
+  --text-heading:    var(--line-white);
+  --text-body:       var(--line-white);
+  --text-muted:      var(--line-dim);
+  --text-faint:      rgba(234,242,248,0.3);
+  --text-accent:     var(--accent);
+  --text-on-accent:  var(--color-black);
+  --text-on-hero:    var(--line-white);
+
+  --border-ui:       var(--border-default);
+  --border-card:     var(--border-moderate);
+  --border-card-hover: var(--border-accent-strong);
+  --border-section:  var(--border-subtle);
+  --border-input:    rgba(234,242,248,0.14);
+  --border-input-focus: rgba(255,107,53,0.60);
+
+  --accent:          var(--color-orange-500);
+  --accent-dim:      rgba(255,107,53,0.06);
+  --accent-mid:      rgba(255,107,53,0.12);
+  --accent-glow:     var(--color-orange-glow);
+
+  --type-hero-size:        var(--font-size-hero);
+  --type-hero-weight:      var(--font-weight-black);
+  --type-hero-tracking:    var(--tracking-tighter);
+  --type-hero-leading:     var(--leading-tight);
+
+  --type-h2-size:          var(--font-size-6xl);
+  --type-h2-weight:        var(--font-weight-extrabold);
+  --type-h2-tracking:      var(--tracking-tight);
+  --type-h2-leading:       var(--leading-tight);
+
+  --type-h3-size:          var(--font-size-5xl);
+  --type-h3-weight:        var(--font-weight-extrabold);
+  --type-h3-tracking:      var(--tracking-snug);
+  --type-h3-leading:       var(--leading-snug);
+
+  --type-body-lg-size:     var(--font-size-3xl);
+  --type-body-size:        var(--font-size-2xl);
+  --type-body-sm-size:     var(--font-size-lg);
+  --type-body-xs-size:     var(--font-size-md);
+  --type-body-weight:      var(--font-weight-regular);
+  --type-body-leading:     var(--leading-loose);
+
+  --type-label-size:       var(--font-size-sm);
+  --type-label-weight:     var(--font-weight-bold);
+  --type-label-tracking:   var(--tracking-widest);
+  --type-label-transform:  uppercase;
+
+  --type-caption-size:     var(--font-size-base);
+  --type-caption-weight:   var(--font-weight-regular);
+
+  --type-mono:             monospace;
+
+  --space-section-y:       var(--space-16);
+  --space-section-x:       56px;
+  --space-section-head:    var(--space-12);
+  --space-component:       var(--space-16);
+  --space-card-pad:        var(--space-8);
+  --space-card-pad-lg:     var(--space-12);
+  --space-gap-sm:          var(--space-3);
+  --space-gap-md:          var(--space-5);
+  --space-gap-lg:          var(--space-6);
+  --space-stack-sm:        var(--space-2);
+  --space-stack-md:        var(--space-4);
+  --space-stack-lg:        var(--space-6);
+
+  --radius-badge:  var(--radius-full);
+  --radius-btn:    var(--radius-full);
+  --radius-input:  var(--radius-md);
+  --radius-card:   var(--radius-xl);
+  --radius-card-lg:var(--radius-2xl);
+  --radius-panel:  var(--radius-lg);
+  --radius-tag:    var(--radius-sm);
+
+  --transition-ui:      color var(--duration-base) var(--ease-base),
+                        background var(--duration-fast) var(--ease-base);
+  --transition-card:    border-color var(--duration-slow) var(--ease-base),
+                        transform var(--duration-slow) var(--ease-spring);
+  --transition-btn:     transform var(--duration-base) var(--ease-base),
+                        box-shadow var(--duration-base) var(--ease-base);
+  --transition-reveal:  opacity var(--duration-reveal) var(--ease-base),
+                        transform var(--duration-reveal) var(--ease-base);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-family-body);
+  background: var(--surface-page);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+  background-image: var(--pattern-orange-grid);
+  background-size: var(--pattern-grid-size);
+  background-attachment: fixed;
+}
+
+.section-tag {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-family-base);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-transform);
+  color: var(--text-accent);
+  margin-bottom: var(--space-5);
+}
+.section-tag::before { content: ''; display: block; width: 20px; height: 1.5px; background: var(--accent); }
+
+.section-h {
+  font-family: var(--font-family-base);
+  font-size: var(--type-h2-size);
+  font-weight: var(--type-h2-weight);
+  letter-spacing: var(--type-h2-tracking);
+  line-height: var(--type-h2-leading);
+  margin-bottom: 18px; text-wrap: pretty;
+}
+.section-h em   { font-style: italic; font-weight: var(--font-weight-extrabold); color: var(--text-accent); }
+.section-p      { font-size: var(--type-body-size); color: var(--text-muted); line-height: var(--type-body-leading); text-wrap: pretty; }
+
+p, li, blockquote {
+  orphans: 3;
+  widows: 3;
+  text-wrap: balance;
+}
+
+.stats-section  { border-top: 1px solid var(--border-ui); border-bottom: 1px solid var(--border-ui); padding: var(--space-10) 0; }
+.stats-inner    { max-width: 100%; display: grid; grid-template-columns: repeat(4,1fr); gap: var(--space-6); }
+.stat-item      { text-align: center; }
+.stat-num       { font-size: 38px; font-weight: var(--font-weight-extrabold); letter-spacing: var(--tracking-tight); color: var(--text-body); line-height: var(--leading-tight); }
+.stat-num em    { font-style: italic; color: var(--text-accent); }
+.stat-label     { font-family: var(--font-family-base); font-size: var(--font-size-md); color: var(--text-muted); margin-top: var(--space-2); font-weight: var(--font-weight-regular); line-height: var(--leading-relaxed); }
+
+.card-grid-2    { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--space-5); }
+@media(max-width:640px){ .card-grid-2, .stats-inner { grid-template-columns: 1fr; } }
+.dark-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: var(--space-8) 28px;
+  cursor: default;
+  transition: var(--transition-card);
+  position: relative; overflow: hidden;
+}
+.dark-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--accent-dim), transparent 60%);
+  opacity: 0; transition: opacity var(--duration-slow) var(--ease-base);
+}
+.dark-card:hover        { border-color: var(--border-card-hover); transform: translateY(-4px); }
+.dark-card:hover::before{ opacity: 1; }
+.card-num       { font-family: var(--font-family-base); font-size: var(--type-label-size); font-weight: var(--type-label-weight); letter-spacing: var(--tracking-widest); text-transform: uppercase; color: var(--text-accent); margin-bottom: 18px; }
+.card-title     { font-family: var(--font-family-base); font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); letter-spacing: var(--tracking-normal); margin-bottom: var(--space-3); color: var(--text-body); }
+.card-body      { font-size: var(--type-body-sm-size); color: var(--text-muted); line-height: var(--leading-relaxed); }
+
+.callout-box {
+  border: 1px solid rgba(18,48,89,0.65);
+  border-radius: var(--radius-panel);
+  padding: 28px var(--space-8);
+  background: rgba(18,48,89,0.35);
+}
+.callout-box p  { font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--text-body); line-height: var(--leading-relaxed); }
+
+.steps-list           { display: flex; flex-direction: column; gap: var(--space-1); }
+.step-item            { display: grid; grid-template-columns: 120px 1fr; align-items: start; gap: var(--space-8); padding: 28px var(--space-8); border: 1px solid var(--border-card); border-radius: var(--space-4); transition: border-color var(--duration-base) var(--ease-base); }
+@media(max-width:640px){ .step-item { grid-template-columns: 1fr; gap: var(--space-2); } }
+.step-item:hover      { border-color: var(--border-accent); }
+.step-num             { font-family: var(--font-family-base); font-size: var(--type-label-size); font-weight: var(--type-label-weight); letter-spacing: var(--tracking-widest); text-transform: uppercase; color: var(--text-accent); padding-top: var(--space-1); }
+.step-label           { font-family: var(--font-family-base); font-size: 17px; font-weight: var(--font-weight-bold); color: var(--text-body); margin-bottom: var(--space-2); }
+.step-body            { font-size: var(--type-body-sm-size); color: var(--text-muted); line-height: var(--leading-relaxed); }
+.step-item.is-output  { background: rgba(255,107,53,0.55); border-color: rgba(255,155,75,0.5); }
+.step-item.is-output .step-num   { color: rgba(255,220,190,0.75); }
+.step-item.is-output .step-label { color: var(--text-primary); }
+.step-item.is-output .step-body  { color: rgba(255,230,210,0.85); }
+
+.cta-section {
+  background: var(--surface-cta); padding: var(--space-20) 60px;
+  text-align: center; position: relative; overflow: hidden; border-radius: var(--radius-card);
+}
+.cta-section::before  { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0; background-image: var(--pattern-black-grid); background-size: var(--pattern-grid-size); }
+.cta-h                { font-size: clamp(28px,4vw,54px); font-weight: var(--font-weight-black); letter-spacing: var(--tracking-tight); color: var(--text-on-hero); line-height: var(--leading-tight); margin-bottom: var(--space-5); position: relative; z-index: 1; }
+.cta-h em             { font-style: italic; font-weight: var(--font-weight-black); color: var(--text-primary); }
+.cta-p                { font-size: 17px; color: rgba(234,242,248,0.65); margin-bottom: var(--space-10); position: relative; z-index: 1; }
+.cta-section .btn-primary { background: var(--color-black); border-color: var(--color-black); color: var(--text-primary); box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; position: relative; z-index: 1; }
+.cta-section .btn-primary:hover { background: var(--color-grey-800); border-color: var(--color-grey-800); box-shadow: none; transform: translateY(-2px); }
+
+.btn-primary {
+  text-decoration: none;
+  background: linear-gradient(135deg, rgba(255,107,53,0.78) 0%, rgba(255,107,53,0.52) 50%, rgba(255,107,53,0.70) 100%);
+  backdrop-filter: blur(18px) saturate(2.1) brightness(1.22);
+  -webkit-backdrop-filter: blur(18px) saturate(2.1) brightness(1.22);
+  border: 1px solid var(--border-accent-strong);
+  box-shadow: var(--shadow-btn-primary);
+  color: var(--text-primary);
+  font-size: var(--type-body-sm-size);
+  font-weight: var(--font-weight-bold);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-btn);
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  cursor: pointer; font-family: var(--font-family-base);
+  transition: var(--transition-btn);
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, rgba(255,107,53,0.92) 0%, rgba(255,107,53,0.68) 50%, rgba(255,107,53,0.84) 100%);
+  box-shadow: var(--shadow-btn-primary-hover);
+  transform: translateY(-2px);
+}
+
+.preread-wrapper {
+  min-height: 100vh;
+  padding: var(--space-16) var(--space-6);
+  display: flex;
+  justify-content: center;
+}
+.preread-container {
+  width: 100%;
+  max-width: 860px;
+}
+
+.preread-header {
+  padding: var(--space-12) 0 var(--space-10);
+  border-bottom: 1px solid var(--border-section);
+  margin-bottom: var(--space-16);
+}
+.preread-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+  flex-wrap: wrap;
+}
+.preread-meta-item {
+  font-family: var(--font-family-base);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--tracking-widest);
+  text-transform: var(--type-label-transform);
+  color: var(--text-muted);
+}
+.preread-meta-divider {
+  width: 1px;
+  height: 12px;
+  background: var(--border-ui);
+  flex-shrink: 0;
+}
+.preread-title {
+  font-family: var(--font-family-base);
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: var(--font-weight-black);
+  letter-spacing: var(--tracking-tighter);
+  line-height: var(--leading-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-5);
+  text-wrap: pretty;
+}
+.preread-title em {
+  font-style: italic;
+  color: var(--text-accent);
+}
+.preread-subtitle {
+  font-size: var(--type-body-lg-size);
+  color: var(--text-muted);
+  line-height: var(--leading-loose);
+  max-width: 640px;
+}
+
+.preread-section {
+  padding: var(--space-12) 0;
+  border-bottom: 1px solid var(--border-section);
+}
+.preread-section:last-child {
+  border-bottom: none;
+}
+
+.mt-32 { margin-top: var(--space-8); }
+.mt-24 { margin-top: var(--space-6); }
+`;
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function ea(s)  { return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+function pageIndex(id) { return state.pages.findIndex(p => p.id === id); }
+function fixedIndexes() {
+  // First page (header) and last page (cta) are fixed; everything between is movable.
+  return { firstMovable: 1, lastMovable: state.pages.length - 2 };
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+
+let _nextId = 1;
+function newId() { return 'sec' + (_nextId++); }
+let _nextCid = 1;
+function newCid() { return 'c' + (_nextCid++); }
+
+const COMPONENT_LABELS = {
+  'section-tag': 'Section Tag',
+  'heading':     'Heading',
+  'body':        'Body Paragraph',
+  'callout':     'Callout Box',
+  'cards':       '2-Col Cards',
+  'steps':       'Steps List',
+  'stats':       'Stats Row',
+};
+
+const COMPONENT_DEFAULTS = {
+  'section-tag': { text: 'Section Label' },
+  'heading':     { text: 'Section Headline Goes Here' },
+  'body':        { text: 'Describe the key point of this section clearly and concisely.' },
+  'callout':     { text: 'A short, highlighted quote, insight, or statistic goes here.' },
+  'cards':       { cards: [ { label: 'Point 01', title: 'Card One', body: 'Description.' }, { label: 'Point 02', title: 'Card Two', body: 'Description.' } ] },
+  'steps':       { steps: [ { label: 'Step One', body: 'Description.', output: false }, { label: 'Step Two', body: 'Description.', output: false } ] },
+  'stats':       { items: [ { value: '00%', label: 'Stat Label' }, { value: '00%', label: 'Stat Label' } ] },
+};
+
+const state = {
+  title: 'Blacfox Pre-Read',
+  pages: [
+    {
+      id: 'header', type: 'header', fixed: true, label: 'Header',
+      fields: {
+        title: 'Partner Revenue Acceleration: <em>A 12-Week Engagement</em>',
+        subtitle: 'This document outlines the engagement scope, method, and expected outcomes for your review prior to our strategy call.',
+        preparedFor: '[Client Name]',
+        preparedBy: 'Blacfox',
+        date: '[Date]'
+      }
+    },
+    {
+      id: newId(), label: 'Executive Summary',
+      components: [
+        { id: newCid(), type: 'section-tag', fields: { text: 'Executive Summary' } },
+        { id: newCid(), type: 'heading', fields: { text: 'The Revenue Gap We Are Here to Close' } },
+        { id: newCid(), type: 'body', fields: { text: 'This engagement is designed for partner practices generating $2M–$20M ARR that have hit a revenue ceiling not explained by market conditions or technical capability. In our experience across 40 partner engagements, the ceiling is almost always structural — built into how the practice pitches, qualifies, and retains. This 12-week engagement identifies and closes the three highest-impact gaps in your current motion, leaving you with a live, independently operable outcome-led revenue system.' } }
+      ]
+    },
+    {
+      id: newId(), label: 'The Challenge',
+      components: [
+        { id: newCid(), type: 'section-tag', fields: { text: 'The Challenge' } },
+        { id: newCid(), type: 'heading', fields: { text: 'Where Most Partner Practices Are Losing Revenue' } },
+        { id: newCid(), type: 'body', fields: { text: 'The following challenges are consistent across the partner practices we have assessed. They compound quietly — each one independently manageable, but together they create a ceiling that standard sales training will not break through.' } },
+        { id: newCid(), type: 'cards', fields: { cards: [
+          { label: 'Challenge 01', title: 'Feature-Led Pitching', body: 'Decision-makers respond to quantified outcomes, not product capability. Feature-led pitches stall at procurement and close at or below list price.' },
+          { label: 'Challenge 02', title: 'No Outcome Evidence', body: 'Without packaged proof points from existing clients, every new sale starts from zero credibility. Deals take longer and require deeper discounting.' },
+          { label: 'Challenge 03', title: 'Reactive Renewal Motion', body: 'Renewals treated as admin events result in late-stage churn that erases new logo gains. Without structured value reviews, retention is luck-dependent.' }
+        ] } },
+        { id: newCid(), type: 'callout', fields: { text: 'According to Forrester, 68% of B2B technology buyers say the winning vendor was the one who helped them build the business case internally — not the one with the best product or the lowest price.' } }
+      ]
+    },
+    {
+      id: newId(), label: 'Our Approach',
+      components: [
+        { id: newCid(), type: 'section-tag', fields: { text: 'Our Approach' } },
+        { id: newCid(), type: 'heading', fields: { text: 'A Four-Phase Engagement With a Live Output at Each Stage' } },
+        { id: newCid(), type: 'body', fields: { text: 'What this engagement looks like in practice: four phases over 12 weeks, each producing a deliverable your team can use immediately — not a deck to review and file.' } },
+        { id: newCid(), type: 'steps', fields: { steps: [
+          { label: 'Discovery & Gap Mapping', body: 'We audit your current sales motion, pipeline data, and retention history to identify the three highest-impact structural gaps.', output: false },
+          { label: 'Playbook & Proof Point Build', body: 'We produce your outcome story library, co-create your business case template, and rebuild your pitch structure around quantified buyer outcomes.', output: false },
+          { label: 'Team Activation & Live Practicum', body: 'We run your AEs through the new motion using live deals in your active pipeline as the practicum — not simulated scenarios.', output: false },
+          { label: 'Live Revenue Motion', body: 'A fully operational outcome-led sales and retention motion, with a 90-day performance baseline and a handoff pack your team owns independently.', output: true }
+        ] } }
+      ]
+    },
+    {
+      id: newId(), label: 'Expected Outcome',
+      components: [
+        { id: newCid(), type: 'section-tag', fields: { text: 'Expected Outcome' } },
+        { id: newCid(), type: 'heading', fields: { text: 'What to Expect at 90 Days' } },
+        { id: newCid(), type: 'body', fields: { text: 'Why these results are realistic: these are the median outcomes across the 40 engagements in our benchmark set, not best-case projections. Partners at or above your ARR band consistently hit these numbers within the first two quarters.' } },
+        { id: newCid(), type: 'stats', fields: { items: [
+          { value: '<em>40</em>%', label: 'Faster average close rate' },
+          { value: '<em>28</em>%', label: 'Increase in average deal size' },
+          { value: '<em>3</em>x', label: 'Higher NPS for partners running quarterly value reviews' },
+          { value: '91%', label: 'Renewal rate for structured QVR partners vs 74% control group' }
+        ] } }
+      ]
+    },
+    {
+      id: 'cta', type: 'cta', fixed: true, label: 'Call To Action',
+      fields: {
+        headline: 'Ready to Build the <em style="color:var(--text-primary)">Motion?</em>',
+        body: 'This engagement is scoped for 12 weeks with a fixed deliverable set. If this pre-read aligns with where your practice is today, the next step is a 45-minute strategy call to confirm fit and scope the engagement.',
+        buttonText: 'Book a Strategy Call →',
+        buttonUrl: '#'
+      }
+    }
+  ]
+};
+
+/* ============================================================
+   PRE-READ RENDERERS
+   ============================================================ */
+
+function renderHeaderSection(p) {
+  const f = p.fields;
+  return `<header class="preread-header">
+  <div class="preread-meta">
+    <span class="preread-meta-item">Prepared for: ${esc(f.preparedFor||'')}</span>
+    <span class="preread-meta-divider"></span>
+    <span class="preread-meta-item">Prepared by: ${esc(f.preparedBy||'')}</span>
+    <span class="preread-meta-divider"></span>
+    <span class="preread-meta-item">${esc(f.date||'')}</span>
+  </div>
+  <h1 class="preread-title">${f.title||''}</h1>
+  <p class="preread-subtitle">${f.subtitle||''}</p>
+</header>`;
+}
+
+function renderCtaSection(p) {
+  const f = p.fields;
+  return `<section class="preread-section">
+  <div class="cta-section">
+    <h2 class="cta-h">${f.headline||''}</h2>
+    <p class="cta-p">${f.body||''}</p>
+    <a href="${ea(f.buttonUrl||'#')}" class="btn-primary">${esc(f.buttonText||'')}</a>
+  </div>
+</section>`;
+}
+
+function renderComponent(comp) {
+  const f = comp.fields;
+  switch (comp.type) {
+    case 'section-tag':
+      return `<span class="section-tag">${esc(f.text||'')}</span>`;
+    case 'heading':
+      return `<h2 class="section-h">${f.text||''}</h2>`;
+    case 'body':
+      return `<p class="section-p">${f.text||''}</p>`;
+    case 'callout':
+      return `<div class="callout-box"><p>${f.text||''}</p></div>`;
+    case 'cards': {
+      const cards = (f.cards||[]).map(c =>
+        `<div class="dark-card"><div class="card-num">${esc(c.label||'')}</div><div class="card-title">${esc(c.title||'')}</div><div class="card-body">${c.body||''}</div></div>`
+      ).join('');
+      return `<div class="card-grid-2 mt-32">${cards}</div>`;
+    }
+    case 'steps': {
+      const steps = (f.steps||[]).map((s,i) =>
+        `<div class="step-item${s.output?' is-output':''}">
+          <div class="step-num">${s.output ? 'Output' : ('Step ' + String(i+1).padStart(2,'0'))}</div>
+          <div><div class="step-label">${esc(s.label||'')}</div><div class="step-body">${s.body||''}</div></div>
+        </div>`
+      ).join('');
+      return `<div class="steps-list mt-32">${steps}</div>`;
+    }
+    case 'stats': {
+      const items = (f.items||[]).map(s => `<div class="stat-item"><div class="stat-num">${s.value||''}</div><div class="stat-label">${esc(s.label||'')}</div></div>`).join('');
+      return `<div class="stats-section mt-32"><div class="stats-inner">${items}</div></div>`;
+    }
+    default: return '';
+  }
+}
+
+function renderContentSection(p) {
+  const compsHtml = (p.components||[]).map(c => renderComponent(c)).join('\n');
+  return `<section class="preread-section">${compsHtml}</section>`;
+}
+
+function renderPreRead(forExport) {
+  const pagesHtml = state.pages.map(p => {
+    if (p.type === 'header') return renderHeaderSection(p);
+    if (p.type === 'cta') return renderCtaSection(p);
+    return renderContentSection(p);
+  }).join('\n');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(state.title)}</title>
+${FONTS_HTML}
+<style>${PAGE_CSS}</style>
+${'<\/head>'}
+${'<body>'}
+<div class="preread-wrapper">
+  <div class="preread-container">
+${pagesHtml}
+  </div>
+</div>
+${'<\/body>'}
+${'<\/html>'}`;
+}
+
+/* ============================================================
+   EDITOR FIELD HELPERS
+   ============================================================ */
+
+function fld(label, inputHtml, hint) {
+  return `<div class="field-group">
+    <span class="field-label">${label}</span>
+    ${inputHtml}
+    ${hint ? `<span class="field-hint">${hint}</span>` : ''}
+  </div>`;
+}
+function inp(pid, fkey, val, ph) {
+  return `<input class="field-input" type="text" data-pid="${pid}" data-fkey="${fkey}" value="${ea(val||'')}" placeholder="${ph||''}">`;
+}
+function rta(pid, fkey, val) {
+  return `<div class="field-rta" contenteditable="true" data-pid="${pid}" data-fkey="${fkey}" spellcheck="true">${val||''}</div>`;
+}
+
+// Component-aware field helpers (include data-cid)
+function cInp(pid, cid, fkey, val, ph) {
+  return `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="${fkey}" value="${ea(val||'')}" placeholder="${ph||''}">`;
+}
+function cRta(pid, cid, fkey, val, small) {
+  return `<div class="field-rta${small?' rta-sm':''}" contenteditable="true" data-pid="${pid}" data-cid="${cid}" data-fkey="${fkey}" spellcheck="true">${val||''}</div>`;
+}
+
+/* ============================================================
+   FIXED PAGE FIELDS (header / cta)
+   ============================================================ */
+
+const fixedPageFields = {
+  header(p) {
+    return fld('Title', rta(p.id,'title',p.fields.title), 'Select text to bold or italicize it') +
+           fld('Subtitle', rta(p.id,'subtitle',p.fields.subtitle)) +
+           `<div class="field-sep"></div>` +
+           `<div class="field-row-2">
+             ${fld('Prepared For', inp(p.id,'preparedFor',p.fields.preparedFor,'e.g. [Client Name]'))}
+             ${fld('Prepared By', inp(p.id,'preparedBy',p.fields.preparedBy,'e.g. Blacfox'))}
+           </div>` +
+           fld('Date', inp(p.id,'date',p.fields.date,'e.g. July 2026'));
+  },
+  cta(p) {
+    return fld('Headline', rta(p.id,'headline',p.fields.headline), 'Select text to bold or italicize it') +
+           fld('Body', rta(p.id,'body',p.fields.body)) +
+           fld('Button Text', inp(p.id,'buttonText',p.fields.buttonText)) +
+           fld('Button URL', inp(p.id,'buttonUrl',p.fields.buttonUrl,'https://'));
+  }
+};
+
+/* ============================================================
+   COMPONENT FIELD BUILDERS
+   ============================================================ */
+
+function buildCompFields(pid, comp) {
+  const cid = comp.id;
+  const f = comp.fields;
+  switch (comp.type) {
+    case 'section-tag':
+      return fld('Tag Text', cInp(pid, cid, 'text', f.text, 'e.g. Executive Summary'));
+    case 'heading':
+      return fld('Heading', cRta(pid, cid, 'text', f.text));
+    case 'body':
+      return fld('Paragraph', cRta(pid, cid, 'text', f.text));
+    case 'callout':
+      return fld('Callout Text', cRta(pid, cid, 'text', f.text));
+    case 'cards':
+      return buildCardsCompFields(pid, comp);
+    case 'steps':
+      return buildStepsCompFields(pid, comp);
+    case 'stats':
+      return buildStatsCompFields(pid, comp);
+    default: return '';
+  }
+}
+
+function buildCardsCompFields(pid, comp) {
+  const cid = comp.id;
+  const cards = comp.fields.cards || [];
+  let html = `<div class="cards-list" id="clst-${cid}">`;
+  cards.forEach((c,i) => {
+    html += `<div class="card-item">
+      <div class="card-item-head">
+        <span class="card-badge">Card ${String(i+1).padStart(2,'0')}</span>
+        <button class="card-rm" data-action="rm-comp-card" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+      </div>
+      ${fld('Label', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="cards.${i}.label" value="${ea(c.label||'')}" placeholder="e.g. Challenge 01">`)}
+      ${fld('Title', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="cards.${i}.title" value="${ea(c.title||'')}" placeholder="Card title">`)}
+      ${fld('Body', cRta(pid, cid, `cards.${i}.body`, c.body))}
+    </div>`;
+  });
+  html += `</div><button class="add-card-btn" data-action="add-comp-card" data-pid="${pid}" data-cid="${cid}">+ Add Card</button>`;
+  return `<div class="field-group"><span class="field-label">Cards</span>${html}</div>`;
+}
+
+function buildStepsCompFields(pid, comp) {
+  const cid = comp.id;
+  const steps = comp.fields.steps || [];
+  let html = `<div class="steps-list-edit" id="slst-${cid}">`;
+  steps.forEach((s,i) => {
+    const isOutput = !!s.output;
+    const typeRow = `<div class="variant-row">
+      <button class="variant-btn${!isOutput?' on':''}" data-action="set-step-output" data-pid="${pid}" data-cid="${cid}" data-idx="${i}" data-val="0">Step</button>
+      <button class="variant-btn${isOutput?' on':''}" data-action="set-step-output" data-pid="${pid}" data-cid="${cid}" data-idx="${i}" data-val="1">Output</button>
+    </div>`;
+    html += `<div class="step-item-edit">
+      <div class="card-item-head">
+        <span class="card-badge">${isOutput ? 'Output' : ('Step ' + String(i+1).padStart(2,'0'))}</span>
+        <button class="card-rm" data-action="rm-comp-step" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+      </div>
+      ${fld('Label', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="steps.${i}.label" value="${ea(s.label||'')}" placeholder="Step title">`)}
+      ${fld('Body', cRta(pid, cid, `steps.${i}.body`, s.body))}
+      ${fld('Type', typeRow, 'Marks the final "Output" step with the highlighted style')}
+    </div>`;
+  });
+  html += `</div><button class="add-step-btn" data-action="add-comp-step" data-pid="${pid}" data-cid="${cid}">+ Add Step</button>`;
+  return `<div class="field-group"><span class="field-label">Steps</span>${html}</div>`;
+}
+
+function buildStatsCompFields(pid, comp) {
+  const cid = comp.id;
+  const items = comp.fields.items || [];
+  let html = `<div class="steps-list-edit" id="stlst-${cid}">`;
+  items.forEach((s,i) => {
+    html += `<div class="step-item-edit">
+      <div class="card-item-head">
+        <span class="card-badge">Stat ${String(i+1).padStart(2,'0')}</span>
+        <button class="card-rm" data-action="rm-comp-stat" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+      </div>
+      ${fld('Value', cRta(pid, cid, `items.${i}.value`, s.value, true), 'e.g. 40% — italicize the number for the accent color')}
+      ${fld('Label', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="items.${i}.label" value="${ea(s.label||'')}" placeholder="e.g. Faster average close rate">`)}
+    </div>`;
+  });
+  html += `</div><button class="add-step-btn" data-action="add-comp-stat" data-pid="${pid}" data-cid="${cid}">+ Add Stat</button>`;
+  return `<div class="field-group"><span class="field-label">Stats</span>${html}</div>`;
+}
+
+function buildComponentBlock(pid, comp, idx, total, hasPrevPage, hasNextPage) {
+  const cid = comp.id;
+  const label = COMPONENT_LABELS[comp.type] || comp.type;
+  return `<div class="comp-block" id="compblock-${cid}">
+    <div class="comp-header">
+      <span class="comp-type-label">${label}</span>
+      <div class="comp-actions">
+        <button class="comp-move" data-action="comp-move-up" data-pid="${pid}" data-cid="${cid}" ${idx===0&&!hasPrevPage?'disabled':''} title="Move up">↑</button>
+        <button class="comp-move" data-action="comp-move-down" data-pid="${pid}" data-cid="${cid}" ${idx===total-1&&!hasNextPage?'disabled':''} title="Move down">↓</button>
+        <button class="comp-remove" data-action="comp-remove" data-pid="${pid}" data-cid="${cid}" title="Remove">✕</button>
+      </div>
+    </div>
+    <div class="comp-fields">${buildCompFields(pid, comp)}</div>
+  </div>`;
+}
+
+function buildAddComponentPanel(pid) {
+  const comps = [
+    { type:'section-tag', label:'Section Tag', desc:'Uppercase label',      title:'A small uppercase label above a heading' },
+    { type:'heading',     label:'Heading',      desc:'H2 headline',          title:'A bold section headline' },
+    { type:'body',        label:'Body',         desc:'Paragraph text',       title:'A paragraph of body text' },
+    { type:'cards',       label:'2-Col Cards',  desc:'Challenge/point cards',title:'Two-column card grid for challenges or key points' },
+    { type:'steps',       label:'Steps',        desc:'Numbered process',     title:'A numbered list of method steps, with an optional highlighted Output step' },
+    { type:'stats',       label:'Stats Row',    desc:'Numbers + labels',     title:'A row of big numbers with labels — expected outcomes' },
+    { type:'callout',     label:'Callout',      desc:'Highlighted box',      title:'A highlighted box for a key quote or stat' },
+  ];
+  const items = comps.map(c =>
+    `<button class="add-comp-item" data-action="add-comp" data-pid="${pid}" data-ctype="${c.type}" title="${c.title}">
+      <strong>${c.label}</strong>
+      <span>${c.desc}</span>
+    </button>`
+  ).join('');
+  return `<div class="add-comp-wrap">
+    <button class="add-comp-trigger" data-action="toggle-comp-panel" data-pid="${pid}">
+      <svg width="10" height="10" viewBox="0 0 11 11" fill="none"><line x1="5.5" y1="1" x2="5.5" y2="10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="1" y1="5.5" x2="10" y2="5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Add Component
+    </button>
+    <div class="add-comp-panel" id="addcomppanel-${pid}" style="display:none">
+      <div class="add-comp-grid">${items}</div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   BUILD EDITOR
+   ============================================================ */
+
+let openPageId = null;
+
+function buildEditor() {
+  const body = document.getElementById('editor-body');
+  body.innerHTML = '';
+
+  if (openPageId === null && state.pages.length) openPageId = state.pages[0].id;
+
+  const TYPE_LABELS = { header: 'Header', cta: 'CTA' };
+
+  state.pages.forEach((page, idx) => {
+    const { firstMovable, lastMovable } = fixedIndexes();
+    const block = document.createElement('div');
+    block.className = 'page-block';
+    block.id = 'pageblock-' + page.id;
+
+    const isContent = !page.type;
+    const typeLabel = page.type ? (TYPE_LABELS[page.type] || page.type) : 'Section';
+    const typeBadgeClass = isContent ? 'page-type-badge neutral' : 'page-type-badge';
+
+    const moveUpDisabled   = page.fixed || idx <= firstMovable;
+    const moveDownDisabled = page.fixed || idx >= lastMovable;
+
+    const actions = page.fixed
+      ? `<span class="page-fixed-badge" title="This section can't be moved or deleted.">FIXED</span>`
+      : `<div class="page-actions">
+          <button class="page-move-btn" data-action="move-up" data-pid="${page.id}" ${moveUpDisabled?'disabled':''}>↑</button>
+          <button class="page-move-btn" data-action="move-down" data-pid="${page.id}" ${moveDownDisabled?'disabled':''}>↓</button>
+          <button class="page-remove-btn" data-action="remove-page" data-pid="${page.id}">✕</button>
+        </div>`;
+
+    let fieldsHtml = '';
+    if (isContent) {
+      const total = page.components.length;
+      const hasPrevPage = state.pages.slice(0, idx).some(pg => !pg.type);
+      const hasNextPage = state.pages.slice(idx + 1).some(pg => !pg.type);
+      const compsHtml = total === 0
+        ? `<div class="empty-page-hint">No components yet — add one below</div>`
+        : page.components.map((c,i) => buildComponentBlock(page.id, c, i, total, hasPrevPage, hasNextPage)).join('');
+      fieldsHtml = `
+        <div class="field-group">
+          <span class="field-label">Section Label</span>
+          <input class="field-input" type="text" data-action="rename-page" data-pid="${page.id}" value="${ea(page.label||'')}" placeholder="Section name">
+        </div>
+        <span class="comps-section-label">Components</span>
+        <div class="comps-list" id="comps-${page.id}">${compsHtml}</div>
+        ${buildAddComponentPanel(page.id)}`;
+    } else {
+      fieldsHtml = fixedPageFields[page.type] ? fixedPageFields[page.type](page) : '';
+    }
+
+    const isOpen = page.id === openPageId;
+    block.innerHTML = `<div class="page-header" data-pid="${page.id}">
+      <span class="page-num-badge">${String(idx+1).padStart(2,'0')}</span>
+      <span class="${typeBadgeClass}">${typeLabel}</span>
+      <span class="page-label">${esc(page.label||typeLabel)}</span>
+      ${actions}
+      <span class="chevron${isOpen?' open':''}">▶</span>
+    </div>
+    <div class="page-fields${isOpen?'':' collapsed'}" id="fields-${page.id}">${fieldsHtml}</div>`;
+    body.appendChild(block);
+  });
+
+  const addWrap = document.createElement('div');
+  addWrap.style.paddingBottom = '8px';
+  addWrap.style.flexShrink = '0';
+  addWrap.innerHTML = `<button class="add-page-trigger" data-action="add-page">
+    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><line x1="5.5" y1="1" x2="5.5" y2="10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="1" y1="5.5" x2="10" y2="5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    Add Blank Section
+  </button>`;
+  body.appendChild(addWrap);
+}
+
+/* ============================================================
+   COMPONENT MUTATIONS
+   ============================================================ */
+
+function addComponent(pid, ctype) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p) return;
+  p.components.push({ id: newCid(), type: ctype, fields: JSON.parse(JSON.stringify(COMPONENT_DEFAULTS[ctype]||{})) });
+  rebuildPageComps(pid);
+  schedulePreview();
+}
+
+function removeComponent(pid, cid) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p) return;
+  p.components = p.components.filter(c => c.id !== cid);
+  rebuildPageComps(pid);
+  schedulePreview();
+}
+
+function moveComponent(pid, cid, dir) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p) return;
+  const idx = p.components.findIndex(c => c.id === cid);
+  if (idx < 0) return;
+  const swap = idx + dir;
+
+  if (swap >= 0 && swap < p.components.length) {
+    [p.components[idx], p.components[swap]] = [p.components[swap], p.components[idx]];
+    rebuildPageComps(pid);
+    schedulePreview();
+    return;
+  }
+
+  // Cross-section: find the nearest adjacent content section in direction dir
+  const pageIdx = state.pages.findIndex(pg => pg.id === pid);
+  let targetIdx = pageIdx + dir;
+  while (targetIdx >= 0 && targetIdx < state.pages.length && state.pages[targetIdx].type) {
+    targetIdx += dir;
+  }
+  if (targetIdx < 0 || targetIdx >= state.pages.length) return;
+  const targetPage = state.pages[targetIdx];
+  if (!targetPage.components) targetPage.components = [];
+
+  const [comp] = p.components.splice(idx, 1);
+  if (dir === -1) {
+    targetPage.components.push(comp);
+  } else {
+    targetPage.components.unshift(comp);
+  }
+  rebuildPageComps(pid);
+  rebuildPageComps(targetPage.id);
+  schedulePreview();
+}
+
+function setComponentField(pid, cid, fkey, value) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p) return;
+  const comp = p.components.find(c => c.id === cid);
+  if (!comp) return;
+  const parts = fkey.split('.');
+  if (parts.length === 1) {
+    comp.fields[parts[0]] = value;
+  } else if (parts.length === 2) {
+    const arr = comp.fields[parts[0]];
+    if (Array.isArray(arr)) arr[parseInt(parts[1])] = value;
+  } else if (parts.length === 3) {
+    const arr = comp.fields[parts[0]];
+    if (Array.isArray(arr)) {
+      if (!arr[parseInt(parts[1])]) arr[parseInt(parts[1])] = {};
+      arr[parseInt(parts[1])][parts[2]] = value;
+    }
+  }
+}
+
+function rebuildPageComps(pid) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p) return;
+  const el = document.getElementById('comps-' + pid);
+  if (!el) return;
+  const total = p.components.length;
+  const pIdx = state.pages.findIndex(pg => pg.id === pid);
+  const hasPrevPage = state.pages.slice(0, pIdx).some(pg => !pg.type);
+  const hasNextPage = state.pages.slice(pIdx + 1).some(pg => !pg.type);
+  el.innerHTML = total === 0
+    ? `<div class="empty-page-hint">No components yet — add one below</div>`
+    : p.components.map((c,i) => buildComponentBlock(pid, c, i, total, hasPrevPage, hasNextPage)).join('');
+}
+
+/* ============================================================
+   PAGE (SECTION) MUTATIONS
+   ============================================================ */
+
+function addPage() {
+  const page = { id: newId(), label: 'New Section', components: [] };
+  state.pages.splice(state.pages.length - 1, 0, page); // insert before CTA
+  openPageId = page.id;
+  buildEditor();
+  schedulePreview();
+}
+
+function removePage(pid) {
+  const idx = pageIndex(pid);
+  if (idx < 0 || state.pages[idx].fixed) return;
+  state.pages.splice(idx, 1);
+  if (openPageId === pid) {
+    openPageId = state.pages.length ? state.pages[0].id : null;
+  }
+  buildEditor();
+  schedulePreview();
+}
+
+function movePage(pid, dir) {
+  const idx = pageIndex(pid);
+  if (idx < 0 || state.pages[idx].fixed) return;
+  const swap = idx + dir;
+  const { firstMovable, lastMovable } = fixedIndexes();
+  if (swap < firstMovable || swap > lastMovable) return;
+  [state.pages[idx], state.pages[swap]] = [state.pages[swap], state.pages[idx]];
+  buildEditor();
+  schedulePreview();
+}
+
+/* ============================================================
+   FIELD MUTATIONS (header / cta)
+   ============================================================ */
+
+function setField(pid, fkey, value) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p || !p.fields) return;
+  p.fields[fkey] = value;
+}
+
+/* ============================================================
+   PREVIEW
+   ============================================================ */
+
+let _previewTimer = null;
+function schedulePreview() {
+  clearTimeout(_previewTimer);
+  _previewTimer = setTimeout(updatePreview, 250);
+}
+function updatePreview() {
+  const frame = document.getElementById('preview-frame');
+  const doc = frame.contentDocument || frame.contentWindow.document;
+  doc.open();
+  doc.write(renderPreRead(false));
+  doc.close();
+}
+
+/* ============================================================
+   EVENT HANDLING
+   ============================================================ */
+
+// Collapse / expand page blocks
+document.getElementById('editor-body').addEventListener('click', function(e) {
+  const header = e.target.closest('.page-header[data-pid]');
+  if (!header) return;
+  if (e.target.closest('[data-action]')) return;
+  const pid = header.dataset.pid;
+  const fields = document.getElementById('fields-' + pid);
+  if (!fields) return;
+
+  if (openPageId === pid) {
+    openPageId = null;
+    fields.classList.add('collapsed');
+    const chevron = header.querySelector('.chevron');
+    if (chevron) chevron.classList.remove('open');
+    return;
+  }
+
+  document.querySelectorAll('.page-block').forEach(block => {
+    const f = block.querySelector('.page-fields');
+    const c = block.querySelector('.chevron');
+    if (f) f.classList.add('collapsed');
+    if (c) c.classList.remove('open');
+  });
+
+  openPageId = pid;
+  fields.classList.remove('collapsed');
+  const chevron = header.querySelector('.chevron');
+  if (chevron) chevron.classList.add('open');
+});
+
+// Button actions
+document.getElementById('editor-body').addEventListener('click', function(e) {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  const pid = btn.dataset.pid;
+  const cid = btn.dataset.cid;
+
+  function getComp() {
+    const p = state.pages.find(pg => pg.id === pid);
+    return p && p.components.find(c => c.id === cid);
+  }
+
+  if (action === 'add-page') {
+    addPage();
+
+  } else if (action === 'remove-page') {
+    removePage(pid);
+
+  } else if (action === 'move-up') {
+    movePage(pid, -1);
+
+  } else if (action === 'move-down') {
+    movePage(pid, 1);
+
+  } else if (action === 'toggle-comp-panel') {
+    const panel = document.getElementById('addcomppanel-' + pid);
+    if (panel) panel.style.display = panel.style.display === 'none' ? '' : 'none';
+
+  } else if (action === 'add-comp') {
+    addComponent(pid, btn.dataset.ctype);
+    const panel = document.getElementById('addcomppanel-' + pid);
+    if (panel) panel.style.display = 'none';
+
+  } else if (action === 'comp-remove') {
+    removeComponent(pid, cid);
+
+  } else if (action === 'comp-move-up') {
+    moveComponent(pid, cid, -1);
+
+  } else if (action === 'comp-move-down') {
+    moveComponent(pid, cid, 1);
+
+  } else if (action === 'add-comp-card') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.cards) comp.fields.cards = [];
+      comp.fields.cards.push({ label: 'Point ' + String(comp.fields.cards.length+1).padStart(2,'0'), title: 'New Card', body: 'Description.' });
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-card') {
+    const comp = getComp();
+    if (comp && comp.fields.cards) {
+      comp.fields.cards.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'add-comp-step') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.steps) comp.fields.steps = [];
+      comp.fields.steps.push({ label: 'New Step', body: 'Description.', output: false });
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-step') {
+    const comp = getComp();
+    if (comp && comp.fields.steps) {
+      comp.fields.steps.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'set-step-output') {
+    const comp = getComp();
+    if (comp && comp.fields.steps) {
+      const idx = parseInt(btn.dataset.idx);
+      if (comp.fields.steps[idx]) comp.fields.steps[idx].output = btn.dataset.val === '1';
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'add-comp-stat') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.items) comp.fields.items = [];
+      comp.fields.items.push({ value: '00%', label: 'New Stat' });
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-stat') {
+    const comp = getComp();
+    if (comp && comp.fields.items) {
+      comp.fields.items.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+  }
+});
+
+// Input / textarea / contenteditable changes
+document.getElementById('editor-body').addEventListener('input', function(e) {
+  const el = e.target;
+  const pid    = el.dataset && el.dataset.pid;
+  const cid    = el.dataset && el.dataset.cid;
+  const fkey   = el.dataset && el.dataset.fkey;
+  const action = el.dataset && el.dataset.action;
+
+  // Section rename
+  if (action === 'rename-page' && pid) {
+    const p = state.pages.find(pg => pg.id === pid);
+    if (p) {
+      p.label = el.value;
+      const labelEl = document.querySelector(`#pageblock-${pid} .page-label`);
+      if (labelEl) labelEl.textContent = el.value;
+      schedulePreview();
+    }
+    return;
+  }
+
+  if (!pid || !fkey) return;
+  const value = el.classList.contains('field-rta') ? el.innerHTML : el.value;
+
+  if (cid) {
+    setComponentField(pid, cid, fkey, value);
+  } else {
+    setField(pid, fkey, value);
+  }
+  schedulePreview();
+});
+
+/* ============================================================
+   EXPORT
+   ============================================================ */
+
+document.getElementById('export-btn').addEventListener('click', function() {
+  const html = renderPreRead(true);
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'pre-read-export.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+/* ============================================================
+   RTA TOOLBAR
+   ============================================================ */
+
+let _rtaTarget = null;
+
+function positionRtaToolbar() {
+  if (!_rtaTarget) return;
+  const rect = _rtaTarget.getBoundingClientRect();
+  const tb = document.getElementById('rta-toolbar');
+  const tbH = 42;
+  let top = rect.top - tbH - 8;
+  let left = rect.left;
+  if (top < 8) top = rect.bottom + 6;
+  if (left + 240 > window.innerWidth) left = window.innerWidth - 246;
+  tb.style.top = Math.max(8, top) + 'px';
+  tb.style.left = Math.max(8, left) + 'px';
+}
+
+document.getElementById('editor-body').addEventListener('focusin', function(e) {
+  const rtaEl = e.target.closest('.field-rta');
+  if (!rtaEl) return;
+  _rtaTarget = rtaEl;
+  positionRtaToolbar();
+  document.getElementById('rta-toolbar').classList.add('visible');
+});
+
+document.getElementById('editor-body').addEventListener('focusout', function(e) {
+  setTimeout(function() {
+    const active = document.activeElement;
+    if (!active || (!active.closest('.field-rta') && !active.closest('#rta-toolbar'))) {
+      document.getElementById('rta-toolbar').classList.remove('visible');
+      _rtaTarget = null;
+    }
+  }, 120);
+});
+
+document.getElementById('editor-body').addEventListener('keyup', positionRtaToolbar);
+document.getElementById('editor-body').addEventListener('scroll', positionRtaToolbar, true);
+
+function applyForeColor(color) {
+  const sel = window.getSelection();
+  if (!sel.rangeCount || sel.isCollapsed) return;
+  const range = sel.getRangeAt(0);
+  const frag = range.extractContents();
+  const span = document.createElement('span');
+  span.style.color = color;
+  span.appendChild(frag);
+  range.insertNode(span);
+  sel.removeAllRanges();
+  const newRange = document.createRange();
+  newRange.selectNodeContents(span);
+  sel.addRange(newRange);
+}
+
+document.getElementById('rta-toolbar').addEventListener('mousedown', function(e) {
+  e.preventDefault();
+  const btn = e.target.closest('[data-fmt]');
+  if (!btn) return;
+  const fmt = btn.dataset.fmt;
+  if (fmt === 'bold')        { document.execCommand('bold', false); }
+  else if (fmt === 'italic') { document.execCommand('italic', false); }
+  else if (fmt === 'clear')  { document.execCommand('removeFormat', false); }
+  else if (fmt === 'color')  { applyForeColor(btn.dataset.color); }
+  if (_rtaTarget) _rtaTarget.dispatchEvent(new Event('input', { bubbles: true }));
+});
+
+// Strip all formatting on paste into RTA fields — plain text only
+document.getElementById('editor-body').addEventListener('paste', function(e) {
+  const rtaEl = e.target.closest('.field-rta');
+  if (!rtaEl) return;
+  e.preventDefault();
+  const plain = (e.clipboardData || window.clipboardData).getData('text/plain');
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  sel.deleteFromDocument();
+  const range = sel.getRangeAt(0);
+  const node = document.createTextNode(plain);
+  range.insertNode(node);
+  range.setStartAfter(node);
+  range.setEndAfter(node);
+  sel.removeAllRanges();
+  sel.addRange(range);
+  rtaEl.dispatchEvent(new Event('input', { bubbles: true }));
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+
+buildEditor();
+updatePreview();
+
+</script>
+</body>
+</html>

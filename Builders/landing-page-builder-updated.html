@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDS Landing Page Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:'Montserrat',sans-serif;background:#0a1526;color:#fff;-webkit-font-smoothing:antialiased}
+#app{display:flex;height:100vh}
+
+/* ── Editor Panel ── */
+#editor-panel{width:390px;flex-shrink:0;background:#0f1d31;border-right:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;height:100vh}
+#editor-header{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;background:#17283f;flex-shrink:0;gap:12px}
+.editor-brand-row{display:flex;align-items:center;gap:10px}
+.editor-brand{width:28px;height:28px;border-radius:6px;background:#FF6B35;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;letter-spacing:0.02em;color:#000;flex-shrink:0}
+.editor-title{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#888}
+#export-btn{background:#FF6B35;color:#fff;border:none;border-radius:9999px;padding:7px 16px;font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;font-family:'Montserrat',sans-serif;transition:background 0.15s;flex-shrink:0;white-space:nowrap}
+#export-btn:hover{background:#ff8659}
+#editor-subtitle{padding:8px 18px;font-size:10px;line-height:1.5;color:#666;background:#132338;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
+#editor-body{flex:1;min-height:0;overflow-y:auto;padding:12px 10px;background:#0a1526;display:flex;flex-direction:column;gap:12px}
+#editor-body::-webkit-scrollbar{width:3px}
+#editor-body::-webkit-scrollbar-track{background:transparent}
+#editor-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+
+/* ── Page Blocks (sections) ── */
+.page-block{border:1px solid rgba(255,255,255,0.12);border-radius:12px;background:#132338;box-shadow:0 3px 14px rgba(0,0,0,0.35);overflow:hidden;flex-shrink:0}
+.page-header{display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer;user-select:none;background:#1c2e48;transition:background 0.1s;border-bottom:1px solid rgba(255,255,255,0.09)}
+.page-header:hover{background:#22374f}
+.page-num-badge{font-size:9px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;color:#888;background:rgba(255,255,255,0.09);border-radius:3px;padding:2px 6px;flex-shrink:0;min-width:26px;text-align:center}
+.page-type-badge{font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#FF6B35;background:rgba(255,107,53,0.14);border-radius:3px;padding:2px 6px;flex-shrink:0}
+.page-type-badge.neutral{color:#888;background:rgba(255,255,255,0.08)}
+.page-label{flex:1;font-size:12px;font-weight:700;color:rgba(255,255,255,0.9)}
+.page-fixed-badge{font-size:8px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;color:#555;padding:2px 5px;border-radius:2px;flex-shrink:0}
+.page-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.page-move-btn{background:none;border:none;color:rgba(255,255,255,0.3);font-size:11px;cursor:pointer;padding:2px 4px;line-height:1;border-radius:3px;transition:color 0.12s,background 0.12s;font-family:inherit}
+.page-move-btn:hover{color:#FF6B35;background:rgba(255,107,53,0.1)}
+.page-move-btn:disabled{opacity:0.2;cursor:default;pointer-events:none}
+.page-remove-btn{background:none;border:none;color:rgba(255,255,255,0.25);font-size:14px;cursor:pointer;padding:1px 4px;line-height:1;border-radius:3px;transition:color 0.12s;font-family:inherit}
+.page-remove-btn:hover{color:#ff7070}
+.chevron{font-size:9px;color:#555;flex-shrink:0;transition:transform 0.15s;margin-left:2px}
+.chevron.open{transform:rotate(90deg)}
+.page-fields{padding:14px 14px 14px;display:flex;flex-direction:column;gap:10px;background:#101f34}
+.page-fields.collapsed{display:none}
+.page-fields>*{flex-shrink:0}
+.comps-section-label{font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#666;margin:2px 0 -2px;display:block}
+
+/* ── Variant selector ── */
+.variant-row{display:flex;gap:4px;flex-wrap:wrap}
+.variant-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:rgba(255,255,255,0.5);font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 8px;cursor:pointer;font-family:inherit;transition:all 0.12s}
+.variant-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
+.variant-btn.on{background:rgba(255,107,53,0.2);border-color:rgba(255,107,53,0.5);color:#FF6B35}
+.icon-pick-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.icon-pick-btn{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:rgba(255,255,255,0.7);cursor:pointer;transition:all 0.12s}
+.icon-pick-btn:hover{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25)}
+.icon-pick-btn.on{background:rgba(255,107,53,0.2);border-color:rgba(255,107,53,0.5);color:#FF6B35}
+.icon-pick-btn svg{width:18px;height:18px}
+.icon-trigger-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:rgba(255,255,255,0.8);font-size:11px;font-weight:600;padding:7px 10px;cursor:pointer;font-family:inherit;transition:all 0.12s;width:100%}
+.icon-trigger-btn:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2)}
+.icon-trigger-btn svg{width:16px;height:16px;color:#FF6B35;flex-shrink:0}
+#icon-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10000;display:none;align-items:center;justify-content:center}
+#icon-picker-overlay.visible{display:flex}
+#icon-picker-modal{background:#17283f;border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:18px;width:360px;max-height:80vh;overflow-y:auto;box-shadow:0 12px 48px rgba(0,0,0,0.6)}
+#icon-picker-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+#icon-picker-header span{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#888}
+#icon-picker-close{background:none;border:none;color:#888;font-size:18px;cursor:pointer;line-height:1;padding:0 4px}
+#icon-picker-close:hover{color:#fff}
+
+/* ── Fields ── */
+.field-group{display:flex;flex-direction:column;gap:4px}
+.field-label{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#555}
+.field-input{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;padding:7px 10px;width:100%;transition:border-color 0.2s;outline:none}
+.field-input:focus{border-color:rgba(255,107,53,0.6)}
+.field-rta{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:#fff;font-family:'Montserrat',sans-serif;font-size:12px;padding:7px 10px;width:100%;min-height:52px;line-height:1.6;cursor:text;word-break:break-word;white-space:pre-wrap;outline:none;transition:border-color 0.2s}
+.field-rta:focus{border-color:rgba(255,107,53,0.6)}
+.field-rta:empty::before{content:'Type here…';color:#444;pointer-events:none}
+.field-hint{font-size:9px;color:#444;font-style:italic}
+.field-sep{height:1px;background:rgba(255,255,255,0.05);margin:2px 0}
+.field-row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* ── Cards / list-style sub-editors (cards, plans, testimonials, faq, stats) ── */
+.cards-list,.steps-list-edit{display:flex;flex-direction:column;gap:7px}
+.card-item,.step-item-edit{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:7px;padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.card-item-head{display:flex;align-items:center;justify-content:space-between}
+.card-badge{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#FF6B35}
+.card-rm{background:none;border:none;color:#444;cursor:pointer;font-size:14px;line-height:1;padding:2px 5px;border-radius:4px;font-family:inherit;transition:color 0.12s}
+.card-rm:hover{color:#ff7070}
+.add-card-btn,.add-step-btn,.add-item-btn{background:rgba(255,107,53,0.06);border:1px dashed rgba(255,107,53,0.25);border-radius:6px;color:#FF6B35;cursor:pointer;font-size:10px;font-weight:700;letter-spacing:0.04em;padding:6px;width:100%;font-family:inherit;transition:all 0.12s;margin-top:2px}
+.add-card-btn:hover,.add-step-btn:hover,.add-item-btn:hover{background:rgba(255,107,53,0.12);border-color:rgba(255,107,53,0.45)}
+
+/* ── List item row ── */
+.item-edit-row{display:flex;align-items:flex-start;gap:6px}
+.item-edit-row .field-rta{flex:1;min-height:44px}
+.item-rm{background:none;border:none;color:#444;cursor:pointer;font-size:15px;line-height:1;padding:3px 4px;border-radius:4px;flex-shrink:0;margin-top:3px;transition:color 0.12s}
+.item-rm:hover{color:#ff7070}
+
+/* ── Image upload ── */
+.img-upload-wrap{border:1px dashed rgba(255,255,255,0.18);border-radius:8px;padding:14px;text-align:center;cursor:pointer;position:relative;transition:border-color 0.15s,background 0.15s;overflow:hidden}
+.img-upload-wrap:hover{border-color:rgba(255,107,53,0.4);background:rgba(255,107,53,0.03)}
+.img-upload-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-upload-lbl{font-size:10px;color:#555;pointer-events:none}
+.img-upload-preview{max-width:100%;border-radius:6px;max-height:110px;object-fit:cover;display:block;margin:0 auto 8px;pointer-events:none}
+.img-clear-btn{background:rgba(255,80,80,0.1);border:1px solid rgba(255,80,80,0.2);border-radius:4px;color:#ff9999;cursor:pointer;font-size:9px;font-weight:700;padding:3px 8px;font-family:inherit;margin-top:6px;position:relative;z-index:2}
+
+/* ── Component blocks ── */
+.comps-list{display:flex;flex-direction:column;gap:10px;margin-bottom:4px;padding-left:10px;border-left:2px solid rgba(255,107,53,0.15)}
+.comp-block{background:#1a2c46;border:1px solid rgba(255,255,255,0.13);border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.3)}
+.comp-header{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:rgba(255,107,53,0.08);border-bottom:1px solid rgba(255,255,255,0.08);border-left:2px solid rgba(255,107,53,0.5)}
+.comp-type-label{font-size:9.5px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.65)}
+.comp-actions{display:flex;align-items:center;gap:2px}
+.comp-move{background:none;border:none;color:rgba(255,255,255,0.2);font-size:11px;cursor:pointer;padding:2px 4px;line-height:1;border-radius:3px;transition:color 0.12s,background 0.12s;font-family:inherit}
+.comp-move:hover{color:#FF6B35;background:rgba(255,107,53,0.1)}
+.comp-move:disabled{opacity:0.2;cursor:default;pointer-events:none}
+.comp-remove{background:none;border:none;color:rgba(255,255,255,0.2);font-size:13px;cursor:pointer;padding:1px 4px;line-height:1;border-radius:3px;transition:color 0.12s;font-family:inherit}
+.comp-remove:hover{color:#ff7070}
+.comp-fields{padding:8px 10px 10px;display:flex;flex-direction:column;gap:7px}
+.empty-page-hint{text-align:center;padding:20px 12px;font-size:11px;color:#444;font-style:italic;border:1px dashed rgba(255,255,255,0.07);border-radius:6px}
+
+/* ── Add component ── */
+.add-comp-trigger{display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 12px;background:rgba(255,107,53,0.06);border:1px dashed rgba(255,107,53,0.22);border-radius:6px;color:#FF6B35;font-size:10px;font-weight:600;cursor:pointer;width:100%;font-family:'Montserrat',sans-serif;transition:all 0.15s;letter-spacing:.02em}
+.add-comp-trigger:hover{background:rgba(255,107,53,0.14);border-color:rgba(255,107,53,0.5)}
+.add-comp-panel{padding:6px 0 2px}
+.add-comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.add-comp-item{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:5px;color:rgba(255,255,255,0.6);font-size:9px;padding:7px 8px;text-align:left;cursor:pointer;transition:all 0.12s;font-family:'Montserrat',sans-serif;line-height:1.3}
+.add-comp-item:hover{background:rgba(255,107,53,0.1);border-color:rgba(255,107,53,0.3);color:#fff}
+.add-comp-item strong{display:block;font-size:9px;font-weight:700;color:rgba(255,255,255,0.8);margin-bottom:2px}
+.add-comp-item span{font-size:8px;color:#555}
+
+/* ── Add page ── */
+.add-page-trigger{display:flex;align-items:center;justify-content:center;gap:6px;margin:10px 12px 8px;padding:9px 14px;background:rgba(255,107,53,0.10);border:1px dashed rgba(255,107,53,0.35);border-radius:7px;color:#FF6B35;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;letter-spacing:.02em;width:calc(100% - 24px)}
+.add-page-trigger:hover{background:rgba(255,107,53,0.18);border-color:rgba(255,107,53,0.6)}
+
+/* ── Preview Pane ── */
+#preview-pane{flex:1;background:#0b1620;display:flex;flex-direction:column;overflow:hidden}
+#preview-toolbar{background:#17283f;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.preview-dots{display:flex;gap:5px}
+.preview-dots span{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.12)}
+.preview-dots span:first-child{background:#ff5f57}
+.preview-dots span:nth-child(2){background:#febc2e}
+.preview-dots span:last-child{background:#28c840}
+.preview-url-bar{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:5px;padding:5px 12px;font-size:11px;color:#555;font-family:'Montserrat',sans-serif;text-align:center}
+#preview-frame{flex:1;border:none;width:100%;background:#0b1620}
+
+/* ── RTA Toolbar ── */
+#rta-toolbar{position:fixed;z-index:9999;background:#17283f;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:4px 6px;display:flex;align-items:center;gap:2px;box-shadow:0 4px 24px rgba(0,0,0,0.7);opacity:0;pointer-events:none;transition:opacity 0.12s;white-space:nowrap}
+#rta-toolbar.visible{opacity:1;pointer-events:all}
+.rta-btn{background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;font-size:11px;font-weight:700;font-family:'Montserrat',sans-serif;padding:4px 7px;border-radius:4px;line-height:1;transition:all 0.1s}
+.rta-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
+.rta-sep{width:1px;height:16px;background:rgba(255,255,255,0.1);margin:0 3px;flex-shrink:0}
+.rta-color{width:14px;height:14px;border-radius:50%;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:border-color 0.1s;outline:none;display:inline-block}
+.rta-color:hover{border-color:rgba(255,255,255,0.5)}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="editor-panel">
+    <div id="editor-header">
+      <div class="editor-brand-row">
+        <div class="editor-brand"><svg viewBox="0 0 40 40" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><polygon points="20,4 34,12 34,28 20,36 6,28 6,12" fill="none" stroke="#000" stroke-width="2.4"/><circle cx="20" cy="20" r="3" fill="#000"/></svg></div>
+        <span class="editor-title">Landing Page Builder</span>
+      </div>
+      <button id="export-btn" title="Downloads a self-contained HTML file">↓ Export HTML</button>
+    </div>
+    <div id="editor-subtitle">Add and arrange sections — the preview on the right updates automatically. Click Export HTML when you're ready to publish.</div>
+    <div id="editor-body"></div>
+  </div>
+  <div id="preview-pane">
+    <div id="preview-toolbar">
+      <div class="preview-dots"><span></span><span></span><span></span></div>
+      <div class="preview-url-bar">landing-page-export.html — Live Preview</div>
+    </div>
+    <iframe id="preview-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+  </div>
+</div>
+
+<div id="rta-toolbar">
+  <button class="rta-btn" data-fmt="bold" title="Bold"><b>B</b></button>
+  <button class="rta-btn" data-fmt="italic" title="Italic"><i>I</i></button>
+  <button class="rta-btn" data-fmt="clear" title="Clear formatting">R</button>
+  <div class="rta-sep"></div>
+  <button class="rta-color" data-fmt="color" data-color="#ffffff" style="background:#fff" title="White"></button>
+  <button class="rta-color" data-fmt="color" data-color="#FF6B35" style="background:#FF6B35" title="Orange"></button>
+  <button class="rta-color" data-fmt="color" data-color="#888888" style="background:#888" title="Muted"></button>
+  <button class="rta-color" data-fmt="color" data-color="#000000" style="background:#111;border:2px solid rgba(255,255,255,0.15)" title="Black"></button>
+</div>
+
+<div id="icon-picker-overlay">
+  <div id="icon-picker-modal">
+    <div id="icon-picker-header">
+      <span>Choose an Icon</span>
+      <button id="icon-picker-close" type="button">×</button>
+    </div>
+    <div id="icon-picker-grid" class="icon-pick-grid"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   SVG CONSTANTS
+   ============================================================ */
+
+const LOGO_MARK_PATHS = `<path fill="#FF6B35" d="M58.3,770.3l63.6-215.7c7-23.4,21-38.3,40-42.4l180.9-40c42.6-9.4,50.5,13,36.2,61.6-9,31.2-22.2,53.3-39.1,67.1,13.1,7.9,16.3,28.7,5.8,64.6-13.4,45.3-39.7,83.7-82.3,93.1l-186.7,41.3c-19,4.2-25.4-6.2-18.4-29.5ZM192.5,740.6l5.8-1.3c7.6-1.7,13.1-7.6,15.8-16.9l18.1-60.5c2.6-9.3,0-13.4-7.6-11.8l-5.8,1.3c-7.6,1.7-13.1,7.6-15.8,16.9l-18.1,60.5c-2.6,9.3,0,13.4,7.6,11.8ZM229.2,615.5l5.8-1.3c7.6-1.7,13.4-7.7,16-17l18.4-61.9c2.6-9.3,0-13.4-7.6-11.8l-5.8,1.3c-7.6,1.7-13.1,7.6-15.8,16.9l-18.4,61.9c-2.6,9.3-.3,13.5,7.3,11.8Z"/><path fill="#FF6B35" d="M383.3,631.2l21-71.9c20.7-70.1,62.7-114.7,119.6-127.3l99.2-21.9c56.9-12.6,78.2,12,61,70.5-7,23.4-21,38.3-40,42.4l-64.2,14.2c-19,4.2-25.4-6.2-18.4-29.5l11.7-39.5c2.6-9.3,0-13.4-7.6-11.8l-5.8,1.3c-7.6,1.7-13.1,7.6-15.8,16.9l-55.4,187c-2.6,9.3,0,13.4,7.6,11.8l5.8-1.3c7.6-1.7,13.1-7.6,15.8-16.9l12.8-43.2c7-23.4,20.7-38.2,39.7-42.4l64.2-14.2c19-4.2,25.7,6.1,18.7,29.5l-6.4,21.6c-13.7,46.7-41.7,76.4-79.6,84.8l-128.4,28.4c-56.9,12.6-76.1-18.5-55.4-88.6Z"/><path fill="#FF6B35" d="M665.4,636l8.5-28.8c7-23.4,20.7-38.2,39.7-42.4l64.2-14.2c19-4.2,25.7,6.1,18.7,29.5l-4.4,14.4c-2.6,9.3,0,13.4,7.6,11.8l5.8-1.3c7.6-1.7,13.1-7.6,15.8-16.9l18.1-61.1c2.9-9.4.3-13.5-7.3-11.8l-81.7,18.1c-37.9,8.4-51.1-12.2-37.1-59l5.3-18c13.7-46.7,41.7-76.4,79.6-84.8l186.7-41.3c19-4.2,25.4,6.2,18.4,29.5l-8.5,28.8c-7,23.4-20.7,38.2-39.7,42.4l-64.2,14.2c-19,4.2-25.7-6.1-18.7-29.5l4.4-14.4c2.6-9.3,0-13.4-7.6-11.8l-5.8,1.3c-7.6,1.7-13.1,7.6-15.8,16.9l-18.1,61.1c-2.9,9.4-.3,13.5,7.3,11.8l81.7-18.1c37.9-8.4,51.1,12.2,37.1,59l-5.3,18c-13.7,46.7-41.7,76.4-79.6,84.8l-186.7,41.3c-19,4.2-25.4-6.2-18.4-29.5Z"/>`;
+function logoMarkSvg(size) {
+  return `<svg viewBox="0 0 1080 1080" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">${LOGO_MARK_PATHS}</svg>`;
+}
+const NAV_LOGO_SVG = logoMarkSvg(40);
+
+const FOOTER_WORDMARK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" width="150" height="75"><g><text x="150" y="98" text-anchor="middle" font-family="'Archivo', sans-serif" font-weight="800" font-size="72" letter-spacing="4">BDS</text></g></svg>`;
+
+const FONTS_HTML = `<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&family=Archivo:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">`;
+
+/* ============================================================
+   LANDING PAGE CSS
+   ============================================================ */
+
+const PAGE_CSS = `
+:root {
+  --color-black:#000000;--color-grey-950:#0a0a0a;--color-grey-900:#111111;--color-grey-800:#1a1a1a;
+  --color-grey-700:#262626;--color-grey-500:#555555;--color-grey-400:#888888;--color-grey-200:#cccccc;--color-grey-100:#e0e0e0;
+  --color-white:#ffffff;
+  --blue-deep:#123059;--blue-base:#2255A4;--blue-mid:#2E63B8;--line-white:#EAF2F8;--line-dim:rgba(234,242,248,0.35);--grid-line:rgba(234,242,248,0.08);
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;
+  --space-8:32px;--space-10:40px;--space-12:48px;--space-16:64px;--space-20:80px;--space-24:96px;
+  --radius-sm:4px;--radius-md:10px;--radius-lg:14px;--radius-xl:20px;--radius-2xl:24px;--radius-full:9999px;
+  --font-family-base:'JetBrains Mono',monospace;--font-family-body:'Archivo',sans-serif;
+  --font-size-2xs:9px;--font-size-xs:10px;--font-size-sm:11px;--font-size-base:12px;--font-size-md:13px;
+  --font-size-lg:14px;--font-size-xl:15px;--font-size-2xl:16px;--font-size-3xl:17px;--font-size-4xl:18px;
+  --font-size-5xl:clamp(18px,2.2vw,28px);--font-size-6xl:clamp(26px,3.2vw,44px);
+  --font-size-7xl:clamp(32px,4vw,54px);--font-size-8xl:clamp(36px,4.5vw,64px);
+  --font-size-hero:clamp(40px,5.5vw,80px);
+  --font-weight-regular:400;--font-weight-medium:500;--font-weight-semibold:600;
+  --font-weight-bold:700;--font-weight-extrabold:800;--font-weight-black:900;
+  --leading-tight:1.0;--leading-snug:1.1;--leading-normal:1.3;--leading-relaxed:1.65;--leading-loose:1.75;
+  --tracking-tighter:-0.04em;--tracking-tight:-0.03em;--tracking-snug:-0.02em;--tracking-normal:-0.01em;
+  --tracking-wide:0.08em;--tracking-wider:0.10em;--tracking-widest:0.14em;--tracking-label:0.18em;
+  --border-subtle:rgba(255,255,255,0.06);--border-default:rgba(255,255,255,0.10);
+  --border-moderate:rgba(255,255,255,0.18);--border-strong:rgba(255,255,255,0.28);
+  --border-accent:rgba(255,107,53,0.30);--border-accent-strong:rgba(255,107,53,0.50);
+  --shadow-btn-primary:0 4px 22px rgba(255,107,53,0.32),inset 0 1.5px 0 rgba(255,185,110,0.45),inset 0 -1px 0 rgba(100,28,0,0.22);
+  --shadow-btn-ghost:0 2px 14px rgba(0,0,0,0.22),inset 0 1.5px 0 rgba(255,255,255,0.14),inset 0 -1px 0 rgba(0,0,0,0.08);
+  --shadow-btn-white:0 4px 20px rgba(0,0,0,0.16),inset 0 1.5px 0 rgba(255,255,255,0.95),inset 0 -1px 0 rgba(0,0,0,0.06);
+  --pattern-orange-grid:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  --pattern-black-grid:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  --pattern-hero-grid:linear-gradient(rgba(18,48,89,0.14) 1px,transparent 1px),linear-gradient(90deg,rgba(18,48,89,0.14) 1px,transparent 1px);
+  --pattern-grid-size:64px 64px;
+  --surface-page:var(--blue-base);--surface-elevated:var(--blue-mid);--surface-card:transparent;--surface-hero:#ffffff;--surface-cta:#ffffff;
+  --text-primary:var(--line-white);--text-heading:var(--line-white);--text-body:var(--line-white);
+  --text-muted:var(--line-dim);--text-faint:rgba(234,242,248,0.3);
+  --text-accent:var(--accent);--text-on-accent:var(--color-black);--text-on-hero:var(--blue-deep);
+  --border-ui:var(--border-default);--border-card:var(--border-moderate);--border-card-hover:var(--border-accent-strong);
+  --border-section:var(--border-subtle);
+  --accent:#FF6B35;--accent-dim:rgba(255,107,53,0.06);--accent-mid:rgba(255,107,53,0.12);--accent-glow:rgba(255,107,53,0.45);
+  --type-hero-size:var(--font-size-hero);--type-hero-weight:var(--font-weight-black);
+  --type-hero-tracking:var(--tracking-tighter);--type-hero-leading:var(--leading-tight);
+  --type-h2-size:var(--font-size-6xl);--type-h2-weight:var(--font-weight-extrabold);
+  --type-h2-tracking:var(--tracking-tight);--type-h2-leading:var(--leading-tight);
+  --type-body-lg-size:var(--font-size-3xl);--type-body-size:var(--font-size-2xl);--type-body-sm-size:var(--font-size-lg);
+  --type-label-size:var(--font-size-sm);--type-label-weight:var(--font-weight-bold);
+  --type-label-tracking:var(--tracking-widest);--type-label-transform:uppercase;
+  --space-section-y:var(--space-16);--space-section-x:56px;
+  --transition-btn:transform 0.2s ease,box-shadow 0.2s ease;--transition-card:border-color 0.3s ease,transform 0.3s cubic-bezier(0.22,0.61,0.36,1);
+  --transition-reveal:opacity 0.7s ease,transform 0.7s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font-family-body);background:var(--surface-page);color:var(--text-body);-webkit-font-smoothing:antialiased;background-image:var(--pattern-orange-grid);background-size:var(--pattern-grid-size);background-attachment:fixed}
+p,li,blockquote{orphans:3;widows:3;text-wrap:balance}
+.site-container{max-width:1100px;margin:0 auto;padding:0 var(--space-section-x)}
+@media(max-width:1024px){.site-container{max-width:900px}}
+@media(max-width:768px){.site-container{max-width:100%;padding:0 var(--space-5)}}
+.page-section{padding:var(--space-section-y) 0;border-top:1px solid var(--border-section)}
+.page-section:first-of-type{border-top:none}
+.section-tag{font-family:var(--font-family-base);display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--type-label-size);font-weight:var(--type-label-weight);letter-spacing:var(--type-label-tracking);text-transform:var(--type-label-transform);color:var(--text-accent);margin-bottom:var(--space-5)}
+.section-tag::before{content:'';display:block;width:20px;height:1.5px;background:var(--accent)}
+.section-h{font-family:var(--font-family-base);font-size:var(--type-h2-size);font-weight:var(--type-h2-weight);letter-spacing:var(--type-h2-tracking);line-height:var(--type-h2-leading);margin-bottom:18px;text-wrap:pretty}
+.section-h em{font-style:italic;font-weight:var(--font-weight-extrabold);color:var(--text-accent)}
+.section-p{font-size:var(--type-body-size);color:var(--text-muted);line-height:var(--leading-loose);text-wrap:pretty}
+.section-p+.section-p{margin-top:var(--space-3)}
+.callout-box{border:1px solid rgba(18,48,89,0.65);border-radius:14px;padding:28px 32px;background:rgba(18,48,89,0.35);margin-top:var(--space-3)}
+.callout-box p{font-size:var(--font-size-4xl);font-weight:700;color:var(--text-body);line-height:var(--leading-relaxed)}
+.btn-primary{text-decoration:none;background:var(--color-black);border:1px solid var(--color-black);color:var(--color-white);font-size:var(--type-body-sm-size);font-weight:var(--font-weight-bold);padding:var(--space-4) var(--space-8);border-radius:var(--radius-full);display:inline-flex;align-items:center;gap:var(--space-2);cursor:pointer;font-family:var(--font-family-base);transition:var(--transition-btn)}
+.btn-primary:hover{background:var(--color-grey-800);border-color:var(--color-grey-800);transform:translateY(-2px)}
+.btn-ghost{text-decoration:none;background:linear-gradient(135deg,rgba(255,255,255,0.10) 0%,rgba(255,255,255,0.03) 50%,rgba(255,255,255,0.08) 100%);border:1px solid var(--border-moderate);box-shadow:var(--shadow-btn-ghost);color:rgba(255,255,255,0.72);font-size:var(--type-body-sm-size);font-weight:var(--font-weight-medium);padding:var(--space-4) var(--space-8);border-radius:var(--radius-full);display:inline-flex;align-items:center;gap:var(--space-2);cursor:pointer;font-family:var(--font-family-base);transition:color 0.2s ease,border-color 0.2s ease,transform 0.2s ease}
+.btn-ghost:hover{border-color:var(--border-strong);color:var(--text-primary);transform:translateY(-2px)}
+.btn-white{text-decoration:none;background:linear-gradient(135deg,rgba(255,255,255,0.82) 0%,rgba(255,255,255,0.64) 50%,rgba(255,255,255,0.76) 100%);border:1px solid rgba(255,255,255,0.70);box-shadow:var(--shadow-btn-white);color:var(--text-accent);font-size:var(--type-body-size);font-weight:var(--font-weight-bold);padding:var(--space-4) var(--space-10);border-radius:var(--radius-full);display:inline-flex;align-items:center;gap:var(--space-3);cursor:pointer;font-family:var(--font-family-base);transition:var(--transition-btn)}
+.btn-white:hover{box-shadow:0 8px 32px rgba(0,0,0,0.22),inset 0 1.5px 0 rgba(255,255,255,1),inset 0 -1px 0 rgba(0,0,0,0.08);transform:translateY(-3px)}
+.site-header{padding:var(--space-5) 0}
+.nav-row{display:flex;align-items:center;justify-content:space-between}
+.nav-cta-btn{padding:10px 24px;font-size:13px}
+.hero-section{padding-top:var(--space-8);background-color:var(--surface-hero);background-image:var(--pattern-hero-grid);background-size:var(--pattern-grid-size)}
+.hero-inner{padding:70px 0 80px;max-width:720px}
+.hero-eyebrow{font-family:var(--font-family-base);display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--type-label-size);font-weight:var(--type-label-weight);letter-spacing:var(--type-label-tracking);text-transform:uppercase;color:rgba(18,48,89,0.55);margin-bottom:var(--space-5)}
+.hero-eyebrow::before{content:'';display:block;width:20px;height:1.5px;background:rgba(18,48,89,0.4)}
+.hero-title{font-family:var(--font-family-base);font-size:clamp(32px,4.5vw,64px);font-weight:var(--font-weight-black);line-height:0.98;letter-spacing:var(--tracking-tighter);color:var(--text-on-hero)}
+.hero-title em{font-style:italic}
+.hero-sub{font-size:var(--type-body-size);color:rgba(18,48,89,0.65);line-height:var(--leading-loose);margin:var(--space-5) 0 var(--space-4)}
+.hero-body{font-size:var(--type-body-size);color:rgba(18,48,89,0.65);line-height:var(--leading-loose);margin:0 0 var(--space-8)}
+.hero-ctas{display:flex;gap:var(--space-3);flex-wrap:wrap}
+.hero-section .btn-ghost{color:rgba(18,48,89,0.65);border-color:rgba(18,48,89,0.25);background:rgba(18,48,89,0.06)}
+.hero-section .btn-ghost:hover{color:rgba(18,48,89,0.85);border-color:rgba(18,48,89,0.4)}
+.trust-bar{padding:var(--space-6) 0;border-bottom:1px solid var(--border-ui);display:flex;align-items:center;justify-content:center;gap:var(--space-8);flex-wrap:wrap;background:linear-gradient(90deg,rgba(255,255,255,0.03) 0%,rgba(255,255,255,0.06) 50%,rgba(255,255,255,0.03) 100%)}
+.trust-label{font-family:var(--font-family-base);font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);letter-spacing:var(--tracking-wider);color:var(--text-muted);text-transform:uppercase}
+.trust-logo{font-size:var(--font-size-md);font-weight:var(--font-weight-bold);color:rgba(255,255,255,0.25);letter-spacing:0.05em}
+.card-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-5)}
+.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-5)}
+@media(max-width:768px){.card-grid-2,.card-grid-3{grid-template-columns:1fr}}
+.dark-card{background:var(--surface-card);border:1px solid var(--border-card);border-radius:var(--radius-card,20px);padding:var(--space-8) 28px;cursor:default;transition:var(--transition-card);position:relative;overflow:hidden}
+.dark-card:hover{border-color:var(--border-card-hover);transform:translateY(-4px)}
+.card-num{font-family:var(--font-family-base);font-size:var(--type-label-size);font-weight:var(--type-label-weight);letter-spacing:var(--tracking-widest);text-transform:uppercase;color:var(--text-accent);margin-bottom:18px;min-height:22px;display:flex;align-items:center}
+.card-title{font-family:var(--font-family-base);font-size:var(--font-size-4xl);font-weight:var(--font-weight-bold);letter-spacing:var(--tracking-normal);margin-bottom:var(--space-3);color:var(--text-body)}
+.card-body{font-size:var(--type-body-sm-size);color:var(--text-muted);line-height:var(--leading-relaxed)}
+.steps-list{display:flex;flex-direction:column;gap:4px}
+.step-item{display:grid;grid-template-columns:100px 1fr;align-items:start;gap:32px;padding:22px 32px;border:1px solid var(--border-card);border-radius:16px}
+@media(max-width:768px){.step-item{grid-template-columns:1fr;gap:8px}}
+.step-num{font-family:var(--font-family-base);font-size:var(--type-label-size);font-weight:700;letter-spacing:var(--tracking-widest);text-transform:uppercase;color:var(--text-accent);padding-top:4px}
+.step-label{font-family:var(--font-family-base);font-size:17px;font-weight:700;color:var(--text-body);margin-bottom:8px}
+.step-body{font-size:var(--type-body-sm-size);color:var(--text-muted);line-height:var(--leading-relaxed)}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--space-8);text-align:center}
+.stat-value{font-family:var(--font-family-base);font-size:clamp(30px,4vw,48px);font-weight:var(--font-weight-black);color:var(--text-accent);letter-spacing:var(--tracking-tight);line-height:1}
+.stat-label{font-family:var(--font-family-base);margin-top:var(--space-2);font-size:var(--type-label-size);font-weight:var(--type-label-weight);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--text-muted)}
+.testimonial-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--space-5)}
+.testimonial-card{background:var(--surface-card);border:1px solid var(--border-card);border-radius:20px;padding:32px 28px}
+.quote-mark{font-size:40px;font-weight:900;color:var(--text-accent);line-height:0.6;display:block;margin-bottom:12px;font-family:Georgia,serif}
+.testimonial-quote{font-size:var(--type-body-sm-size);color:var(--text-body);line-height:var(--leading-relaxed);margin-bottom:20px}
+.testimonial-name{font-size:var(--font-size-base);font-weight:700;color:var(--text-body)}
+.testimonial-role{font-size:var(--font-size-sm);color:var(--text-muted);margin-top:2px}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--space-5);align-items:start}
+.pricing-card{border:1px solid var(--border-card);border-radius:20px;padding:36px 30px;display:flex;flex-direction:column;gap:18px;transition:var(--transition-card)}
+.pricing-card.featured{border-color:var(--border-accent-strong);background:var(--accent-dim);position:relative}
+.pricing-card.featured::before{content:'Most Popular';position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--accent);color:var(--color-black);font-size:9px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:4px 12px;border-radius:9999px}
+.pricing-name{font-size:var(--font-size-sm);font-weight:700;letter-spacing:var(--tracking-widest);text-transform:uppercase;color:var(--text-accent)}
+.pricing-price{font-size:44px;font-weight:900;letter-spacing:var(--tracking-tight);color:var(--text-body)}
+.pricing-period{font-size:var(--font-size-md);color:var(--text-muted);font-weight:500;margin-left:4px}
+.pricing-features{list-style:none;display:flex;flex-direction:column;gap:10px}
+.pricing-features li{display:flex;align-items:flex-start;gap:10px;font-size:var(--type-body-sm-size);color:var(--text-muted);line-height:1.5}
+.pricing-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
+.faq-list{display:flex;flex-direction:column;gap:10px}
+.faq-item{border:1px solid var(--border-card);border-radius:12px;padding:20px 24px}
+.faq-q{font-size:var(--font-size-4xl);font-weight:700;color:var(--text-body);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.faq-q::-webkit-details-marker{display:none}
+.faq-q::after{content:'+';font-size:22px;font-weight:400;color:var(--text-accent);flex-shrink:0;transition:transform 0.2s ease}
+details[open] .faq-q::after{transform:rotate(45deg)}
+.faq-a{font-size:var(--type-body-sm-size);color:var(--text-muted);line-height:var(--leading-relaxed);margin-top:14px}
+.image-block img{width:100%;border-radius:20px;object-fit:cover;display:block}
+.image-block .placeholder{border:1px dashed var(--border-moderate);border-radius:20px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.02)}
+.image-block .placeholder span{font-family:var(--font-family-base);font-size:var(--type-label-size);font-weight:var(--type-label-weight);letter-spacing:var(--tracking-widest);text-transform:uppercase;color:var(--text-faint)}
+.button-row{display:flex;gap:var(--space-3);flex-wrap:wrap}
+.cta-wrapper{background:var(--surface-cta);position:relative;overflow:hidden}
+.cta-wrapper::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;background-image:var(--pattern-hero-grid);background-size:var(--pattern-grid-size)}
+.cta-section{padding:var(--space-20) 0;text-align:center;position:relative}
+.cta-h{font-family:var(--font-family-base);font-size:var(--font-size-7xl);font-weight:var(--font-weight-black);letter-spacing:var(--tracking-tight);color:var(--text-on-hero);line-height:var(--leading-tight);margin-bottom:var(--space-5);position:relative;z-index:1}
+.cta-h em{font-style:italic;font-weight:var(--font-weight-black)}
+.cta-p{font-size:17px;color:rgba(18,48,89,0.65);margin-bottom:var(--space-10);position:relative;z-index:1;max-width:520px;margin-left:auto;margin-right:auto}
+.cta-ctas{display:flex;gap:var(--space-3);justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.cta-section .btn-primary,.cta-section .btn-white{background:var(--color-black);border-color:var(--color-black);color:var(--text-primary);box-shadow:none}
+.cta-section .btn-primary:hover,.cta-section .btn-white:hover{background:var(--color-grey-800);border-color:var(--color-grey-800);box-shadow:none;transform:translateY(-2px)}
+.cta-section .btn-ghost{color:rgba(18,48,89,0.65);border-color:rgba(18,48,89,0.25);background:rgba(18,48,89,0.06)}
+.cta-section .btn-ghost:hover{color:rgba(18,48,89,0.85);border-color:rgba(18,48,89,0.4)}
+.lead-form{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.lead-form-row{display:flex;gap:14px;flex-wrap:wrap}
+.lead-form-field{flex:1;min-width:180px;display:flex;flex-direction:column;gap:6px}
+.lead-form-label{font-family:var(--font-family-base);font-size:var(--type-label-size);font-weight:700;letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--text-muted)}
+.lead-form-input{background:rgba(255,255,255,0.04);border:1px solid var(--border-card);border-radius:10px;color:var(--text-body);font-family:var(--font-family-base);font-size:15px;padding:14px 16px}
+.footer-demo{padding:var(--space-16) 0 var(--space-6)}
+.footer-socials{display:flex;gap:var(--space-3);justify-content:center}
+.soc{width:38px;height:38px;border-radius:var(--radius-md);border:1px solid var(--border-ui);background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--text-muted);font-size:var(--font-size-md);transition:background 0.2s ease,border-color 0.2s ease,color 0.2s ease,transform 0.2s ease}
+.soc:hover{background:var(--accent);border-color:var(--accent);color:var(--color-white);transform:translateY(-2px)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid var(--border-ui);font-size:var(--font-size-md);color:var(--text-muted)}
+.footer-legal-link{color:var(--text-muted);text-decoration:none}
+.reveal{opacity:0;transform:translateY(40px);transition:var(--transition-reveal)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+`;
+
+/* ============================================================
+   ICONS
+   ============================================================ */
+
+const ICONS = [
+  `<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 12 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1.5"/><path d="M12 8V12L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<path d="M3 17L9 11L13 15L21 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 7H21V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  `<path d="M12 2L4 6V12C4 16.4183 7.41828 20.5 12 22C16.5817 20.5 20 16.4183 20 12V6L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  `<circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20C4 17.7909 7.58172 16 12 16C16.4183 16 20 17.7909 20 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<path d="M21 16V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16Z" stroke="currentColor" stroke-width="1.5"/><path d="M8 12H16M12 8V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/>`,
+  `<path d="M13 2L4 14H11L10 22L20 9H13L13 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`,
+  `<path d="M12 20.5C12 20.5 3 15 3 9C3 5.5 5.5 3.5 8.5 3.5C10.2 3.5 11.4 4.3 12 5.3C12.6 4.3 13.8 3.5 15.5 3.5C18.5 3.5 21 5.5 21 9C21 15 12 20.5 12 20.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`,
+  `<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 7V12L16 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  `<rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 7L12 13L20 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  `<path d="M12 2C15 4 17 8 16 14L12 18L8 14C7 8 9 4 12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 15L6 18M15 15L18 18M10 14L12 20L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  `<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/>`,
+  `<circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M12 2V5M12 19V22M22 12H19M5 12H2M19.07 4.93L16.95 7.05M7.05 16.95L4.93 19.07M19.07 19.07L16.95 16.95M7.05 7.05L4.93 4.93" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<path d="M7 18H17C19.2091 18 21 16.2091 21 14C21 11.9698 19.5085 10.2966 17.5605 10.0287C17.0522 7.1993 14.5321 5 11.5 5C8.18629 5 5.5 7.68629 5.5 11C5.5 11.1516 5.5058 11.3018 5.5171 11.4504C3.98003 11.9224 3 13.3231 3 15C3 16.6569 4.34315 18 6 18H7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`,
+  `<ellipse cx="12" cy="6" rx="8" ry="3" stroke="currentColor" stroke-width="1.5"/><path d="M4 6V18C4 19.6569 7.58172 21 12 21C16.4183 21 20 19.6569 20 18V6" stroke="currentColor" stroke-width="1.5"/><path d="M4 12C4 13.6569 7.58172 15 12 15C16.4183 15 20 13.6569 20 12" stroke="currentColor" stroke-width="1.5"/>`,
+  `<rect x="3" y="4" width="18" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 7H7.01M7 17H7.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<path d="M8 8L4 12L8 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8L20 12L16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 6L11 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<rect x="3" y="4" width="18" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 20H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M3 12H21M12 3C14.5 5.5 15.5 8.5 15.5 12C15.5 15.5 14.5 18.5 12 21C9.5 18.5 8.5 15.5 8.5 12C8.5 8.5 9.5 5.5 12 3Z" stroke="currentColor" stroke-width="1.5"/>`,
+  `<path d="M9 15L15 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M11 7L12.5 5.5C13.8807 4.11929 16.1193 4.11929 17.5 5.5C18.8807 6.88071 18.8807 9.11929 17.5 10.5L16 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13 17L11.5 18.5C10.1193 19.8807 7.88071 19.8807 6.5 18.5C5.11929 17.1193 5.11929 14.8807 6.5 13.5L8 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7V11" stroke="currentColor" stroke-width="1.5"/>`,
+  `<circle cx="8" cy="15" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M11 12L19 4M19 4H15M19 4V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  `<rect x="3" y="8" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 8V6C8 4.89543 8.89543 4 10 4H14C15.1046 4 16 4.89543 16 6V8" stroke="currentColor" stroke-width="1.5"/>`,
+  `<path d="M3 12L7 8L11 11L13 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12L17 8L13 11L11 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 8V16M17 8V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<path d="M4 4V20H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 16V12M12 16V8M16 16V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<path d="M12 3V12L19 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3" stroke="currentColor" stroke-width="1.5"/>`,
+  `<path d="M4 4H20L14 12V18L10 20V12L4 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`,
+  `<path d="M4 5H20V16H9L5 20V16H4V5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`,
+  `<rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 10H21M8 3V7M16 3V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<path d="M6 18L18 6M18 6H10M18 6V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  `<rect x="7" y="7" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M9 3V7M15 3V7M9 17V21M15 17V21M3 9H7M3 15H7M17 9H21M17 15H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<circle cx="6" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="18" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M8.2 7.3L10.5 16M15.8 7.3L13.5 16M8.5 6H15.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+  `<circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M15 15L20 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`,
+];
+function mkIcon(i) {
+  return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${ICONS[i % ICONS.length]}</svg>`;
+}
+
+/* ============================================================
+   EXPORTED-DOCUMENT SCRIPTS
+   ============================================================ */
+
+const REVEAL_JS = `<script>
+const _obs = new IntersectionObserver(
+  entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+  { threshold: 0.12 }
+);
+document.querySelectorAll('.reveal').forEach(el => _obs.observe(el));
+<\\/script>`;
+
+const FAQ_JS = `<script>
+document.querySelectorAll('.faq-item').forEach(function(item){
+  item.addEventListener('toggle', function(){
+    if (item.open) {
+      document.querySelectorAll('.faq-item').forEach(function(other){ if (other !== item) other.open = false; });
+    }
+  });
+});
+<\\/script>`;
+
+/* ============================================================
+   STATE
+   ============================================================ */
+
+let _nextId = 1;
+function newId() { return 'sec' + (_nextId++); }
+let _nextCid = 1;
+function newCid() { return 'c' + (_nextCid++); }
+
+const COMPONENT_LABELS = {
+  'section-tag':  'Section Tag',
+  'heading':      'Heading',
+  'body':         'Body Paragraph',
+  'callout':      'Callout Box',
+  'stats':        'Stats Row',
+  'trust-logos':  'Trust / Logo Bar',
+  'cards-2col':   '2-Col Cards',
+  'cards-3col':   '3-Col Cards',
+  'steps':        'Steps List',
+  'testimonials': 'Testimonials',
+  'pricing':      'Pricing Table',
+  'faq':          'FAQ Accordion',
+  'list':         'List',
+  'image':        'Image',
+  'button-row':   'Button Row',
+  'spacer':       'Spacer',
+};
+
+const COMPONENT_DEFAULTS = {
+  'section-tag':  { text: 'Why It Works' },
+  'heading':      { text: 'Section Headline Goes Here' },
+  'body':         { text: 'Describe the key point of this section clearly and concisely — one or two sentences is usually enough.' },
+  'callout':      { text: 'A short, highlighted quote, insight, or statistic goes here.' },
+  'stats':        { items: [ { value: '98%', label: 'Client Retention' }, { value: '3.2x', label: 'Avg. Pipeline Growth' }, { value: '12 wks', label: 'Time to Impact' } ] },
+  'trust-logos':  { label: 'Trusted by teams at', logos: ['Microsoft Partners', 'SAP Partners', 'ISVs', 'CSPs'] },
+  'cards-2col':   { variant: 'numbered', cards: [ { title: 'Card One', body: 'Description.' }, { title: 'Card Two', body: 'Description.' } ] },
+  'cards-3col':   { variant: 'numbered', cards: [ { title: 'Point One', body: 'Description.' }, { title: 'Point Two', body: 'Description.' }, { title: 'Point Three', body: 'Description.' } ] },
+  'steps':        { steps: [ { label: 'Step One', body: 'Description.' }, { label: 'Step Two', body: 'Description.' }, { label: 'Step Three', body: 'Description.' } ] },
+  'testimonials': { items: [ { quote: 'Working with this team completely changed how we approach revenue.', name: 'Jane Doe', role: 'VP Sales, Example Co.' }, { quote: 'The clearest, most structured engagement we\'ve run in years.', name: 'John Smith', role: 'CRO, Sample Inc.' } ] },
+  'pricing':      { plans: [
+                      { name: 'Starter', price: '$2,500', period: '/mo', featuresText: 'Core strategy sessions\nMonthly reporting\nEmail support', ctaText: 'Get Started', ctaUrl: '#', highlighted: false },
+                      { name: 'Growth', price: '$5,500', period: '/mo', featuresText: 'Everything in Starter\nWeekly check-ins\nDedicated advisor\nPriority support', ctaText: 'Get Started', ctaUrl: '#', highlighted: true },
+                      { name: 'Enterprise', price: 'Custom', period: '', featuresText: 'Everything in Growth\nCustom scope & SLAs\nQuarterly business reviews', ctaText: 'Talk to Us', ctaUrl: '#', highlighted: false }
+                    ] },
+  'faq':          { items: [
+                      { q: 'How long does an engagement typically take?', a: 'Most engagements run 8–12 weeks from kickoff to a live, working revenue motion.' },
+                      { q: 'Do you work with early-stage partners?', a: 'We typically work with partner practices generating $2M–$20M in ARR, but reach out if you\'re outside that range.' },
+                      { q: 'What does the process look like?', a: 'We start with a structured discovery sprint, then move into build, pilot, and rollout phases with weekly checkpoints.' }
+                    ] },
+  'list':         { listType: 'bullet', items: ['First item', 'Second item', 'Third item'] },
+  'image':        { dataUrl: null },
+  'button-row':   { primaryText: 'Book a Call', primaryUrl: '#', secondaryText: '', secondaryUrl: '' },
+  'spacer':       { size: 'md' },
+};
+
+const state = {
+  title: 'BDS Landing Page',
+  pages: [
+    { id: 'nav', type: 'nav', fixed: true, label: 'Navigation', fields: { ctaText: 'Book a Call', ctaUrl: '#' } },
+    {
+      id: 'hero', type: 'hero', fixed: true, label: 'Hero',
+      fields: {
+        eyebrow: 'Partner Growth Advisory',
+        headline: 'Build the Revenue Engine<br><em style="color:var(--text-on-hero)">Your Partners Need</em>',
+        subheadline: 'BDS helps Microsoft and SAP partners close faster, retain longer, and grow without adding headcount.',
+        bodyPara: 'Purpose-built for partner practices generating $2M–$20M ARR who are ready to move from reactive sales to a structured, outcome-led revenue motion.',
+        primaryText: 'Book a Strategy Call ↗', primaryUrl: '#',
+        secondaryText: '', secondaryUrl: ''
+      }
+    },
+    {
+      id: newId(), label: 'Proof & Approach',
+      components: [
+        { id: newCid(), type: 'trust-logos', fields: JSON.parse(JSON.stringify(COMPONENT_DEFAULTS['trust-logos'])) },
+        { id: newCid(), type: 'section-tag', fields: { text: 'How We Help' } },
+        { id: newCid(), type: 'heading', fields: { text: 'Three Engagements. One Revenue Motion.' } },
+        { id: newCid(), type: 'body', fields: { text: 'Each engagement is scoped, time-boxed, and designed to produce a live output — not a report that sits in a folder.' } },
+        { id: newCid(), type: 'cards-3col', fields: JSON.parse(JSON.stringify(COMPONENT_DEFAULTS['cards-3col'])) }
+      ]
+    },
+    {
+      id: 'cta', type: 'cta', fixed: true, label: 'CTA / Closing',
+      fields: {
+        headline: 'Ready to Build Revenue That <em style="color:var(--text-on-hero)">Scales?</em>',
+        body: '12 weeks. One focused engagement. A live partner revenue motion on the other side.',
+        primaryText: 'Book a Strategy Call ↗', primaryUrl: '#',
+        secondaryText: 'Download the Guide', secondaryUrl: '#'
+      }
+    },
+    {
+      id: 'footer', type: 'footer', fixed: true, label: 'Footer',
+      fields: {
+        description: 'We build the revenue engine that tech companies need to scale through partners — not around them.',
+        copyrightYear: '2026', copyrightName: 'BDS',
+        legalText: 'Privacy Policy', legalUrl: '#'
+      }
+    }
+  ]
+};
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function ea(s)  { return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+function pageIndex(id) { return state.pages.findIndex(p => p.id === id); }
+function fixedIndexes() {
+  // First two pages (nav, hero) and last two pages (cta, footer) are fixed.
+  return { firstMovable: 2, lastMovable: state.pages.length - 3 };
+}
+
+function imgBlock(dataUrl) {
+  if (dataUrl) return `<div class="image-block"><img src="${dataUrl}"></div>`;
+  return `<div class="image-block"><div class="placeholder"><span>Image Placeholder</span></div></div>`;
+}
+function bulletItem(text) { return `<li>${text||''}</li>`; }
+
+/* ============================================================
+   LANDING PAGE RENDERERS
+   ============================================================ */
+
+function renderNavPage(p) {
+  const f = p.fields;
+  return `<header class="site-header">
+  <div class="site-container">
+  <div class="nav-row">
+    <a href="#">${NAV_LOGO_SVG}</a>
+    <a href="${ea(f.ctaUrl||'#')}" class="btn-ghost nav-cta-btn">${esc(f.ctaText||'Book a Call')}</a>
+  </div>
+  </div>
+</header>`;
+}
+
+function renderHeroPage(p) {
+  const f = p.fields;
+  const secondary = f.secondaryText ? `<a href="${ea(f.secondaryUrl||'#')}" class="btn-ghost">${esc(f.secondaryText)}</a>` : '';
+  return `<section class="page-section hero-section">
+  <div class="site-container">
+  <div class="hero-inner reveal">
+    <span class="hero-eyebrow">${esc(f.eyebrow||'')}</span>
+    <h1 class="hero-title">${f.headline||''}</h1>
+    <p class="hero-sub">${f.subheadline||''}</p>
+    <p class="hero-body">${f.bodyPara||''}</p>
+    <div class="hero-ctas">
+      <a href="${ea(f.primaryUrl||'#')}" class="btn-primary">${esc(f.primaryText||'Book a Call')}</a>
+      ${secondary}
+    </div>
+  </div>
+  </div>
+</section>`;
+}
+
+function renderCtaPage(p) {
+  const f = p.fields;
+  const secondary = f.secondaryText ? `<a href="${ea(f.secondaryUrl||'#')}" class="btn-ghost">${esc(f.secondaryText)}</a>` : '';
+  return `<section class="cta-wrapper">
+  <div class="site-container">
+  <div class="cta-section reveal">
+    <h2 class="cta-h">${f.headline||''}</h2>
+    <p class="cta-p">${f.body||''}</p>
+    <div class="cta-ctas">
+      <a href="${ea(f.primaryUrl||'#')}" class="btn-white">${esc(f.primaryText||'Book a Call')}</a>
+      ${secondary}
+    </div>
+  </div>
+  </div>
+</section>`;
+}
+
+function renderFooterPage(p) {
+  const f = p.fields;
+  return `<footer class="footer-demo">
+  <div class="site-container">
+  <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 0 var(--space-12);">
+    ${logoMarkSvg(56)}
+    <p style="font-size:var(--type-body-sm-size);color:var(--text-muted);line-height:var(--leading-loose);max-width:360px;margin:var(--space-4) 0 var(--space-6);">${f.description||''}</p>
+    <div class="footer-socials">
+      <a href="#" class="soc">in</a>
+      <a href="#" class="soc">&#120143;</a>
+      <a href="#" class="soc">&#9654;</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; ${esc(f.copyrightYear||'')} ${esc(f.copyrightName||'')}. All rights reserved.</span>
+    <a href="${ea(f.legalUrl||'#')}" class="footer-legal-link">${esc(f.legalText||'Privacy Policy')}</a>
+  </div>
+  </div>
+</footer>`;
+}
+
+function renderComponent(comp) {
+  const f = comp.fields;
+  switch (comp.type) {
+    case 'section-tag':
+      return `<span class="section-tag">${esc(f.text||'')}</span>`;
+    case 'heading':
+      return `<h2 class="section-h">${f.text||''}</h2>`;
+    case 'body':
+      return `<p class="section-p">${f.text||''}</p>`;
+    case 'callout':
+      return `<div class="callout-box"><p>${f.text||''}</p></div>`;
+    case 'stats': {
+      const items = (f.items||[]).map(s => `<div><div class="stat-value">${esc(s.value||'')}</div><div class="stat-label">${esc(s.label||'')}</div></div>`).join('');
+      return `<div class="stats-row reveal">${items}</div>`;
+    }
+    case 'trust-logos': {
+      const logos = (f.logos||[]).map(l => `<span class="trust-logo">${esc(l)}</span>`).join('\n');
+      return `<div class="trust-bar reveal">
+  <span class="trust-label">${esc(f.label||'')}</span>
+  ${logos}
+</div>`;
+    }
+    case 'cards-2col':
+    case 'cards-3col': {
+      const cols = comp.type === 'cards-2col' ? 2 : 3;
+      const variant = f.variant || 'numbered';
+      const cards = (f.cards||[]).map((c,i) => {
+        let badge = '';
+        if (variant === 'numbered') badge = `<div class="card-num">${String(i+1).padStart(2,'0')}</div>`;
+        else if (variant === 'icon') badge = `<div class="card-num">${mkIcon(c.icon != null ? c.icon : i)}</div>`;
+        return `<div class="dark-card"><div class="card-num-slot">${badge}</div><div class="card-title">${esc(c.title||'')}</div><div class="card-body">${c.body||''}</div></div>`;
+      }).join('');
+      return `<div class="card-grid-${cols} reveal">${cards}</div>`;
+    }
+    case 'steps': {
+      const steps = (f.steps||[]).map((s,i) =>
+        `<div class="step-item">
+          <div class="step-num">Step ${String(i+1).padStart(2,'0')}</div>
+          <div><div class="step-label">${esc(s.label||'')}</div><div class="step-body">${s.body||''}</div></div>
+        </div>`
+      ).join('');
+      return `<div class="steps-list reveal">${steps}</div>`;
+    }
+    case 'testimonials': {
+      const items = (f.items||[]).map(t =>
+        `<div class="testimonial-card">
+          <span class="quote-mark">&ldquo;</span>
+          <p class="testimonial-quote">${t.quote||''}</p>
+          <div class="testimonial-name">${esc(t.name||'')}</div>
+          <div class="testimonial-role">${esc(t.role||'')}</div>
+        </div>`
+      ).join('');
+      return `<div class="testimonial-grid reveal">${items}</div>`;
+    }
+    case 'pricing': {
+      const plans = (f.plans||[]).map(pl => {
+        const features = String(pl.featuresText||'').split('\n').filter(Boolean).map(t => `<li>${esc(t)}</li>`).join('');
+        return `<div class="pricing-card${pl.highlighted?' featured':''}">
+          <div class="pricing-name">${esc(pl.name||'')}</div>
+          <div><span class="pricing-price">${esc(pl.price||'')}</span><span class="pricing-period">${esc(pl.period||'')}</span></div>
+          <ul class="pricing-features">${features}</ul>
+          <a href="${ea(pl.ctaUrl||'#')}" class="${pl.highlighted?'btn-primary':'btn-ghost'}">${esc(pl.ctaText||'Get Started')}</a>
+        </div>`;
+      }).join('');
+      return `<div class="pricing-grid reveal">${plans}</div>`;
+    }
+    case 'faq': {
+      const items = (f.items||[]).map(qa =>
+        `<details class="faq-item"><summary class="faq-q">${esc(qa.q||'')}</summary><div class="faq-a">${qa.a||''}</div></details>`
+      ).join('');
+      return `<div class="faq-list reveal">${items}</div>`;
+    }
+    case 'list': {
+      const items = (f.items||[]).map(it => `<li>${it||''}</li>`).join('');
+      const tag = f.listType === 'numbered' ? 'ol' : 'ul';
+      return `<${tag} class="reveal" style="list-style:none;display:flex;flex-direction:column;gap:var(--space-4);padding-left:0;">${items}</${tag}>`;
+    }
+    case 'image':
+      return `<div class="reveal">${imgBlock(f.dataUrl)}</div>`;
+    case 'button-row': {
+      const secondary = f.secondaryText ? `<a href="${ea(f.secondaryUrl||'#')}" class="btn-ghost">${esc(f.secondaryText)}</a>` : '';
+      return `<div class="button-row reveal"><a href="${ea(f.primaryUrl||'#')}" class="btn-primary">${esc(f.primaryText||'')}</a>${secondary}</div>`;
+    }
+    case 'spacer': {
+      const h = { sm:'16px', md:'32px', lg:'64px' }[f.size||'md'];
+      return `<div style="height:${h}"></div>`;
+    }
+    default: return '';
+  }
+}
+
+function renderSectionPage(p) {
+  const compsHtml = (p.components||[]).map(c => renderComponent(c)).join('\n');
+  return `<section class="page-section">
+  <div class="site-container">
+  <div style="display:flex;flex-direction:column;gap:var(--space-5);">${compsHtml}</div>
+  </div>
+</section>`;
+}
+
+function renderLandingPage(forExport) {
+  const pages = state.pages.map(p => {
+    if (p.type === 'nav') return renderNavPage(p);
+    if (p.type === 'hero') return renderHeroPage(p);
+    if (p.type === 'cta') return renderCtaPage(p);
+    if (p.type === 'footer') return renderFooterPage(p);
+    return renderSectionPage(p);
+  }).join('\n');
+
+  const revealOverride = forExport ? '' : `<style>.reveal{opacity:1!important;transform:none!important;transition:none!important}</style>`;
+  const revealScript = forExport ? REVEAL_JS : '';
+  const faqScript = forExport ? FAQ_JS : '';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(state.title)}</title>
+${FONTS_HTML}
+<style>${PAGE_CSS}</style>
+${revealOverride}
+${'<\/head>'}
+${'<body>'}
+${pages}
+${revealScript}
+${faqScript}
+${'<\/body>'}
+${'<\/html>'}`;
+}
+
+/* ============================================================
+   EDITOR FIELD HELPERS
+   ============================================================ */
+
+function fld(label, inputHtml, hint) {
+  return `<div class="field-group">
+    <span class="field-label">${label}</span>
+    ${inputHtml}
+    ${hint ? `<span class="field-hint">${hint}</span>` : ''}
+  </div>`;
+}
+function inp(pid, fkey, val, ph) {
+  return `<input class="field-input" type="text" data-pid="${pid}" data-fkey="${fkey}" value="${ea(val||'')}" placeholder="${ph||''}">`;
+}
+function rta(pid, fkey, val) {
+  return `<div class="field-rta" contenteditable="true" data-pid="${pid}" data-fkey="${fkey}" spellcheck="true">${val||''}</div>`;
+}
+
+// Component-aware field helpers (include data-cid)
+function cInp(pid, cid, fkey, val, ph) {
+  return `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="${fkey}" value="${ea(val||'')}" placeholder="${ph||''}">`;
+}
+function cRta(pid, cid, fkey, val) {
+  return `<div class="field-rta" contenteditable="true" data-pid="${pid}" data-cid="${cid}" data-fkey="${fkey}" spellcheck="true">${val||''}</div>`;
+}
+function cTa(pid, cid, fkey, val, rows) {
+  return `<textarea class="field-input" data-pid="${pid}" data-cid="${cid}" data-fkey="${fkey}" rows="${rows||3}" style="resize:vertical;line-height:1.5">${esc(val||'')}</textarea>`;
+}
+
+/* ============================================================
+   FIXED PAGE FIELDS (nav / hero / cta / footer)
+   ============================================================ */
+
+const fixedPageFields = {
+  nav(p) {
+    return fld('CTA Button Text', inp(p.id,'ctaText',p.fields.ctaText,'e.g. Book a Call')) +
+           fld('CTA Button URL', inp(p.id,'ctaUrl',p.fields.ctaUrl,'https://'));
+  },
+  hero(p) {
+    return fld('Eyebrow Tag', inp(p.id,'eyebrow',p.fields.eyebrow,'e.g. Partner Growth Advisory')) +
+           fld('Headline', rta(p.id,'headline',p.fields.headline), 'Select text to bold or italicize it') +
+           fld('Subheadline', rta(p.id,'subheadline',p.fields.subheadline)) +
+           fld('Body Paragraph', rta(p.id,'bodyPara',p.fields.bodyPara)) +
+           `<div class="field-sep"></div>` +
+           fld('Primary Button Text', inp(p.id,'primaryText',p.fields.primaryText)) +
+           fld('Primary Button URL', inp(p.id,'primaryUrl',p.fields.primaryUrl,'https://')) +
+           fld('Secondary Button Text', inp(p.id,'secondaryText',p.fields.secondaryText,'Optional')) +
+           fld('Secondary Button URL', inp(p.id,'secondaryUrl',p.fields.secondaryUrl,'https://'));
+  },
+  cta(p) {
+    return fld('Headline', rta(p.id,'headline',p.fields.headline), 'Select text to bold or italicize it') +
+           fld('Body', rta(p.id,'body',p.fields.body)) +
+           fld('Primary Button Text', inp(p.id,'primaryText',p.fields.primaryText)) +
+           fld('Primary Button URL', inp(p.id,'primaryUrl',p.fields.primaryUrl,'https://')) +
+           fld('Secondary Button Text', inp(p.id,'secondaryText',p.fields.secondaryText,'Optional')) +
+           fld('Secondary Button URL', inp(p.id,'secondaryUrl',p.fields.secondaryUrl,'https://'));
+  },
+  footer(p) {
+    return fld('Brand Description', rta(p.id,'description',p.fields.description)) +
+           `<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+             ${fld('Copyright Year', inp(p.id,'copyrightYear',p.fields.copyrightYear))}
+             ${fld('Brand Name', inp(p.id,'copyrightName',p.fields.copyrightName))}
+           </div>` +
+           fld('Legal Link Text', inp(p.id,'legalText',p.fields.legalText)) +
+           fld('Legal Link URL', inp(p.id,'legalUrl',p.fields.legalUrl,'https://'));
+  }
+};
+
+/* ============================================================
+   COMPONENT FIELD BUILDERS
+   ============================================================ */
+
+function buildCompFields(pid, comp) {
+  const cid = comp.id;
+  const f = comp.fields;
+  switch (comp.type) {
+    case 'section-tag':
+      return fld('Tag Text', cInp(pid, cid, 'text', f.text, 'e.g. Why It Works'));
+    case 'heading':
+      return fld('Heading', cRta(pid, cid, 'text', f.text));
+    case 'body':
+      return fld('Paragraph', cRta(pid, cid, 'text', f.text));
+    case 'callout':
+      return fld('Callout Text', cRta(pid, cid, 'text', f.text));
+    case 'stats':
+      return buildStatsCompFields(pid, comp);
+    case 'trust-logos':
+      return fld('Intro Label', cInp(pid, cid, 'label', f.label)) + buildLogosCompFields(pid, comp);
+    case 'cards-2col':
+    case 'cards-3col':
+      return buildCardCompFields(pid, comp);
+    case 'steps':
+      return buildStepCompFields(pid, comp);
+    case 'testimonials':
+      return buildTestimonialCompFields(pid, comp);
+    case 'pricing':
+      return buildPricingCompFields(pid, comp);
+    case 'faq':
+      return buildFaqCompFields(pid, comp);
+    case 'list':
+      return buildListCompFields(pid, comp);
+    case 'image':
+      return buildImageCompFields(pid, comp);
+    case 'button-row':
+      return fld('Primary Button Text', cInp(pid, cid, 'primaryText', f.primaryText)) +
+             fld('Primary Button URL', cInp(pid, cid, 'primaryUrl', f.primaryUrl, 'https://')) +
+             fld('Secondary Button Text', cInp(pid, cid, 'secondaryText', f.secondaryText, 'Optional')) +
+             fld('Secondary Button URL', cInp(pid, cid, 'secondaryUrl', f.secondaryUrl, 'https://'));
+    case 'spacer': {
+      const s = f.size || 'md';
+      const btns = ['sm','md','lg'].map(v =>
+        `<button class="variant-btn${s===v?' on':''}" data-action="set-comp-field" data-pid="${pid}" data-cid="${cid}" data-fkey="size" data-val="${v}">${v==='sm'?'Small':v==='md'?'Medium':'Large'}</button>`
+      ).join('');
+      return fld('Size', `<div class="variant-row">${btns}</div>`);
+    }
+    default: return '';
+  }
+}
+
+function buildCardCompFields(pid, comp) {
+  const cid = comp.id;
+  const f = comp.fields;
+  const variant = f.variant || 'numbered';
+  const varRow = fld('Card Style', `<div class="variant-row">${
+    [{v:'numbered',l:'Numbered'},{v:'icon',l:'Icon'},{v:'plain',l:'Plain'}].map(o =>
+      `<button class="variant-btn${variant===o.v?' on':''}" data-action="set-comp-field" data-pid="${pid}" data-cid="${cid}" data-fkey="variant" data-val="${o.v}">${o.l}</button>`
+    ).join('')
+  }</div>`);
+  const cards = f.cards || [];
+  let cardsHtml = `<div class="cards-list" id="clst-${cid}">`;
+  cards.forEach((c,i) => {
+    const selectedIcon = c.icon != null ? c.icon : i;
+    const iconPicker = variant === 'icon' ? fld('Icon', `<button class="icon-trigger-btn" data-action="open-icon-picker" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">${mkIcon(selectedIcon)}<span>Choose Icon</span></button>`) : '';
+    cardsHtml += `<div class="card-item">
+      <div class="card-item-head">
+        <span class="card-badge">${String(i+1).padStart(2,'0')}</span>
+        <button class="card-rm" data-action="rm-comp-card" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+      </div>
+      ${fld('Title', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="cards.${i}.title" value="${ea(c.title||'')}" placeholder="Card title">`)}
+      ${fld('Body', cRta(pid, cid, `cards.${i}.body`, c.body))}
+      ${iconPicker}
+    </div>`;
+  });
+  cardsHtml += `</div><button class="add-card-btn" data-action="add-comp-card" data-pid="${pid}" data-cid="${cid}">+ Add Card</button>`;
+  return varRow + `<div class="field-group"><span class="field-label">Cards</span>${cardsHtml}</div>`;
+}
+
+function buildStepCompFields(pid, comp) {
+  const cid = comp.id;
+  const steps = comp.fields.steps || [];
+  let html = `<div class="steps-list-edit" id="slst-${cid}">`;
+  steps.forEach((s,i) => {
+    html += `<div class="step-item-edit">
+      <div class="card-item-head">
+        <span class="card-badge">Step ${String(i+1).padStart(2,'0')}</span>
+        <button class="card-rm" data-action="rm-comp-step" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+      </div>
+      ${fld('Label', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="steps.${i}.label" value="${ea(s.label||'')}" placeholder="Step title">`)}
+      ${fld('Body', cRta(pid, cid, `steps.${i}.body`, s.body))}
+    </div>`;
+  });
+  html += `</div><button class="add-step-btn" data-action="add-comp-step" data-pid="${pid}" data-cid="${cid}">+ Add Step</button>`;
+  return `<div class="field-group"><span class="field-label">Steps</span>${html}</div>`;
+}
+
+function buildListCompFields(pid, comp) {
+  const cid = comp.id;
+  const f = comp.fields;
+  const listType = f.listType || 'bullet';
+  const varRow = fld('List Type', `<div class="variant-row">${
+    [{v:'bullet',l:'• Bullet'},{v:'numbered',l:'1. Numbered'}].map(o =>
+      `<button class="variant-btn${listType===o.v?' on':''}" data-action="set-comp-field" data-pid="${pid}" data-cid="${cid}" data-fkey="listType" data-val="${o.v}">${o.l}</button>`
+    ).join('')
+  }</div>`);
+  const items = f.items || [];
+  let html = `<div class="cards-list" id="ilst-${cid}">`;
+  items.forEach((item,i) => {
+    html += `<div class="item-edit-row">
+      <div class="field-rta" contenteditable="true" data-pid="${pid}" data-cid="${cid}" data-fkey="items.${i}" spellcheck="true">${item||''}</div>
+      <button class="item-rm" data-action="rm-comp-item" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+    </div>`;
+  });
+  html += `</div><button class="add-item-btn" data-action="add-comp-item" data-pid="${pid}" data-cid="${cid}">+ Add Item</button>`;
+  return varRow + `<div class="field-group"><span class="field-label">Items</span>${html}</div>`;
+}
+
+function buildLogosCompFields(pid, comp) {
+  const cid = comp.id;
+  const logos = comp.fields.logos || [];
+  let html = `<div class="cards-list" id="glst-${cid}">`;
+  logos.forEach((logo,i) => {
+    html += `<div class="item-edit-row">
+      <input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="logos.${i}" value="${ea(logo)}" placeholder="Partner or client name">
+      <button class="item-rm" data-action="rm-comp-logo" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+    </div>`;
+  });
+  html += `</div><button class="add-item-btn" data-action="add-comp-logo" data-pid="${pid}" data-cid="${cid}">+ Add Logo</button>`;
+  return `<div class="field-group"><span class="field-label">Logo Items</span>${html}</div>`;
+}
+
+function buildStatsCompFields(pid, comp) {
+  const cid = comp.id;
+  const items = comp.fields.items || [];
+  let html = `<div class="steps-list-edit" id="stlst-${cid}">`;
+  items.forEach((s,i) => {
+    html += `<div class="step-item-edit">
+      <div class="card-item-head">
+        <span class="card-badge">Stat ${String(i+1).padStart(2,'0')}</span>
+        <button class="card-rm" data-action="rm-comp-stat" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+      </div>
+      ${fld('Value', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="items.${i}.value" value="${ea(s.value||'')}" placeholder="e.g. 98%">`)}
+      ${fld('Label', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="items.${i}.label" value="${ea(s.label||'')}" placeholder="e.g. Client Retention">`)}
+    </div>`;
+  });
+  html += `</div><button class="add-step-btn" data-action="add-comp-stat" data-pid="${pid}" data-cid="${cid}">+ Add Stat</button>`;
+  return `<div class="field-group"><span class="field-label">Stats</span>${html}</div>`;
+}
+
+function buildTestimonialCompFields(pid, comp) {
+  const cid = comp.id;
+  const items = comp.fields.items || [];
+  let html = `<div class="steps-list-edit" id="tlst-${cid}">`;
+  items.forEach((t,i) => {
+    html += `<div class="step-item-edit">
+      <div class="card-item-head">
+        <span class="card-badge">Quote ${String(i+1).padStart(2,'0')}</span>
+        <button class="card-rm" data-action="rm-comp-testimonial" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+      </div>
+      ${fld('Quote', cRta(pid, cid, `items.${i}.quote`, t.quote))}
+      ${fld('Name', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="items.${i}.name" value="${ea(t.name||'')}" placeholder="Full name">`)}
+      ${fld('Role / Company', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="items.${i}.role" value="${ea(t.role||'')}" placeholder="e.g. VP Sales, Example Co.">`)}
+    </div>`;
+  });
+  html += `</div><button class="add-step-btn" data-action="add-comp-testimonial" data-pid="${pid}" data-cid="${cid}">+ Add Testimonial</button>`;
+  return `<div class="field-group"><span class="field-label">Testimonials</span>${html}</div>`;
+}
+
+function buildPricingCompFields(pid, comp) {
+  const cid = comp.id;
+  const plans = comp.fields.plans || [];
+  let html = `<div class="steps-list-edit" id="plst-${cid}">`;
+  plans.forEach((pl,i) => {
+    html += `<div class="step-item-edit">
+      <div class="card-item-head">
+        <span class="card-badge">Plan ${String(i+1).padStart(2,'0')}</span>
+        <button class="card-rm" data-action="rm-comp-plan" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+      </div>
+      ${fld('Plan Name', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="plans.${i}.name" value="${ea(pl.name||'')}" placeholder="e.g. Growth">`)}
+      <div class="field-row-2">
+        ${fld('Price', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="plans.${i}.price" value="${ea(pl.price||'')}" placeholder="e.g. $5,500">`)}
+        ${fld('Period', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="plans.${i}.period" value="${ea(pl.period||'')}" placeholder="e.g. /mo">`)}
+      </div>
+      ${fld('Features', cTa(pid, cid, `plans.${i}.featuresText`, pl.featuresText, 4), 'One feature per line')}
+      <div class="field-row-2">
+        ${fld('Button Text', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="plans.${i}.ctaText" value="${ea(pl.ctaText||'')}" placeholder="Get Started">`)}
+        ${fld('Button URL', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="plans.${i}.ctaUrl" value="${ea(pl.ctaUrl||'')}" placeholder="https://">`)}
+      </div>
+      ${fld('Highlight', `<div class="variant-row">${[{v:'0',l:'Normal'},{v:'1',l:'Featured'}].map(o=>`<button class="variant-btn${(pl.highlighted?'1':'0')===o.v?' on':''}" data-action="set-plan-highlight" data-pid="${pid}" data-cid="${cid}" data-idx="${i}" data-val="${o.v}">${o.l}</button>`).join('')}</div>`)}
+    </div>`;
+  });
+  html += `</div><button class="add-step-btn" data-action="add-comp-plan" data-pid="${pid}" data-cid="${cid}">+ Add Plan</button>`;
+  return `<div class="field-group"><span class="field-label">Pricing Plans</span>${html}</div>`;
+}
+
+function buildFaqCompFields(pid, comp) {
+  const cid = comp.id;
+  const items = comp.fields.items || [];
+  let html = `<div class="steps-list-edit" id="flst-${cid}">`;
+  items.forEach((qa,i) => {
+    html += `<div class="step-item-edit">
+      <div class="card-item-head">
+        <span class="card-badge">Q&amp;A ${String(i+1).padStart(2,'0')}</span>
+        <button class="card-rm" data-action="rm-comp-faq" data-pid="${pid}" data-cid="${cid}" data-idx="${i}">×</button>
+      </div>
+      ${fld('Question', `<input class="field-input" type="text" data-pid="${pid}" data-cid="${cid}" data-fkey="items.${i}.q" value="${ea(qa.q||'')}" placeholder="Question">`)}
+      ${fld('Answer', cRta(pid, cid, `items.${i}.a`, qa.a))}
+    </div>`;
+  });
+  html += `</div><button class="add-step-btn" data-action="add-comp-faq" data-pid="${pid}" data-cid="${cid}">+ Add Question</button>`;
+  return `<div class="field-group"><span class="field-label">Questions</span>${html}</div>`;
+}
+
+function buildImageCompFields(pid, comp) {
+  const cid = comp.id;
+  const dataUrl = comp.fields.dataUrl;
+  return `<div class="field-group"><span class="field-label">Image</span>
+    <div class="img-upload-wrap" id="imgwrap-${cid}">
+      <input type="file" accept="image/*" data-pid="${pid}" data-cid="${cid}" data-fkey="dataUrl">
+      ${dataUrl ? `<img class="img-upload-preview" src="${dataUrl}">` : ''}
+      <span class="img-upload-lbl" ${dataUrl ? 'style="display:none"' : ''}>Click to upload image</span>
+      ${dataUrl ? `<br><button class="img-clear-btn" data-action="clear-comp-img" data-pid="${pid}" data-cid="${cid}">Remove image</button>` : ''}
+    </div>
+  </div>`;
+}
+
+function buildComponentBlock(pid, comp, idx, total, hasPrevPage, hasNextPage) {
+  const cid = comp.id;
+  const label = COMPONENT_LABELS[comp.type] || comp.type;
+  return `<div class="comp-block" id="compblock-${cid}">
+    <div class="comp-header">
+      <span class="comp-type-label">${label}</span>
+      <div class="comp-actions">
+        <button class="comp-move" data-action="comp-move-up" data-pid="${pid}" data-cid="${cid}" ${idx===0&&!hasPrevPage?'disabled':''} title="Move up">↑</button>
+        <button class="comp-move" data-action="comp-move-down" data-pid="${pid}" data-cid="${cid}" ${idx===total-1&&!hasNextPage?'disabled':''} title="Move down">↓</button>
+        <button class="comp-remove" data-action="comp-remove" data-pid="${pid}" data-cid="${cid}" title="Remove">✕</button>
+      </div>
+    </div>
+    <div class="comp-fields">${buildCompFields(pid, comp)}</div>
+  </div>`;
+}
+
+function buildAddComponentPanel(pid) {
+  const comps = [
+    { type:'section-tag',  label:'Section Tag',   desc:'Uppercase label',      title:'A small uppercase label above a heading' },
+    { type:'heading',      label:'Heading',       desc:'H2 headline',          title:'A bold section headline' },
+    { type:'body',         label:'Body',          desc:'Paragraph text',       title:'A paragraph of body text' },
+    { type:'callout',      label:'Callout',       desc:'Highlighted box',      title:'A highlighted box for a key quote or stat' },
+    { type:'stats',        label:'Stats Row',     desc:'Numbers + labels',     title:'A row of big numbers with labels — social proof' },
+    { type:'trust-logos',  label:'Trust Bar',     desc:'Partner/client names', title:'A row of partner or client names to build credibility' },
+    { type:'cards-2col',   label:'2-Col Cards',   desc:'2-column grid',        title:'Two feature cards side by side' },
+    { type:'cards-3col',   label:'3-Col Cards',   desc:'3-column grid',        title:'Three feature cards side by side' },
+    { type:'steps',        label:'Steps',         desc:'Numbered process',     title:'A numbered list of process steps' },
+    { type:'testimonials', label:'Testimonials',  desc:'Quote cards',          title:'A grid of customer quote cards' },
+    { type:'pricing',      label:'Pricing Table', desc:'Plan cards',           title:'A set of pricing plan cards' },
+    { type:'faq',          label:'FAQ',           desc:'Accordion Q&A',        title:'An expandable list of questions and answers' },
+    { type:'list',         label:'List',          desc:'Bullet or numbered',   title:'A bullet or numbered list of items' },
+    { type:'image',        label:'Image',         desc:'Upload a photo',       title:'An image or supporting graphic' },
+    { type:'button-row',   label:'Button Row',    desc:'One or two CTAs',      title:'A standalone row of call-to-action buttons' },
+    { type:'spacer',       label:'Spacer',        desc:'Vertical space',       title:'Adds vertical blank space between components' },
+  ];
+  const items = comps.map(c =>
+    `<button class="add-comp-item" data-action="add-comp" data-pid="${pid}" data-ctype="${c.type}" title="${c.title}">
+      <strong>${c.label}</strong>
+      <span>${c.desc}</span>
+    </button>`
+  ).join('');
+  return `<div class="add-comp-wrap">
+    <button class="add-comp-trigger" data-action="toggle-comp-panel" data-pid="${pid}">
+      <svg width="10" height="10" viewBox="0 0 11 11" fill="none"><line x1="5.5" y1="1" x2="5.5" y2="10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="1" y1="5.5" x2="10" y2="5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Add Component
+    </button>
+    <div class="add-comp-panel" id="addcomppanel-${pid}" style="display:none">
+      <div class="add-comp-grid">${items}</div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   BUILD EDITOR
+   ============================================================ */
+
+let openPageId = null;
+
+function buildEditor() {
+  const body = document.getElementById('editor-body');
+  body.innerHTML = '';
+
+  if (openPageId === null && state.pages.length) openPageId = state.pages[0].id;
+
+  const TYPE_LABELS = { nav: 'Nav', hero: 'Hero', cta: 'CTA', footer: 'Footer' };
+
+  state.pages.forEach((page, idx) => {
+    const { firstMovable, lastMovable } = fixedIndexes();
+    const block = document.createElement('div');
+    block.className = 'page-block';
+    block.id = 'pageblock-' + page.id;
+
+    const isContent = !page.type; // section pages have no type
+    const typeLabel = page.type ? (TYPE_LABELS[page.type] || page.type) : 'Section';
+    const typeBadgeClass = isContent ? 'page-type-badge neutral' : 'page-type-badge';
+
+    const moveUpDisabled   = page.fixed || idx <= firstMovable;
+    const moveDownDisabled = page.fixed || idx >= lastMovable;
+
+    const actions = page.fixed
+      ? `<span class="page-fixed-badge" title="This section can't be moved or deleted.">FIXED</span>`
+      : `<div class="page-actions">
+          <button class="page-move-btn" data-action="move-up" data-pid="${page.id}" ${moveUpDisabled?'disabled':''}>↑</button>
+          <button class="page-move-btn" data-action="move-down" data-pid="${page.id}" ${moveDownDisabled?'disabled':''}>↓</button>
+          <button class="page-remove-btn" data-action="remove-page" data-pid="${page.id}">✕</button>
+        </div>`;
+
+    let fieldsHtml = '';
+    if (isContent) {
+      const total = page.components.length;
+      const hasPrevPage = state.pages.slice(0, idx).some(pg => !pg.type);
+      const hasNextPage = state.pages.slice(idx + 1).some(pg => !pg.type);
+      const compsHtml = total === 0
+        ? `<div class="empty-page-hint">No components yet — add one below</div>`
+        : page.components.map((c,i) => buildComponentBlock(page.id, c, i, total, hasPrevPage, hasNextPage)).join('');
+      fieldsHtml = `
+        <div class="field-group">
+          <span class="field-label">Section Label</span>
+          <input class="field-input" type="text" data-action="rename-page" data-pid="${page.id}" value="${ea(page.label||'')}" placeholder="Section name">
+        </div>
+        <span class="comps-section-label">Components</span>
+        <div class="comps-list" id="comps-${page.id}">${compsHtml}</div>
+        ${buildAddComponentPanel(page.id)}`;
+    } else {
+      fieldsHtml = fixedPageFields[page.type] ? fixedPageFields[page.type](page) : '';
+    }
+
+    const isOpen = page.id === openPageId;
+    block.innerHTML = `<div class="page-header" data-pid="${page.id}">
+      <span class="page-num-badge">${String(idx+1).padStart(2,'0')}</span>
+      <span class="${typeBadgeClass}">${typeLabel}</span>
+      <span class="page-label">${esc(page.label||typeLabel)}</span>
+      ${actions}
+      <span class="chevron${isOpen?' open':''}">▶</span>
+    </div>
+    <div class="page-fields${isOpen?'':' collapsed'}" id="fields-${page.id}">${fieldsHtml}</div>`;
+    body.appendChild(block);
+  });
+
+  // Add Section button
+  const addWrap = document.createElement('div');
+  addWrap.style.paddingBottom = '8px';
+  addWrap.style.flexShrink = '0';
+  addWrap.innerHTML = `<button class="add-page-trigger" data-action="add-page">
+    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><line x1="5.5" y1="1" x2="5.5" y2="10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="1" y1="5.5" x2="10" y2="5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    Add Blank Section
+  </button>`;
+  body.appendChild(addWrap);
+}
+
+/* ============================================================
+   COMPONENT MUTATIONS
+   ============================================================ */
+
+function addComponent(pid, ctype) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p) return;
+  p.components.push({ id: newCid(), type: ctype, fields: JSON.parse(JSON.stringify(COMPONENT_DEFAULTS[ctype]||{})) });
+  rebuildPageComps(pid);
+  schedulePreview();
+}
+
+function removeComponent(pid, cid) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p) return;
+  p.components = p.components.filter(c => c.id !== cid);
+  rebuildPageComps(pid);
+  schedulePreview();
+}
+
+function moveComponent(pid, cid, dir) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p) return;
+  const idx = p.components.findIndex(c => c.id === cid);
+  if (idx < 0) return;
+  const swap = idx + dir;
+
+  if (swap >= 0 && swap < p.components.length) {
+    [p.components[idx], p.components[swap]] = [p.components[swap], p.components[idx]];
+    rebuildPageComps(pid);
+    schedulePreview();
+    return;
+  }
+
+  // Cross-section: find the nearest adjacent content section in direction dir
+  const pageIdx = state.pages.findIndex(pg => pg.id === pid);
+  let targetIdx = pageIdx + dir;
+  while (targetIdx >= 0 && targetIdx < state.pages.length && state.pages[targetIdx].type) {
+    targetIdx += dir;
+  }
+  if (targetIdx < 0 || targetIdx >= state.pages.length) return;
+  const targetPage = state.pages[targetIdx];
+  if (!targetPage.components) targetPage.components = [];
+
+  const [comp] = p.components.splice(idx, 1);
+  if (dir === -1) {
+    targetPage.components.push(comp);     // moving up → append to end of previous section
+  } else {
+    targetPage.components.unshift(comp);  // moving down → prepend to start of next section
+  }
+  rebuildPageComps(pid);
+  rebuildPageComps(targetPage.id);
+  schedulePreview();
+}
+
+function setComponentField(pid, cid, fkey, value) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p) return;
+  const comp = p.components.find(c => c.id === cid);
+  if (!comp) return;
+  const parts = fkey.split('.');
+  if (parts.length === 1) {
+    comp.fields[parts[0]] = value;
+  } else if (parts.length === 2) {
+    const arr = comp.fields[parts[0]];
+    if (Array.isArray(arr)) arr[parseInt(parts[1])] = value;
+  } else if (parts.length === 3) {
+    const arr = comp.fields[parts[0]];
+    if (Array.isArray(arr)) {
+      if (!arr[parseInt(parts[1])]) arr[parseInt(parts[1])] = {};
+      arr[parseInt(parts[1])][parts[2]] = value;
+    }
+  }
+}
+
+function rebuildPageComps(pid) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p) return;
+  const el = document.getElementById('comps-' + pid);
+  if (!el) return;
+  const total = p.components.length;
+  const pIdx = state.pages.findIndex(pg => pg.id === pid);
+  const hasPrevPage = state.pages.slice(0, pIdx).some(pg => !pg.type);
+  const hasNextPage = state.pages.slice(pIdx + 1).some(pg => !pg.type);
+  el.innerHTML = total === 0
+    ? `<div class="empty-page-hint">No components yet — add one below</div>`
+    : p.components.map((c,i) => buildComponentBlock(pid, c, i, total, hasPrevPage, hasNextPage)).join('');
+}
+
+/* ============================================================
+   PAGE (SECTION) MUTATIONS
+   ============================================================ */
+
+function addPage() {
+  const page = { id: newId(), label: 'New Section', components: [] };
+  state.pages.splice(state.pages.length - 2, 0, page); // insert before CTA
+  openPageId = page.id;
+  buildEditor();
+  schedulePreview();
+}
+
+function removePage(pid) {
+  const idx = pageIndex(pid);
+  if (idx < 0 || state.pages[idx].fixed) return;
+  state.pages.splice(idx, 1);
+  if (openPageId === pid) {
+    openPageId = state.pages.length ? state.pages[0].id : null;
+  }
+  buildEditor();
+  schedulePreview();
+}
+
+function movePage(pid, dir) {
+  const idx = pageIndex(pid);
+  if (idx < 0 || state.pages[idx].fixed) return;
+  const swap = idx + dir;
+  const { firstMovable, lastMovable } = fixedIndexes();
+  if (swap < firstMovable || swap > lastMovable) return;
+  [state.pages[idx], state.pages[swap]] = [state.pages[swap], state.pages[idx]];
+  buildEditor();
+  schedulePreview();
+}
+
+/* ============================================================
+   FIELD MUTATIONS (nav / hero / cta / footer)
+   ============================================================ */
+
+function setField(pid, fkey, value) {
+  const p = state.pages.find(pg => pg.id === pid);
+  if (!p || !p.fields) return;
+  p.fields[fkey] = value;
+}
+
+/* ============================================================
+   PREVIEW
+   ============================================================ */
+
+let _previewTimer = null;
+function schedulePreview() {
+  clearTimeout(_previewTimer);
+  _previewTimer = setTimeout(updatePreview, 250);
+}
+function updatePreview() {
+  const frame = document.getElementById('preview-frame');
+  const doc = frame.contentDocument || frame.contentWindow.document;
+  doc.open();
+  doc.write(renderLandingPage(false));
+  doc.close();
+}
+
+/* ============================================================
+   EVENT HANDLING
+   ============================================================ */
+
+// Collapse / expand page blocks
+document.getElementById('editor-body').addEventListener('click', function(e) {
+  const header = e.target.closest('.page-header[data-pid]');
+  if (!header) return;
+  if (e.target.closest('[data-action]')) return;
+  const pid = header.dataset.pid;
+  const fields = document.getElementById('fields-' + pid);
+  if (!fields) return;
+
+  if (openPageId === pid) {
+    openPageId = null;
+    fields.classList.add('collapsed');
+    const chevron = header.querySelector('.chevron');
+    if (chevron) chevron.classList.remove('open');
+    return;
+  }
+
+  document.querySelectorAll('.page-block').forEach(block => {
+    const f = block.querySelector('.page-fields');
+    const c = block.querySelector('.chevron');
+    if (f) f.classList.add('collapsed');
+    if (c) c.classList.remove('open');
+  });
+
+  openPageId = pid;
+  fields.classList.remove('collapsed');
+  const chevron = header.querySelector('.chevron');
+  if (chevron) chevron.classList.add('open');
+});
+
+// Button actions
+document.getElementById('editor-body').addEventListener('click', function(e) {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  const pid = btn.dataset.pid;
+  const cid = btn.dataset.cid;
+
+  function getComp() {
+    const p = state.pages.find(pg => pg.id === pid);
+    return p && p.components.find(c => c.id === cid);
+  }
+
+  if (action === 'add-page') {
+    addPage();
+
+  } else if (action === 'remove-page') {
+    removePage(pid);
+
+  } else if (action === 'move-up') {
+    movePage(pid, -1);
+
+  } else if (action === 'move-down') {
+    movePage(pid, 1);
+
+  } else if (action === 'toggle-comp-panel') {
+    const panel = document.getElementById('addcomppanel-' + pid);
+    if (panel) panel.style.display = panel.style.display === 'none' ? '' : 'none';
+
+  } else if (action === 'add-comp') {
+    addComponent(pid, btn.dataset.ctype);
+    const panel = document.getElementById('addcomppanel-' + pid);
+    if (panel) panel.style.display = 'none';
+
+  } else if (action === 'open-icon-picker') {
+    openIconPicker(pid, cid, parseInt(btn.dataset.idx));
+
+  } else if (action === 'comp-remove') {
+    removeComponent(pid, cid);
+
+  } else if (action === 'comp-move-up') {
+    moveComponent(pid, cid, -1);
+
+  } else if (action === 'comp-move-down') {
+    moveComponent(pid, cid, 1);
+
+  } else if (action === 'set-comp-field') {
+    setComponentField(pid, cid, btn.dataset.fkey, btn.dataset.val);
+    rebuildPageComps(pid);
+    schedulePreview();
+
+  } else if (action === 'set-plan-highlight') {
+    const comp = getComp();
+    if (comp && comp.fields.plans) {
+      comp.fields.plans[parseInt(btn.dataset.idx)].highlighted = btn.dataset.val === '1';
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'add-comp-card') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.cards) comp.fields.cards = [];
+      comp.fields.cards.push({ title: 'New Card', body: 'Description.' });
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-card') {
+    const comp = getComp();
+    if (comp && comp.fields.cards) {
+      comp.fields.cards.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'add-comp-step') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.steps) comp.fields.steps = [];
+      comp.fields.steps.push({ label: 'New Step', body: 'Description.' });
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-step') {
+    const comp = getComp();
+    if (comp && comp.fields.steps) {
+      comp.fields.steps.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'add-comp-item') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.items) comp.fields.items = [];
+      comp.fields.items.push('New item.');
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-item') {
+    const comp = getComp();
+    if (comp && comp.fields.items) {
+      comp.fields.items.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'add-comp-logo') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.logos) comp.fields.logos = [];
+      comp.fields.logos.push('Partner Name');
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-logo') {
+    const comp = getComp();
+    if (comp && comp.fields.logos) {
+      comp.fields.logos.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'add-comp-stat') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.items) comp.fields.items = [];
+      comp.fields.items.push({ value: '00%', label: 'New Stat' });
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-stat') {
+    const comp = getComp();
+    if (comp && comp.fields.items) {
+      comp.fields.items.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'add-comp-testimonial') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.items) comp.fields.items = [];
+      comp.fields.items.push({ quote: 'New testimonial quote.', name: 'Full Name', role: 'Title, Company' });
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-testimonial') {
+    const comp = getComp();
+    if (comp && comp.fields.items) {
+      comp.fields.items.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'add-comp-plan') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.plans) comp.fields.plans = [];
+      comp.fields.plans.push({ name: 'New Plan', price: '$0', period: '/mo', featuresText: 'Feature one\nFeature two', ctaText: 'Get Started', ctaUrl: '#', highlighted: false });
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-plan') {
+    const comp = getComp();
+    if (comp && comp.fields.plans) {
+      comp.fields.plans.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'add-comp-faq') {
+    const comp = getComp();
+    if (comp) {
+      if (!comp.fields.items) comp.fields.items = [];
+      comp.fields.items.push({ q: 'New question?', a: 'Answer goes here.' });
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'rm-comp-faq') {
+    const comp = getComp();
+    if (comp && comp.fields.items) {
+      comp.fields.items.splice(parseInt(btn.dataset.idx), 1);
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+
+  } else if (action === 'clear-comp-img') {
+    const comp = getComp();
+    if (comp) {
+      comp.fields.dataUrl = null;
+      rebuildPageComps(pid);
+      schedulePreview();
+    }
+  }
+});
+
+// Input / textarea / contenteditable changes
+document.getElementById('editor-body').addEventListener('input', function(e) {
+  const el = e.target;
+  const pid    = el.dataset && el.dataset.pid;
+  const cid    = el.dataset && el.dataset.cid;
+  const fkey   = el.dataset && el.dataset.fkey;
+  const action = el.dataset && el.dataset.action;
+
+  // Section rename
+  if (action === 'rename-page' && pid) {
+    const p = state.pages.find(pg => pg.id === pid);
+    if (p) {
+      p.label = el.value;
+      const labelEl = document.querySelector(`#pageblock-${pid} .page-label`);
+      if (labelEl) labelEl.textContent = el.value;
+      schedulePreview();
+    }
+    return;
+  }
+
+  if (!pid || !fkey) return;
+  const value = el.classList.contains('field-rta') ? el.innerHTML : el.value;
+
+  if (cid) {
+    setComponentField(pid, cid, fkey, value);
+  } else {
+    setField(pid, fkey, value);
+  }
+  schedulePreview();
+});
+
+// File input (image upload) changes
+document.getElementById('editor-body').addEventListener('change', function(e) {
+  const el = e.target;
+  if (el.type !== 'file' || !el.dataset.pid || !el.dataset.cid || !el.dataset.fkey) return;
+  const file = el.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    setComponentField(el.dataset.pid, el.dataset.cid, el.dataset.fkey, ev.target.result);
+    rebuildPageComps(el.dataset.pid);
+    schedulePreview();
+  };
+  reader.readAsDataURL(file);
+});
+
+/* ============================================================
+   EXPORT
+   ============================================================ */
+
+document.getElementById('export-btn').addEventListener('click', function() {
+  const html = renderLandingPage(true);
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'landing-page-export.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+/* ============================================================
+   RTA TOOLBAR
+   ============================================================ */
+
+let _rtaTarget = null;
+
+function positionRtaToolbar() {
+  if (!_rtaTarget) return;
+  const rect = _rtaTarget.getBoundingClientRect();
+  const tb = document.getElementById('rta-toolbar');
+  const tbH = 42;
+  let top = rect.top - tbH - 8;
+  let left = rect.left;
+  if (top < 8) top = rect.bottom + 6;
+  if (left + 240 > window.innerWidth) left = window.innerWidth - 246;
+  tb.style.top = Math.max(8, top) + 'px';
+  tb.style.left = Math.max(8, left) + 'px';
+}
+
+document.getElementById('editor-body').addEventListener('focusin', function(e) {
+  const rta = e.target.closest('.field-rta');
+  if (!rta) return;
+  _rtaTarget = rta;
+  positionRtaToolbar();
+  document.getElementById('rta-toolbar').classList.add('visible');
+});
+
+document.getElementById('editor-body').addEventListener('focusout', function(e) {
+  setTimeout(function() {
+    const active = document.activeElement;
+    if (!active || (!active.closest('.field-rta') && !active.closest('#rta-toolbar'))) {
+      document.getElementById('rta-toolbar').classList.remove('visible');
+      _rtaTarget = null;
+    }
+  }, 120);
+});
+
+document.getElementById('editor-body').addEventListener('keyup', positionRtaToolbar);
+document.getElementById('editor-body').addEventListener('scroll', positionRtaToolbar, true);
+
+function applyForeColor(color) {
+  const sel = window.getSelection();
+  if (!sel.rangeCount || sel.isCollapsed) return;
+  const range = sel.getRangeAt(0);
+  const frag = range.extractContents();
+  const span = document.createElement('span');
+  span.style.color = color;
+  span.appendChild(frag);
+  range.insertNode(span);
+  sel.removeAllRanges();
+  const newRange = document.createRange();
+  newRange.selectNodeContents(span);
+  sel.addRange(newRange);
+}
+
+document.getElementById('rta-toolbar').addEventListener('mousedown', function(e) {
+  e.preventDefault();
+  const btn = e.target.closest('[data-fmt]');
+  if (!btn) return;
+  const fmt = btn.dataset.fmt;
+  if (fmt === 'bold')        { document.execCommand('bold', false); }
+  else if (fmt === 'italic') { document.execCommand('italic', false); }
+  else if (fmt === 'clear')  { document.execCommand('removeFormat', false); }
+  else if (fmt === 'color')  { applyForeColor(btn.dataset.color); }
+  if (_rtaTarget) _rtaTarget.dispatchEvent(new Event('input', { bubbles: true }));
+});
+
+/* ============================================================
+   ICON PICKER POPUP
+   ============================================================ */
+
+let _iconPickerTarget = null;
+
+function openIconPicker(pid, cid, idx) {
+  const p = state.pages.find(pg => pg.id === pid);
+  const comp = p && p.components.find(c => c.id === cid);
+  const card = comp && comp.fields.cards && comp.fields.cards[idx];
+  if (!card) return;
+  _iconPickerTarget = { pid, cid, idx };
+  const selectedIcon = card.icon != null ? card.icon : idx;
+  const grid = document.getElementById('icon-picker-grid');
+  grid.innerHTML = ICONS.map((_, ii) =>
+    `<button class="icon-pick-btn${String(selectedIcon)===String(ii)?' on':''}" data-icon-idx="${ii}" title="Icon ${ii+1}">${mkIcon(ii)}</button>`
+  ).join('');
+  document.getElementById('icon-picker-overlay').classList.add('visible');
+}
+
+function closeIconPicker() {
+  document.getElementById('icon-picker-overlay').classList.remove('visible');
+  _iconPickerTarget = null;
+}
+
+document.getElementById('icon-picker-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeIconPicker();
+});
+document.getElementById('icon-picker-close').addEventListener('click', closeIconPicker);
+
+document.getElementById('icon-picker-grid').addEventListener('click', function(e) {
+  const btn = e.target.closest('.icon-pick-btn');
+  if (!btn || !_iconPickerTarget) return;
+  const { pid, cid, idx } = _iconPickerTarget;
+  setComponentField(pid, cid, `cards.${idx}.icon`, parseInt(btn.dataset.iconIdx));
+  rebuildPageComps(pid);
+  schedulePreview();
+  closeIconPicker();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' && _iconPickerTarget) closeIconPicker();
+});
+
+// Strip all formatting on paste into RTA fields — plain text only
+document.getElementById('editor-body').addEventListener('paste', function(e) {
+  const rta = e.target.closest('.field-rta');
+  if (!rta) return;
+  e.preventDefault();
+  const plain = (e.clipboardData || window.clipboardData).getData('text/plain');
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  sel.deleteFromDocument();
+  const range = sel.getRangeAt(0);
+  const node = document.createTextNode(plain);
+  range.insertNode(node);
+  range.setStartAfter(node);
+  range.setEndAfter(node);
+  sel.removeAllRanges();
+  sel.addRange(range);
+  rta.dispatchEvent(new Event('input', { bubbles: true }));
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+
+buildEditor();
+updatePreview();
+
+</script>
+</body>
+</html>
