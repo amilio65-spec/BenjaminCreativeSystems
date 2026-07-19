@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-field="EBOOK_TITLE">The Partner Revenue Guide — Blacfox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+
+/* ─────────────────────────────────────────────
+   BLACFOX DESIGN SYSTEM — :root token block
+   Copied from blacfox-design-system-v3.html
+   Do NOT modify these tokens.
+───────────────────────────────────────────── */
+
+:root {
+  --color-black:        #000000;
+  --color-grey-950:     #0a0a0a;
+  --color-grey-900:     #111111;
+  --color-grey-800:     #1a1a1a;
+  --color-grey-700:     #262626;
+  --color-grey-500:     #555555;
+  --color-grey-400:     #888888;
+  --color-grey-200:     #cccccc;
+  --color-grey-100:     #e0e0e0;
+  --color-white:        #ffffff;
+
+  --color-orange-600:   #c44d1c;
+  --color-orange-500:   #e95c25;
+  --color-orange-400:   #f07040;
+  --color-orange-300:   #f9a07a;
+  --color-orange-glow:  rgba(233,92,37,0.45);
+
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+  --space-30:  120px;
+
+  --radius-sm:   4px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  --font-family-base:  'Montserrat', sans-serif;
+
+  --font-size-2xs:  9px;
+  --font-size-xs:   10px;
+  --font-size-sm:   11px;
+  --font-size-base: 12px;
+  --font-size-md:   13px;
+  --font-size-lg:   14px;
+  --font-size-xl:   15px;
+  --font-size-2xl:  16px;
+  --font-size-3xl:  17px;
+  --font-size-4xl:  18px;
+  --font-size-5xl:  clamp(18px, 2.2vw, 28px);
+  --font-size-6xl:  clamp(26px, 3.2vw, 44px);
+  --font-size-7xl:  clamp(32px, 4vw, 54px);
+  --font-size-8xl:  clamp(36px, 4.5vw, 64px);
+  --font-size-hero: clamp(40px, 5.5vw, 80px);
+
+  --font-weight-regular:   400;
+  --font-weight-medium:    500;
+  --font-weight-semibold:  600;
+  --font-weight-bold:      700;
+  --font-weight-extrabold: 800;
+  --font-weight-black:     900;
+
+  --leading-tight:   1.0;
+  --leading-snug:    1.1;
+  --leading-normal:  1.3;
+  --leading-relaxed: 1.65;
+  --leading-loose:   1.75;
+
+  --tracking-tighter: -0.04em;
+  --tracking-tight:   -0.03em;
+  --tracking-snug:    -0.02em;
+  --tracking-normal:  -0.01em;
+  --tracking-wide:    0.08em;
+  --tracking-wider:   0.10em;
+  --tracking-widest:  0.14em;
+  --tracking-label:   0.18em;
+
+  --duration-fast:   0.15s;
+  --duration-base:   0.2s;
+  --duration-slow:   0.3s;
+  --ease-base:       ease;
+  --ease-spring:     cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out:        cubic-bezier(0.4, 0, 0.2, 1);
+
+  --border-subtle:   rgba(255,255,255,0.06);
+  --border-default:  rgba(255,255,255,0.10);
+  --border-moderate: rgba(255,255,255,0.18);
+  --border-strong:   rgba(255,255,255,0.28);
+  --border-accent:   rgba(233,92,37,0.30);
+  --border-accent-strong: rgba(233,92,37,0.50);
+
+  --shadow-btn-primary:
+    0 4px 22px rgba(233,92,37,0.32),
+    inset 0 1.5px 0 rgba(255,185,110,0.45),
+    inset 0 -1px 0 rgba(100,28,0,0.22);
+  --shadow-btn-primary-hover:
+    0 8px 36px rgba(233,92,37,0.44),
+    inset 0 1.5px 0 rgba(255,190,115,0.55),
+    inset 0 -1px 0 rgba(100,28,0,0.28);
+  --shadow-btn-white:
+    0 4px 20px rgba(0,0,0,0.16),
+    inset 0 1.5px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(0,0,0,0.06);
+
+  --pattern-orange-grid:
+    linear-gradient(rgba(233,92,37,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(233,92,37,0.08) 1px, transparent 1px);
+  --pattern-black-grid:
+    linear-gradient(rgba(0,0,0,0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.10) 1px, transparent 1px);
+  --pattern-grid-size:    64px 64px;
+  --pattern-grid-size-sm: 32px 32px;
+
+  /* ── Tier 2: Semantic Tokens ── */
+  --surface-page:      var(--color-black);
+  --surface-elevated:  var(--color-grey-800);
+  --surface-card:      transparent;
+  --surface-inset:     rgba(0,0,0,0.4);
+  --surface-overlay:   rgba(0,0,0,0.75);
+  --surface-hero:      var(--color-orange-500);
+  --surface-cta:       var(--color-orange-500);
+
+  --text-primary:    var(--color-white);
+  --text-heading:    var(--color-white);
+  --text-body:       var(--color-grey-100);
+  --text-muted:      var(--color-grey-400);
+  --text-faint:      rgba(255,255,255,0.3);
+  --text-accent:     var(--color-orange-500);
+  --text-on-accent:  var(--color-black);
+  --text-on-hero:    var(--color-black);
+
+  --border-ui:           var(--border-default);
+  --border-card:         var(--border-moderate);
+  --border-card-hover:   var(--border-accent-strong);
+  --border-section:      var(--border-subtle);
+  --border-input:        rgba(255,255,255,0.14);
+  --border-input-focus:  rgba(233,92,37,0.60);
+
+  --accent:      var(--color-orange-500);
+  --accent-dim:  rgba(233,92,37,0.06);
+  --accent-mid:  rgba(233,92,37,0.12);
+  --accent-glow: var(--color-orange-glow);
+
+  --type-hero-size:        var(--font-size-hero);
+  --type-hero-weight:      var(--font-weight-black);
+  --type-hero-tracking:    var(--tracking-tighter);
+  --type-hero-leading:     var(--leading-tight);
+
+  --type-h2-size:          var(--font-size-6xl);
+  --type-h2-weight:        var(--font-weight-extrabold);
+  --type-h2-tracking:      var(--tracking-tight);
+  --type-h2-leading:       var(--leading-tight);
+
+  --type-h3-size:          var(--font-size-5xl);
+  --type-h3-weight:        var(--font-weight-extrabold);
+  --type-h3-tracking:      var(--tracking-snug);
+  --type-h3-leading:       var(--leading-snug);
+
+  --type-body-lg-size:     var(--font-size-3xl);
+  --type-body-size:        var(--font-size-2xl);
+  --type-body-sm-size:     var(--font-size-lg);
+  --type-body-xs-size:     var(--font-size-md);
+  --type-body-weight:      var(--font-weight-regular);
+  --type-body-leading:     var(--leading-loose);
+
+  --type-label-size:       var(--font-size-sm);
+  --type-label-weight:     var(--font-weight-bold);
+  --type-label-tracking:   var(--tracking-widest);
+  --type-label-transform:  uppercase;
+
+  --type-caption-size:     var(--font-size-base);
+  --type-caption-weight:   var(--font-weight-regular);
+
+  --type-mono:             monospace;
+
+  --space-section-y:       var(--space-16);
+  --space-section-x:       56px;
+  --space-section-head:    var(--space-12);
+  --space-component:       var(--space-16);
+  --space-card-pad:        var(--space-8);
+  --space-card-pad-lg:     var(--space-12);
+  --space-gap-sm:          var(--space-3);
+  --space-gap-md:          var(--space-5);
+  --space-gap-lg:          var(--space-6);
+  --space-stack-sm:        var(--space-2);
+  --space-stack-md:        var(--space-4);
+  --space-stack-lg:        var(--space-6);
+
+  --radius-badge:   var(--radius-full);
+  --radius-btn:     var(--radius-full);
+  --radius-input:   var(--radius-md);
+  --radius-card:    var(--radius-xl);
+  --radius-card-lg: var(--radius-2xl);
+  --radius-panel:   var(--radius-lg);
+  --radius-tag:     var(--radius-sm);
+
+  --transition-ui:   color var(--duration-base) var(--ease-base),
+                     background var(--duration-fast) var(--ease-base);
+  --transition-card: border-color var(--duration-slow) var(--ease-base),
+                     transform var(--duration-slow) var(--ease-spring);
+  --transition-btn:  transform var(--duration-base) var(--ease-base),
+                     box-shadow var(--duration-base) var(--ease-base);
+}
+
+/* ─────────────────────────────────────────────
+   BASE RESET
+───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: var(--font-family-base);
+  background: var(--color-grey-900);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─────────────────────────────────────────────
+   EBOOK PAGE SYSTEM — A4 Portrait
+   210mm × 297mm → rendered at 794px × 1123px
+───────────────────────────────────────────── */
+.ebook-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-8) var(--space-4);
+}
+
+.page {
+  width: 794px;
+  min-height: 1123px;
+  background: var(--surface-page);
+  background-image: var(--pattern-orange-grid);
+  background-size: var(--pattern-grid-size);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-inner {
+  padding: var(--space-12) var(--space-section-x);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-footer {
+  padding: var(--space-5) var(--space-section-x);
+  border-top: 1px solid var(--border-section);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--tracking-widest);
+  text-transform: var(--type-label-transform);
+  color: var(--text-muted);
+}
+
+.page-footer-num {
+  font-size: var(--type-caption-size);
+  color: var(--text-faint);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Cover page overrides — full bleed orange hero */
+.page.page-cover {
+  background-color: var(--surface-hero);
+  background-image: var(--pattern-black-grid);
+  background-size: var(--pattern-grid-size);
+}
+
+.page.page-cover .page-footer {
+  border-top-color: rgba(0,0,0,0.15);
+}
+
+.page.page-cover .page-footer-brand {
+  color: rgba(0,0,0,0.45);
+}
+
+.page.page-cover .page-footer-num {
+  color: rgba(0,0,0,0.3);
+}
+
+/* CTA page overrides */
+.page.page-cta {
+  background-color: var(--surface-cta);
+  background-image: var(--pattern-black-grid);
+  background-size: var(--pattern-grid-size);
+}
+
+.page.page-cta .page-inner {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.page.page-cta .page-footer {
+  border-top-color: rgba(0,0,0,0.15);
+}
+
+.page.page-cta .page-footer-brand {
+  color: rgba(0,0,0,0.45);
+}
+
+.page.page-cta .page-footer-num {
+  color: rgba(0,0,0,0.3);
+}
+
+.page.page-cta .cta-section {
+  background: transparent;
+}
+
+.page.page-cta .cta-section::before {
+  display: none;
+}
+
+/* ─────────────────────────────────────────────
+   COMPONENT STYLES
+   Sourced verbatim from design system.
+   Do NOT modify.
+───────────────────────────────────────────── */
+
+.section-tag {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: var(--type-label-transform);
+  color: var(--text-accent);
+  margin-bottom: var(--space-5);
+}
+.section-tag::before { content: ''; display: block; width: 20px; height: 1.5px; background: var(--accent); }
+
+.section-h {
+  font-size: var(--type-h2-size);
+  font-weight: var(--type-h2-weight);
+  letter-spacing: var(--type-h2-tracking);
+  line-height: var(--type-h2-leading);
+  color: var(--text-heading);
+  margin-bottom: 18px;
+  text-wrap: pretty;
+}
+.section-h em { font-style: italic; font-weight: var(--font-weight-extrabold); color: var(--text-accent); }
+
+.section-p { font-size: var(--type-body-size); color: var(--text-muted); line-height: var(--type-body-leading); text-wrap: pretty; }
+
+/* TYPOGRAPHY — ORPHAN + WIDOW CONTROL
+   Applies to all text-bearing elements
+   across all asset templates            */
+p, li, blockquote {
+  orphans: 3;
+  widows: 3;
+  text-wrap: balance;
+}
+
+/* BULLET LIST — aligned orange markers */
+.page-inner ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.page-inner ul li {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  font-size: var(--type-body-sm-size);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+}
+.page-inner ul li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  margin-top: 0.48em;
+}
+
+/* NUMBERED LIST — aligned orange counters */
+.page-inner ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: ebook-list;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.page-inner ol li {
+  list-style: none;
+  counter-increment: ebook-list;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  font-size: var(--type-body-sm-size);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+}
+.page-inner ol li::before {
+  content: counter(ebook-list);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 14px;
+  padding-top: 0.1em;
+}
+
+.stats-section  { border-top: 1px solid var(--border-ui); border-bottom: 1px solid var(--border-ui); padding: var(--space-10) 0; }
+.stats-inner    { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--space-6); }
+.stat-item      { text-align: center; }
+.stat-num       { font-size: 38px; font-weight: var(--font-weight-extrabold); letter-spacing: var(--tracking-tight); color: var(--text-body); line-height: var(--leading-tight); }
+.stat-num em    { font-style: italic; color: var(--text-accent); }
+.stat-label     { font-size: var(--font-size-md); color: var(--text-muted); margin-top: var(--space-2); font-weight: var(--font-weight-regular); line-height: var(--leading-relaxed); }
+
+.card-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-5); }
+.card-grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--space-5); }
+.dark-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  padding: var(--space-8) 28px;
+  position: relative; overflow: hidden;
+}
+.card-num   { font-size: var(--type-label-size); font-weight: var(--type-label-weight); letter-spacing: var(--tracking-widest); text-transform: uppercase; color: var(--text-accent); margin-bottom: 18px; }
+.card-title { font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); letter-spacing: var(--tracking-normal); margin-bottom: var(--space-3); color: var(--text-body); }
+.card-body  { font-size: var(--type-body-sm-size); color: var(--text-muted); line-height: var(--leading-relaxed); }
+
+.callout-box {
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-panel);
+  padding: 28px var(--space-8);
+  background: var(--accent-dim);
+  width: fit-content;
+  max-width: 70%;
+  align-self: flex-start;
+}
+.callout-box p { font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); color: var(--text-body); line-height: var(--leading-relaxed); }
+
+.steps-list { display: flex; flex-direction: column; gap: var(--space-1); }
+.step-item {
+  display: grid; grid-template-columns: 110px 1fr; align-items: start;
+  gap: var(--space-8); padding: 22px var(--space-8);
+  border: 1px solid var(--border-card); border-radius: var(--space-4);
+}
+.step-num   { font-size: var(--type-label-size); font-weight: var(--type-label-weight); letter-spacing: var(--tracking-widest); text-transform: uppercase; color: var(--text-accent); padding-top: var(--space-1); }
+.step-label { font-size: 17px; font-weight: var(--font-weight-bold); color: var(--text-body); margin-bottom: var(--space-2); }
+.step-body  { font-size: var(--type-body-sm-size); color: var(--text-muted); line-height: var(--leading-relaxed); }
+
+.cta-section {
+  background: var(--surface-cta); padding: var(--space-16) var(--space-10);
+  text-align: center; position: relative; overflow: hidden; border-radius: var(--radius-card);
+}
+.cta-section::before { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0; background-image: var(--pattern-black-grid); background-size: var(--pattern-grid-size); }
+.cta-h  { font-size: var(--font-size-7xl); font-weight: var(--font-weight-black); letter-spacing: var(--tracking-tight); color: var(--text-on-accent); line-height: var(--leading-tight); margin-bottom: var(--space-5); position: relative; z-index: 1; }
+.cta-h em { font-style: italic; font-weight: var(--font-weight-black); color: var(--text-primary); }
+.cta-p  { font-size: 17px; color: rgba(0,0,0,0.65); margin-bottom: var(--space-10); position: relative; z-index: 1; }
+
+.btn-primary {
+  text-decoration: none;
+  background: linear-gradient(135deg, rgba(233,92,37,0.78) 0%, rgba(233,92,37,0.52) 50%, rgba(233,92,37,0.70) 100%);
+  border: 1px solid var(--border-accent-strong);
+  box-shadow: var(--shadow-btn-primary);
+  color: var(--text-primary);
+  font-size: var(--type-body-sm-size);
+  font-weight: var(--font-weight-bold);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-btn);
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  cursor: pointer; font-family: var(--font-family-base);
+  position: relative; z-index: 1;
+}
+
+.btn-white {
+  text-decoration: none;
+  background: linear-gradient(135deg, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.64) 50%, rgba(255,255,255,0.76) 100%);
+  border: 1px solid rgba(255,255,255,0.70);
+  box-shadow: var(--shadow-btn-white);
+  color: var(--text-accent);
+  font-size: var(--type-body-size);
+  font-weight: var(--font-weight-bold);
+  padding: var(--space-4) var(--space-10);
+  border-radius: var(--radius-btn);
+  display: inline-flex; align-items: center; gap: var(--space-3);
+  cursor: pointer; font-family: var(--font-family-base);
+  position: relative; z-index: 1;
+}
+
+/* Cover-specific hero type */
+.cover-headline {
+  font-size: var(--type-hero-size);
+  font-weight: var(--type-hero-weight);
+  letter-spacing: var(--type-hero-tracking);
+  line-height: var(--type-hero-leading);
+  color: var(--text-on-hero);
+  text-wrap: pretty;
+  margin-bottom: var(--space-6);
+}
+.cover-headline em {
+  font-style: italic;
+  color: var(--text-primary);
+}
+
+.cover-subhead {
+  font-size: var(--type-body-lg-size);
+  color: rgba(0,0,0,0.65);
+  line-height: var(--leading-loose);
+  max-width: 520px;
+  margin-bottom: var(--space-12);
+}
+
+.cover-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding-top: var(--space-8);
+  border-top: 1px solid rgba(0,0,0,0.15);
+}
+
+.cover-meta-item {
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--tracking-widest);
+  text-transform: var(--type-label-transform);
+  color: rgba(0,0,0,0.5);
+}
+
+.cover-meta-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(0,0,0,0.25);
+  flex-shrink: 0;
+}
+
+/* Spacer utility for stacking within a page */
+.mt-stack-sm  { margin-top: var(--space-stack-sm); }
+.mt-stack-md  { margin-top: var(--space-stack-md); }
+.mt-stack-lg  { margin-top: var(--space-stack-lg); }
+.mt-component { margin-top: var(--space-component); }
+.mt-section-head { margin-top: var(--space-section-head); }
+
+/* ─────────────────────────────────────────────
+   PRINT SUPPORT
+───────────────────────────────────────────── */
+@media print {
+  body { background: none; }
+  .ebook-wrapper { padding: 0; gap: 0; }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    page-break-after: always;
+    break-after: page;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!--
+TEMPLATE: EBOOK (A4 PORTRAIT)
+
+ALLOWED COMPONENTS:
+- hero (cover-headline, cover-subhead)
+- section-tag
+- section-h
+- section-p
+- card-grid-2
+- card-grid-3
+- steps-list
+- stats-section
+- callout-box
+- cta-section
+- page wrapper
+
+RULES:
+- Do NOT create new components
+- Do NOT modify layout structure
+- Do NOT break A4 page structure
+- Do NOT change spacing or tokens
+- ONLY replace placeholders with content
+-->
+
+<!--
+CONTENT MAP:
+
+Cover:
+- Headline
+- Subhead
+
+Intro:
+- Hook
+- Context
+
+Problem:
+- Pain points
+
+Insight:
+- Explanation
+
+Solution:
+- Offer explanation
+
+Process:
+- Step-by-step breakdown
+
+Proof:
+- Stats / outcomes
+
+CTA:
+- Conversion message
+-->
+
+<div class="ebook-wrapper">
+
+  <!-- ═══════════════════════════════════════
+       PAGE 1 — COVER
+  ═══════════════════════════════════════ -->
+  <div class="page page-cover">
+    <div class="page-inner" style="justify-content: flex-end;">
+
+      <!-- Logo mark -->
+      <div style="margin-bottom: auto; padding-top: var(--space-4);">
+        <svg class="brand-logo" viewBox="55 60 975 910" width="110" xmlns="http://www.w3.org/2000/svg"><g fill="#000"><path d="M921.7,672.99c2.59,2.94,4.83,5.53,6.71,7.72,1.42-1.88,3.16-4.2,5.23-6.95,4.25-5.73,8.83-11.64,13.74-17.78,4.91-6.11,9.19-10.33,12.84-12.65,4.42-2.51,9.08-3.84,14.04-3.95l2.18.11c5.83.35,9.84,2.51,12.08,6.43.6,1.06.93,2.32.95,3.76.08,3.79-1.96,8.72-6.08,14.83-5.48,7.5-11.51,15.16-18.13,22.96-3.98,4.74-7.72,9.38-11.21,13.93l-1.28,1.47-2.56,3.24c1.28,1.53,2.78,3.24,4.47,5.15,5.86,6.87,14.83,17.34,26.88,31.46,1.99,2.18,3,4.63,3,7.36s-.98,5.13-2.97,7.2c-1.15.98-2.34,1.74-3.6,2.26-1.53,1.01-3.6,1.72-6.22,2.18l-2.92.05c-4.85.11-11.01-6.35-18.46-19.41-4.12-6.22-6.98-11.07-8.62-14.53l-4.47-5.15c-1.61,2.26-3.44,4.83-5.51,7.69-4.8,7.09-10.25,14.26-16.36,21.46-6.11,7.23-12.24,12-18.4,14.37-3.57,1.04-6.71,1.61-9.43,1.66-4.93.11-8.48-1.42-10.58-4.58-1.2-1.83-1.83-3.9-1.88-6.22-.08-4.17,1.69-9.22,5.34-15.1,3.95-5.73,8.48-11.59,13.6-17.61,2.84-3.27,5.45-6.43,7.8-9.49,4.53-5.92,9.05-11.81,13.6-17.61l-33.15-38.61c-2.07-1.99-3.16-4.39-3.22-7.2v-.44c-.05-2.51.82-4.83,2.62-6.9.85-.79,1.72-1.45,2.59-1.94,1.99-2.18,4.44-3.3,7.36-3.35,6.22-.14,10.74,3.27,13.6,10.2,2.45,5.48,7.91,13.47,16.39,23.97h.03Z"/><path d="M456.6,453.75l-16.85-31.22c-10.01-18.57-41.8-66.22-68.6-63.88-18.29,1.61-30.75,27.92-37.98,49.7l-12.68-4.2c-.68,9.3-1.39,14.97-1.47,15.57l-16.22-2.13c.11-.9,7.44-59.87-3.82-117.84-.98-.16-1.99-.35-2.97-.55-34.79-6.65-69.99-28.57-101.8-63.36-23.75-25.98-37.22-49.76-37.79-50.74l-5.86-10.41,11.83-1.69c45.15-6.41,81.63,3.79,108.4,30.29,19.47,19.28,33.45,46.59,41.8,81.6,31.16,2.02,62.44-9.46,93.13-34.3,44.88-36.29,71.11-88.61,82.31-110.94,5.75-11.45,8.12-16.22,15.05-14.56,3,.71,6.54,3.46,6.54,8.81,0,7.66,1.91,74.81,67.67,74.81,4.83,0,7.77,3.22,8.56,6.38,1.66,6.71-3.19,9.27-12.02,13.96-79.64,42.1-120.02,95.29-120.02,158.13l2.78,66.58v-.03.02ZM316.02,301.46c1.99,11.26,3.46,23.23,4.44,35.85,1.64,21.7,1.39,41.39.71,56.08,12.41-32.14,28.71-49.29,48.58-51.04,18.65-1.58,38.66,10.41,59.55,35.77,2.97,3.6,5.73,7.2,8.26,10.66l-.05-1.31c0-65.93,38.74-121.44,115.19-165.47-34.13-9.05-50.25-36.89-56.33-62.6-14.01,26.86-39.83,71.13-80.29,103.85-32.64,26.39-66.17,39.18-100.01,38.14l-.05.05v.02ZM177.47,187.87c16.03,24.05,59.41,81.06,117.54,94.42-6.87-25.63-17.97-49.87-35.69-67.4-20.45-20.2-47.93-29.28-81.85-27.05v.03Z"/><path d="M436.9,678.04h.01c-8.86-5.54-16.52-8.24-23.04-8.11-2.54.05-4.85.55-6.95,1.47-7.69,3.19-13.47,9.43-17.29,18.79-3.82,9.35-6.05,19.47-6.71,30.35-.22,3.49-.3,6.84-.22,10.06.14,6.41.9,12.16,2.26,17.29,2.1,7.72,5.89,11.86,11.34,12.43.38.08.76.14,1.17.11,5.43-.11,12.6-5.21,21.51-15.32,5.59-6.52,9.54-13.25,11.86-20.2,2.32-6.93,4.23-14.37,5.7-22.25l.79-3.52-.46-21.1h.03Z"/><path d="M344.11,397.13c-154.11,0-279.05,124.93-279.05,279.05s124.94,279.05,279.05,279.05,279.05-124.93,279.05-279.05-124.93-279.05-279.05-279.05ZM251.33,717.94c-1.94,13.44-6.16,25.76-12.68,36.97s-15.08,19.25-25.76,24.13c-4.72,2.13-9.79,3.27-15.21,3.38-6.9.14-14.34-1.34-22.38-4.47-.38-.08-.74-.22-1.04-.41-1.17-.55-2.32-.98-3.38-1.23-.38-.08-.79-.14-1.17-.11-.57,0-1.12.16-1.58.46l-2.02,1.5c-1.64,1.2-3.22,2.24-4.74,3.08s-3.03,1.31-4.47,1.34c-5.04.11-9.05-1.06-12.02-3.52s-5.07-5.86-6.33-10.2c-1.15-4.06-1.8-8.59-1.88-13.63v-1.31c.08-21.95-.05-43.92-.44-65.95l-.35-23.86-.65-23.86c-.55-21.24-1.34-40-2.37-56.3h-.03l-.02.02c-.14-1.45-.22-2.94-.25-4.5-.05-3.11.05-6.27.38-9.46.49-4.85,1.99-8.92,4.55-12.19,2.45-3.24,6.49-4.93,12.13-5.07h.44c7.28.41,12.41,3.14,15.38,8.1,2.97,4.99,4.69,10.96,5.13,17.94.16,2.62.25,5.15.3,7.55.08,4.17.03,8.26-.16,12.24-.14,2.62-.25,5.02-.27,7.14-.14,7.47-.05,17.48.22,29.99.14,6.22.3,12.46.55,18.76.27,7.96.49,15.87.65,23.72,5.1-7.28,11.81-13.3,20.15-18.05,9.41-4.96,18.05-7.52,25.9-7.69,3.38-.08,6.65.3,9.79,1.09,10.44,2.78,17.89,11.89,22.27,27.32,1.58,6.19,2.45,12.62,2.59,19.3.14,5.73-.3,11.64-1.23,17.78ZM341.55,773.98c-2.97,2.15-6.38,3.74-10.22,4.8-3,.74-5.64,1.15-7.99,1.2-.79,0-1.5,0-2.18-.11-5.94-.85-11.01-3.44-15.24-7.74-4.23-4.34-7.66-9.38-10.31-15.13-2.64-5.78-4.61-11.26-5.89-16.47-2.26-9.84-3.79-20.04-4.58-30.54-.82-10.52-1.34-20.91-1.55-31.19-.14-1.64-.22-3.3-.25-4.93-.33-10.2-.57-20.37-.79-30.56l-.6-28.08c-.27-12.9-.65-24.24-1.17-34.05-.11-5.62.6-11.01,2.13-16.19,1.91-6.43,7.06-10.01,15.49-10.66h1.88l.03-.11v-.05c6.64.74,11.3,3.3,14,7.72,2.73,4.42,4.28,9.57,4.69,15.49.25,2.73.41,5.34.46,7.85.05,3.11,0,6.16-.25,9.19-.71,7.58-1.06,18.13-1.06,31.63-.11,8.94-.35,17.91-.74,26.94-.49,8.83-.79,17.69-.9,26.53v1.31c-.08,4.28-.03,10.74.16,19.36l.05,2.62c.16,7.85.74,16.06,1.69,24.57.98,9.49,2.73,17.61,5.26,24.35,2.51,6.73,6.08,10.36,10.63,10.82h.87c.68-.03,1.45-.11,2.32-.22,1.06-.22,2.07-.33,3.05-.35s1.88.05,2.78.22c1.74.35,2.7,1.74,2.86,4.17-.14,2.92-1.69,5.45-4.63,7.61ZM466.64,776.53l-4.06.08c-5.94-.95-10.66-3.35-14.12-7.28-3.34-2.53-6.66-7.63-9.92-15.32-2.91,4.03-5.93,7.45-9,10.23-3.08,2.78-6.79,5.4-11.12,7.8-9.41,4.96-18.08,7.52-26.04,7.69-3.41.08-6.65-.3-9.79-1.09-10.36-2.7-17.72-11.7-22.14-27.05-1.39-5.89-2.15-12.08-2.29-18.59-.14-6.49.35-13.3,1.45-20.42,2.13-14.31,6.79-27.26,14.01-38.88,7.23-11.61,17.15-19.25,29.8-22.9,3.19-.74,6.27-1.15,9.3-1.23,2.24-.05,4.36.11,6.41.44,4.85.68,8.92,1.5,12.13,2.51,2.45.74,4.2,1.06,5.26,1.06h.3s.3-.11.65-.3c.33-.19.74-.46,1.23-.76.76-.41,1.55-.82,2.37-1.23.82-.41,1.47-.71,1.94-.93,3.95-1.34,7.42-2.04,10.44-2.13,3.87-.08,6.95.98,9.24,3.16,3.95,3.9,6.05,10.31,6.24,19.22-.05,2.04-.05,4.12,0,6.27-.05,2.54-.08,5.1-.14,7.72.05,2.92.19,7.39.44,13.39.25,7.47.52,15.81.82,25.03l.19,8.89c.14,5.73.19,11.07.19,16,.85,8.12,1.64,12.98,2.34,14.5l1.25,4.06.05,2.32c-1.15,5.07-3.63,7.66-7.42,7.74ZM586.51,751.42c-2.75,5.29-5.26,9.24-7.52,11.81-6.16,6.35-13.55,10.63-22.14,12.84-3.57.95-7.2,1.47-10.88,1.55-4.85.11-9.68-.57-14.45-2.02-8.32-2.45-15.16-7.5-20.56-15.13-5.53-8.42-9.32-18.29-11.4-29.61-1.34-7.55-2.07-14.91-2.21-22.08-.08-3.49,0-6.98.22-10.5h-.07s0,0,0,.01h-.01s.01-.01.01-.01c1.94-18.67,7.25-32.41,16-41.24,7.8-7.74,18.76-11.75,32.94-12.05,1.85-.03,3.68-.03,5.53,0,8.56.41,15.65,2.56,21.32,6.54s9.38,10.96,11.15,21.02c.14,1.36.19,2.62.22,3.79.14,6.22-1.53,9.98-4.99,11.31-.68.3-1.36.46-2.02.49-3.49.08-7.14-3.14-10.99-9.65-2.24-4.31-5.1-7.5-8.64-9.57-2.15-1.23-4.44-1.8-6.87-1.74-1.55.03-3.19.33-4.93.85-4.34,1.64-7.82,4.47-10.52,8.45-2.67,3.98-4.66,8.32-5.92,13.01-.76,4.58-1.09,9.82-.98,15.73.05,2.81.22,5.73.49,8.72.79,9.49,2.84,18.29,6.16,26.36,3.33,8.07,8.26,13.28,14.83,15.54,1.36.35,2.64.52,3.79.49,1.94-.05,3.74-.6,5.34-1.72,2.67-1.72,4.96-4.14,6.84-7.28,1.31-2.26,2.56-4.61,3.79-7.06,0-.11.05-.19.14-.3.27-.68.6-1.42.98-2.21,1.47-3.82,3.49-7.44,6.03-10.91,1.69-2.26,3.65-3.44,5.89-3.46,1.17,0,2.37.25,3.65.79,3.24,1.96,4.91,4.93,4.99,8.92,0,.79,0,1.61-.08,2.48-.65,5.26-2.37,10.52-5.13,15.84Z"/><path d="M228.89,685.18c-2.78-7.99-7.31-12.35-13.52-13.11-.49-.08-1.01-.14-1.61-.11-6.03.14-13.47,5.18-22.38,15.19-5.59,6.52-9.57,13.25-11.94,20.2-2.37,6.95-4.25,14.31-5.64,22.11-.27,1.17-.52,2.4-.79,3.65v-.03h-.01l.44,20.97c8.94,5.64,16.88,8.37,23.77,8.23,2.43-.05,4.74-.49,6.95-1.31,8.37-3,14.86-9.02,19.41-18.1,4.55-9.08,7.25-19,8.1-29.8.22-3.22.3-6.27.25-9.19-.14-6.9-1.15-13.11-3.03-18.7Z"/><path d="M650.94,668.3l-.44-.57c-.6-.57-1.25-.95-1.99-1.12-.74-.16-1.5-.35-2.26-.55h-.3c-.98-.16-1.94-.3-2.92-.35-2.62-.14-5.02-.68-7.17-1.66s-3.6-3.14-4.36-6.52c-.11-.68-.16-1.31-.19-1.88-.08-3.3.95-5.64,3.05-7.06,2.59-1.69,5.62-2.78,9.11-3.24,4.36-.76,6.95-2.29,7.77-4.53.74-1.85,1.06-4.34,1.01-7.44l-.08-3.35c-.16-7.47.68-16.03,2.51-25.68,1.83-9.65,4.99-18.62,9.46-26.91,4.47-8.29,10.66-14.04,18.57-17.2,4.23-1.64,10.09-3.03,17.53-4.17,3.38-.55,6.63-.87,9.73-.93,3.79-.08,7.39.19,10.8.79,6.33,1.12,10.03,4.39,11.12,9.82v.87c.08,2.62-.76,4.53-2.48,5.73-1.91,1.31-4.23,2.04-6.95,2.18h-1.61c-2.13.08-4.09,0-5.83-.27-1.74-.16-3.41-.22-4.96-.19-4.47.11-8.04,1.09-10.71,3-3.54,2.51-6.24,7.23-8.15,14.15-1.01,3.22-1.91,8.32-2.73,15.27s-1.36,13.88-1.58,20.78c-.05,1.94-.05,3.74-.03,5.4.08,4.17.49,7.28,1.23,9.3.41,1.06,1.06,1.69,1.94,1.94.87.25,1.91.38,3.05.44l15-.33c2.81-.05,5.23.87,7.28,2.84,2.02,1.94,3.08,4.36,3.14,7.28.05,2.81-.87,5.23-2.84,7.28-1.94,2.02-4.34,3.08-7.14,3.14l-3.63.08c-1.36-.05-2.67-.08-3.93-.05-4.06.08-8.1.52-12.05,1.28,0,4.55.05,9.16.16,13.82.25,11.94.95,24.1,2.1,36.51.79,9.87,1.45,19.63,1.94,29.23.03,1.85.19,4.04.44,6.54.38,4.74.65,9.73.76,14.97.05,2.62.05,5.34.03,8.15,0,8.34-1.2,14.53-3.54,18.57-2.26,3.05-5.67,5.07-10.2,6.05-1.55.33-3.11.49-4.63.55-2.92.05-5.78-.41-8.62-1.42-4.42-1.66-7.47-4.8-9.22-9.41-.74-2.81-1.17-6.82-1.28-12.05s-.08-10.52.11-15.57c0-3.3.05-6.05.11-8.29,0-4.66-.05-9.32-.16-13.99-.41-18.73-1.45-37.38-3.11-55.97-.25-2.24-.57-4.77-.95-7.63-.41-2.86-1.01-5.34-1.83-7.47l-.05-.11-.03-.05Z"/><path d="M758.85,648.97c9.43-3.9,20.12-5.97,32.04-6.22,2.13-.05,4.28-.05,6.41,0,14.37.38,26.45,4.39,36.21,12.02,10.31,9.68,16.9,21.54,19.85,35.53,1.09,5.02,1.66,10.06,1.77,15.1.19,8.72-1.15,17.34-3.95,25.85-4.58,13.39-12.98,24.05-25.22,31.98-9.02,5.23-18.54,8.64-28.6,10.22-2.81.44-5.67.71-8.56.76-7.17.16-14.4-.9-21.62-3.16-11.53-3.93-20.72-11.26-27.56-21.97-6.84-10.71-10.88-22.77-12.13-36.13-.25-2.04-.38-4.06-.41-6.11-.25-11.07,1.77-21.54,6.03-31.44,5.1-11.67,13.69-20.48,25.79-26.47l-.03.03h-.02ZM798.49,752.79c10.96-.82,19.49-5.56,25.6-14.23,6.11-8.67,9.35-18.27,9.73-28.74l.08-3.22c-.16-7.47-1.53-14.61-4.09-21.46-3-7.91-7.63-13.96-13.93-18.19-4.44-3-9.76-4.44-15.95-4.31-2.62.05-5.37.41-8.29,1.06-11.48,2.97-19.47,8.86-23.94,17.69-3.35,6.49-4.96,13.6-4.77,21.35.05,2.81.35,5.73.93,8.72,1.55,9.49,5.18,18.43,10.85,26.86,5.67,8.42,13.6,13.25,23.83,14.48l-.05-.03v.02Z"/><path d="M647.86,826.21v38.28h-8.64v-38.28h8.64Z"/><path d="M666.21,826.21l18.59,24.59v-24.59h8.21v38.28h-7.88l-18.54-24.54v24.54h-8.26v-38.28h7.88Z"/><path d="M731.64,826.21v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/><path d="M767.44,826.21v7.17h-20.5v8.32h18.43v7.17h-18.43v8.48h21.1v7.17h-29.75v-38.28h29.15v-.03h0Z"/><path d="M785.49,826.21v30.73h16.39v7.55h-25.03v-38.28h8.64,0Z"/><path d="M817.66,826.21v30.73h16.39v7.55h-25.03v-38.28h8.64,0Z"/><path d="M849.86,826.21v38.28h-8.64v-38.28h8.64Z"/><path d="M886.04,845.19h7.5v14.7c-4.04,2.94-10.22,4.99-15.51,4.99-11.59,0-20.39-8.42-20.39-19.52s8.97-19.41,20.88-19.41c5.7,0,11.48,2.18,15.35,5.59l-4.88,6.19c-2.84-2.62-6.79-4.25-10.5-4.25-6.79,0-12.02,5.21-12.02,11.91s5.32,11.97,12.08,11.97c2.29,0,5.02-.82,7.5-2.07v-10.09h-.01Z"/><path d="M932.22,826.21v7.17h-20.5v8.32h18.43v7.17h-18.43v8.48h21.1v7.17h-29.75v-38.28h29.15v-.03h0Z"/><path d="M949.51,826.21l18.59,24.59v-24.59h8.21v38.28h-7.88l-18.54-24.54v24.54h-8.26v-38.28h7.88Z"/><path d="M1014.94,826.21v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/><path d="M664.9,902.44h7.5v14.7c-4.04,2.94-10.22,4.99-15.51,4.99-11.59,0-20.39-8.42-20.39-19.52s8.97-19.41,20.88-19.41c5.7,0,11.48,2.18,15.35,5.59l-4.88,6.19c-2.84-2.62-6.79-4.25-10.5-4.25-6.79,0-12.02,5.21-12.02,11.91s5.32,11.97,12.08,11.97c2.29,0,5.02-.82,7.5-2.07v-10.09h-.01Z"/><path d="M705.47,921.75l-6.08-10.93h-8.81v10.93h-8.64v-38.28h16.6c10.01,0,15.68,4.8,15.68,13.28,0,5.92-2.51,10.17-7.17,12.35l8.15,12.62h-9.79l.05.03h.01ZM690.61,903.59h7.99c4.77,0,7.5-2.18,7.5-6.57s-2.73-6.41-7.5-6.41h-7.99v12.98Z"/><path d="M761.93,902.61c0,11.04-8.86,19.52-20.56,19.52s-20.56-8.42-20.56-19.52,8.86-19.41,20.56-19.41,20.56,8.32,20.56,19.41ZM729.68,902.61c0,6.73,5.43,11.97,11.81,11.97s11.59-5.23,11.59-11.97-5.21-11.86-11.59-11.86-11.81,5.13-11.81,11.86Z"/><path d="M774.17,883.47l8.04,28.87,7.99-28.87h8.48l8.1,28.87,7.99-28.87h8.86l-12.68,38.28h-8.92l-7.72-27.26-7.88,27.26h-8.92l-12.62-38.28h9.3-.03,0Z"/><path d="M857.57,883.47v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/><path d="M872.87,883.47v15.95h17.34v-15.95h8.64v38.28h-8.64v-15.08h-17.34v15.08h-8.64v-38.28h8.64Z"/></g></svg>
+      </div>
+
+      <h1 class="cover-headline" data-field="COVER_HEADLINE" data-field-em="COVER_HEADLINE_EMPHASIS" data-component="heading_main">Six Methods for Partner<br><em data-component="heading_sub">Revenue Acceleration</em></h1>
+      <p class="cover-subhead" data-field="COVER_SUBHEAD" data-component="hero_body">A practical guide for Microsoft and SAP partners generating $2M–$20M ARR who want to close faster, retain longer, and grow without adding headcount.</p>
+
+      <div class="cover-meta">
+        <span class="cover-meta-item">Blacfox</span>
+        <span class="cover-meta-dot"></span>
+        <span class="cover-meta-item" data-field="YEAR">2025</span>
+        <span class="cover-meta-dot"></span>
+        <span class="cover-meta-item" data-field="EBOOK_CATEGORY">Partner Revenue</span>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 2 — INTRO / HOOK
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">Introduction</span>
+      <h2 class="section-h" data-component="heading_main">The Revenue Gap Most Partners Never See</h2>
+      <p class="section-p" data-component="intro_body">Most Microsoft and SAP partners are generating less revenue than their capability justifies — not because they lack technical depth, but because their go-to-market motion was built for a buying environment that no longer exists. The six methods in this guide address the specific gaps that compound quietly across your pipeline, your retention, and your expansion motion.</p>
+
+      <div class="mt-section-head"></div>
+
+      <div class="callout-box" data-hide-if-empty data-component="callout_block">
+        <p>"Partners who lead with outcomes close 40% faster and at higher ACV than those who lead with product capability." — Blacfox Partner Benchmark, 2025</p>
+      </div>
+
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">02</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 2B — INTRO (WITH BULLET LIST)
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">Introduction</span>
+      <h2 class="section-h" data-component="heading_main">The Revenue Gap Most Partners Never See</h2>
+      <p class="section-p" data-component="intro_body">Most Microsoft and SAP partners are generating less revenue than their capability justifies — not because they lack technical depth, but because their go-to-market motion was built for a buying environment that no longer exists. The six methods in this guide address the specific gaps that compound quietly across your pipeline, your retention, and your expansion motion.</p>
+
+      <ol style="margin-top: var(--space-5);">
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Pitching capability to buyers who only care about business outcomes compounds in your pipeline every quarter.</li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Starting each sale without documented proof points forces you to rebuild credibility from scratch every time.</li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Losing deals at the decision stage because the internal business case was never built for the buyer.</li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Treating renewal as an admin event rather than a proactive value review erodes retention quarter after quarter.</li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Leaving expansion revenue untouched in accounts you've already won and could grow.</li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Competing on price because your positioning is indistinguishable from every other partner in the ecosystem.</li>
+      </ol>
+
+      <div class="mt-section-head"></div>
+
+      <div class="callout-box" data-hide-if-empty data-component="callout_block">
+        <p>"Partners who lead with outcomes close 40% faster and at higher ACV than those who lead with product capability." — Blacfox Partner Benchmark, 2025</p>
+      </div>
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">02</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 2C — INTRO (NUMBERED LIST)
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">Introduction</span>
+      <h2 class="section-h" data-component="heading_main">The Revenue Gap Most Partners Never See</h2>
+      <p class="section-p" data-component="intro_body">Most Microsoft and SAP partners are generating less revenue than their capability justifies — not because they lack technical depth, but because their go-to-market motion was built for a buying environment that no longer exists. The six methods in this guide address the specific gaps that compound quietly across your pipeline, your retention, and your expansion motion.</p>
+
+      <ul style="margin-top: var(--space-5); list-style: none; display: flex; flex-direction: column; gap: var(--space-3); padding: 0;">
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Pitching capability to buyers who only care about business outcomes compounds in your pipeline every quarter.</li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Starting each sale without documented proof points forces you to rebuild credibility from scratch every time.</li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Losing deals at the decision stage because the internal business case was never built for the buyer.</li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Treating renewal as an admin event rather than a proactive value review erodes retention quarter after quarter.</li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Leaving expansion revenue untouched in accounts you've already won and could grow.</li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-4); font-size: var(--font-size-lg); color: var(--text-body); line-height: var(--leading-relaxed);">Competing on price because your positioning is indistinguishable from every other partner in the ecosystem.</li>
+      </ul>
+
+      <div class="mt-section-head"></div>
+
+      <div class="callout-box" data-hide-if-empty data-component="callout_block">
+        <p>"Partners who lead with outcomes close 40% faster and at higher ACV than those who lead with product capability." — Blacfox Partner Benchmark, 2025</p>
+      </div>
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">02</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 3 — PROBLEM
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">The Problem</span>
+      <h2 class="section-h" data-component="heading_main">Why Good Partners Stall at the Same Revenue Ceiling</h2>
+      <p class="section-p" data-component="section_body">The pattern is consistent across partner types and regions. Practices reach a revenue threshold — usually between $3M and $8M ARR — and stop growing, not because of market saturation, but because five specific structural gaps begin compounding against each other.</p>
+
+      <div class="mt-section-head"></div>
+
+      <div class="card-grid-2" data-hide-if-empty>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">01</div>
+          <div class="card-title" data-component="section_subheading">Feature-Led Pitching</div>
+          <div class="card-body" data-component="section_body">Buyers at decision-maker level do not respond to feature lists. Pitching product depth to a CFO reads as vendor noise, not business value.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">02</div>
+          <div class="card-title" data-component="section_subheading">No Outcome Evidence</div>
+          <div class="card-body" data-component="section_body">Without documented proof points from existing clients, every new sale starts from zero credibility. Deals take longer and close at lower value.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">03</div>
+          <div class="card-title" data-component="section_subheading">Weak Renewal Motion</div>
+          <div class="card-body" data-component="section_body">Renewals treated as admin events — not proactive value reviews — result in churn that erases new logo gains quarter after quarter.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">04</div>
+          <div class="card-title" data-component="section_subheading">Underdeveloped Expansion</div>
+          <div class="card-body" data-component="section_body">Partners who close well but never build a structured upsell motion leave an average of 30% of addressable revenue untouched per account.</div>
+        </div>
+      </div>
+
+      <div class="mt-section-head"></div>
+
+      <div class="callout-box" data-hide-if-empty data-component="callout_block">
+        <p>According to Forrester, 68% of B2B technology buyers say the winning vendor was the one who helped them build the business case internally — not the one with the best product.</p>
+      </div>
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">03</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 3B — PROBLEM (NO NUMBERS)
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">The Problem</span>
+      <h2 class="section-h" data-component="heading_main">Why Good Partners Stall at the Same Revenue Ceiling</h2>
+      <p class="section-p" data-component="section_body">The pattern is consistent across partner types and regions. Practices reach a revenue threshold — usually between $3M and $8M ARR — and stop growing, not because of market saturation, but because five specific structural gaps begin compounding against each other.</p>
+
+      <div class="mt-section-head"></div>
+
+      <div class="card-grid-2" data-hide-if-empty>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-title" data-component="section_subheading">Feature-Led Pitching</div>
+          <div class="card-body" data-component="section_body">Buyers at decision-maker level do not respond to feature lists. Pitching product depth to a CFO reads as vendor noise, not business value.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-title" data-component="section_subheading">No Outcome Evidence</div>
+          <div class="card-body" data-component="section_body">Without documented proof points from existing clients, every new sale starts from zero credibility. Deals take longer and close at lower value.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-title" data-component="section_subheading">Weak Renewal Motion</div>
+          <div class="card-body" data-component="section_body">Renewals treated as admin events — not proactive value reviews — result in churn that erases new logo gains quarter after quarter.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-title" data-component="section_subheading">Underdeveloped Expansion</div>
+          <div class="card-body" data-component="section_body">Partners who close well but never build a structured upsell motion leave an average of 30% of addressable revenue untouched per account.</div>
+        </div>
+      </div>
+
+      <div class="mt-section-head"></div>
+
+      <div class="callout-box" data-hide-if-empty data-component="callout_block">
+        <p>According to Forrester, 68% of B2B technology buyers say the winning vendor was the one who helped them build the business case internally — not the one with the best product.</p>
+      </div>
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">03</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 3C — PROBLEM (ICON VARIANT)
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">The Problem</span>
+      <h2 class="section-h" data-component="heading_main">Why Good Partners Stall at the Same Revenue Ceiling</h2>
+      <p class="section-p" data-component="section_body">The pattern is consistent across partner types and regions. Practices reach a revenue threshold — usually between $3M and $8M ARR — and stop growing, not because of market saturation, but because five specific structural gaps begin compounding against each other.</p>
+
+      <div class="mt-section-head"></div>
+
+      <div class="card-grid-2" data-hide-if-empty>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 3L4 9H2C1.45 9 1 9.45 1 10V14C1 14.55 1.45 15 2 15H4L18 21V3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M21 8.5C22.2 9.8 23 11.3 23 13C23 14.7 22.2 16.2 21 17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="card-title" data-component="section_subheading">Feature-Led Pitching</div>
+          <div class="card-body" data-component="section_body">Buyers at decision-maker level do not respond to feature lists. Pitching product depth to a CFO reads as vendor noise, not business value.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 21H21M7 21V10M12 21V6M17 21V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M15 3L19 7M19 3L15 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="card-title" data-component="section_subheading">No Outcome Evidence</div>
+          <div class="card-body" data-component="section_body">Without documented proof points from existing clients, every new sale starts from zero credibility. Deals take longer and close at lower value.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 4V10H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M23 20V14H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20.5 9A9 9 0 005.6 5.6L1 10M23 14L18.4 18.4A9 9 0 013.5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="card-title" data-component="section_subheading">Weak Renewal Motion</div>
+          <div class="card-body" data-component="section_body">Renewals treated as admin events — not proactive value reviews — result in churn that erases new logo gains quarter after quarter.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M23 6L13.5 15.5L8.5 10.5L1 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M17 6H23V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="card-title" data-component="section_subheading">Underdeveloped Expansion</div>
+          <div class="card-body" data-component="section_body">Partners who close well but never build a structured upsell motion leave an average of 30% of addressable revenue untouched per account.</div>
+        </div>
+      </div>
+
+      <div class="mt-section-head"></div>
+
+      <div class="callout-box" data-hide-if-empty data-component="callout_block">
+        <p>According to Forrester, 68% of B2B technology buyers say the winning vendor was the one who helped them build the business case internally — not the one with the best product.</p>
+      </div>
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">03</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 4 — INSIGHT / CONTEXT
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">The Insight</span>
+      <h2 class="section-h" data-component="heading_main">The Shift That Changes Everything</h2>
+      <p class="section-p" data-component="section_intro">What this looks like in practice: partners who restructure their pitch around three quantified outcomes — cost reduction, risk mitigation, and revenue growth — consistently outperform peers across deal velocity, deal size, and retention rate.</p>
+
+
+      <div class="mt-section-head"></div>
+
+      <p class="section-p" data-component="section_rationale">Why it matters: these gaps are not unique to any one practice. They are structural — built into the way most partner programs were trained to sell. Addressing them does not require a team restructure. It requires a deliberate shift in the first 15 minutes of every client conversation.</p>
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">04</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 5 — SOLUTION
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">The Solution</span>
+      <h2 class="section-h" data-component="heading_main">An Outcome-Led Motion Built Into Your Existing Sales Process</h2>
+      <p class="section-p" data-component="section_body">The six methods in this guide do not replace your current sales motion. They layer into it — shifting the language, the evidence, and the structure of how you qualify, pitch, and retain, without requiring a team restructure or new hires.</p>
+
+      <div class="mt-section-head"></div>
+
+      <div class="card-grid-2" data-hide-if-empty>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">Without it</div>
+          <div class="card-title" data-component="section_subheading">Longer Cycles, Lower ACV</div>
+          <div class="card-body" data-component="section_body">Deals take 60–90 days, stall at procurement, and close at or below list price. Expansion is reactive and rare.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">With it</div>
+          <div class="card-title" data-component="section_subheading">Faster Close, Higher Retention</div>
+          <div class="card-body" data-component="section_body">Buyers arrive at procurement already aligned on value. Renewals become proactive conversations. Expansion becomes a structured motion, not a lucky upsell.</div>
+        </div>
+      </div>
+
+      <div class="mt-section-head"></div>
+
+      <div class="callout-box" data-hide-if-empty data-component="callout_block">
+        <p>The partners seeing the fastest growth in 2025 are not the ones with the deepest technical bench. They are the ones who have made buyer-language outcomes the first thing out of their mouth in every meeting.</p>
+      </div>
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">05</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 6 — PROCESS / METHOD
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">The Insight</span>
+      <h2 class="section-h" data-component="heading_main">The Shift That Changes Everything</h2>
+      <p class="section-p" data-component="section_intro">What this looks like in practice: partners who restructure their pitch around three quantified outcomes — cost reduction, risk mitigation, and revenue growth — consistently outperform peers across deal velocity, deal size, and retention rate.</p>
+
+      <div class="mt-section-head"></div>
+
+      <div class="steps-list" data-hide-if-empty data-component="method_list">
+        <div class="step-item" data-hide-if-empty>
+          <div class="step-num">Step 01</div>
+          <div>
+            <div class="step-label" data-component="section_subheading">Outcome Discovery</div>
+            <div class="step-body" data-component="section_body">Replace feature demos with a structured 45-minute discovery that surfaces the three quantified outcomes your buyer needs to justify the investment internally.</div>
+          </div>
+        </div>
+        <div class="step-item" data-hide-if-empty>
+          <div class="step-num">Step 02</div>
+          <div>
+            <div class="step-label" data-component="section_subheading">Business Case Construction</div>
+            <div class="step-body" data-component="section_body">Build the ROI model with the buyer, not for them. Co-created business cases survive procurement because the buyer owns the numbers.</div>
+          </div>
+        </div>
+        <div class="step-item" data-hide-if-empty>
+          <div class="step-num">Step 03</div>
+          <div>
+            <div class="step-label" data-component="section_subheading">Proof Point Packaging</div>
+            <div class="step-body" data-component="section_body">Convert your three strongest client results into one-page outcome stories your AEs can use in first meetings — no case study writing required.</div>
+          </div>
+        </div>
+        <div class="step-item" data-hide-if-empty>
+          <div class="step-num">Step 04</div>
+          <div>
+            <div class="step-label" data-component="section_subheading">Quarterly Value Review</div>
+            <div class="step-body" data-component="section_body">Replace the annual renewal call with a structured QVR that documents delivered value, surfaces expansion triggers, and resets the relationship for the next 12 months.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">06</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 7 — PROOF / STATS
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">Results</span>
+      <h2 class="section-h" data-component="heading_main">What Partners Using This Method Are Seeing</h2>
+      <p class="section-p" data-component="section_body">Across 40 partner engagements over 18 months, the outcome-led motion consistently outperformed the control group on every primary revenue metric.</p>
+
+
+      <div class="mt-section-head"></div>
+
+      <div class="card-grid-3" data-hide-if-empty>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">01</div>
+          <div class="card-title" data-component="section_subheading">40% Faster Close</div>
+          <div class="card-body" data-component="section_body">Average reduction in sales cycle length within 90 days of adopting the outcome discovery framework.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">02</div>
+          <div class="card-title" data-component="section_subheading">28% Higher ACV</div>
+          <div class="card-body" data-component="section_body">Average increase in average contract value when deals are led with co-created business cases versus vendor-supplied ROI calculators.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">03</div>
+          <div class="card-title" data-component="section_subheading">91% Renewal Rate</div>
+          <div class="card-body" data-component="section_body">Average renewal rate for partners running structured quarterly value reviews, versus 74% for the control group.</div>
+        </div>
+      </div>
+
+      <div class="mt-section-head"></div>
+
+      <div class="card-grid-3" data-hide-if-empty>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">
+            <!-- Stopwatch — Faster Close -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 9V13L14.5 15.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 2H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M12 2V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="card-title" data-component="section_subheading">40% Faster Close</div>
+          <div class="card-body" data-component="section_body">Average reduction in sales cycle length within 90 days of adopting the outcome discovery framework.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">
+            <!-- Trending up — Higher ACV -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 17L9 11L13 15L21 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15 7H21V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="card-title" data-component="section_subheading">28% Higher ACV</div>
+          <div class="card-body" data-component="section_body">Average increase in average contract value when deals are led with co-created business cases versus vendor-supplied ROI calculators.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-num">
+            <!-- Shield check — Renewal Rate -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L4 6V12C4 16.4 7.4 20.5 12 22C16.6 20.5 20 16.4 20 12V6L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="card-title" data-component="section_subheading">91% Renewal Rate</div>
+          <div class="card-body" data-component="section_body">Average renewal rate for partners running structured quarterly value reviews, versus 74% for the control group.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">07</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 7B — PROOF (NO NUMBERS, BORDERLESS)
+  ═══════════════════════════════════════ -->
+  <div class="page">
+    <div class="page-inner">
+
+      <span class="section-tag" data-component="section_heading">Results</span>
+      <h2 class="section-h" data-component="heading_main">What Partners Using This Method Are Seeing</h2>
+      <p class="section-p" data-component="section_body">Across 40 partner engagements over 18 months, the outcome-led motion consistently outperformed the control group on every primary revenue metric.</p>
+
+      <div class="mt-section-head"></div>
+
+      <div class="card-grid-3" data-hide-if-empty>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-title" data-component="section_subheading">40% Faster Close</div>
+          <div class="card-body" data-component="section_body">Average reduction in sales cycle length within 90 days of adopting the outcome discovery framework.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-title" data-component="section_subheading">28% Higher ACV</div>
+          <div class="card-body" data-component="section_body">Average increase in average contract value when deals are led with co-created business cases versus vendor-supplied ROI calculators.</div>
+        </div>
+        <div class="dark-card" data-hide-if-empty>
+          <div class="card-title" data-component="section_subheading">91% Renewal Rate</div>
+          <div class="card-body" data-component="section_body">Average renewal rate for partners running structured quarterly value reviews, versus 74% for the control group.</div>
+        </div>
+      </div>
+
+      <div class="mt-section-head"></div>
+
+      <div class="card-grid-3" data-hide-if-empty>
+        <div style="padding: var(--space-8) 28px;">
+          <div class="card-title" data-component="section_subheading">40% Faster Close</div>
+          <div class="card-body" data-component="section_body">Average reduction in sales cycle length within 90 days of adopting the outcome discovery framework.</div>
+        </div>
+        <div style="padding: var(--space-8) 28px;">
+          <div class="card-title" data-component="section_subheading">28% Higher ACV</div>
+          <div class="card-body" data-component="section_body">Average increase in average contract value when deals are led with co-created business cases versus vendor-supplied ROI calculators.</div>
+        </div>
+        <div style="padding: var(--space-8) 28px;">
+          <div class="card-title" data-component="section_subheading">91% Renewal Rate</div>
+          <div class="card-body" data-component="section_body">Average renewal rate for partners running structured quarterly value reviews, versus 74% for the control group.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="page-footer">
+      <span class="page-footer-brand">Blacfox — Partner Revenue Guide</span>
+      <span class="page-footer-num">07</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PAGE 8 — FINAL CTA
+  ═══════════════════════════════════════ -->
+  <div class="page page-cta">
+    <div class="page-inner">
+
+      <div class="cta-section">
+        <h2 class="cta-h" data-field="FINAL_CTA_HEADLINE" data-field-em="CTA_HEADLINE_EMPHASIS" data-component="heading_main">Ready to Build Revenue<br><em>That Scales?</em></h2>
+        <p class="cta-p" data-field="FINAL_CTA_TEXT" data-component="conclusion_body">The partners who will own the Microsoft and SAP ecosystem in the next three years are the ones who figured out how to translate capability into a buyer's language — consistently, at scale. Book a strategy call and let's build that motion together.</p>
+        <div style="display: flex; gap: var(--space-3); justify-content: center; align-items: center; position: relative; z-index: 1;">
+          <a href="" class="btn-white" data-field="CTA_PRIMARY_BUTTON_LABEL" data-field-href="CTA_PRIMARY_URL" data-component="cta_button">Book a Strategy Call →</a>
+        </div>
+      </div>
+
+    </div>
+    <div style="padding: var(--space-8); display: flex; justify-content: center;">
+      <svg viewBox="55 60 975 910" width="110" xmlns="http://www.w3.org/2000/svg"><g fill="#000"><path d="M921.7,672.99c2.59,2.94,4.83,5.53,6.71,7.72,1.42-1.88,3.16-4.2,5.23-6.95,4.25-5.73,8.83-11.64,13.74-17.78,4.91-6.11,9.19-10.33,12.84-12.65,4.42-2.51,9.08-3.84,14.04-3.95l2.18.11c5.83.35,9.84,2.51,12.08,6.43.6,1.06.93,2.32.95,3.76.08,3.79-1.96,8.72-6.08,14.83-5.48,7.5-11.51,15.16-18.13,22.96-3.98,4.74-7.72,9.38-11.21,13.93l-1.28,1.47-2.56,3.24c1.28,1.53,2.78,3.24,4.47,5.15,5.86,6.87,14.83,17.34,26.88,31.46,1.99,2.18,3,4.63,3,7.36s-.98,5.13-2.97,7.2c-1.15.98-2.34,1.74-3.6,2.26-1.53,1.01-3.6,1.72-6.22,2.18l-2.92.05c-4.85.11-11.01-6.35-18.46-19.41-4.12-6.22-6.98-11.07-8.62-14.53l-4.47-5.15c-1.61,2.26-3.44,4.83-5.51,7.69-4.8,7.09-10.25,14.26-16.36,21.46-6.11,7.23-12.24,12-18.4,14.37-3.57,1.04-6.71,1.61-9.43,1.66-4.93.11-8.48-1.42-10.58-4.58-1.2-1.83-1.83-3.9-1.88-6.22-.08-4.17,1.69-9.22,5.34-15.1,3.95-5.73,8.48-11.59,13.6-17.61,2.84-3.27,5.45-6.43,7.8-9.49,4.53-5.92,9.05-11.81,13.6-17.61l-33.15-38.61c-2.07-1.99-3.16-4.39-3.22-7.2v-.44c-.05-2.51.82-4.83,2.62-6.9.85-.79,1.72-1.45,2.59-1.94,1.99-2.18,4.44-3.3,7.36-3.35,6.22-.14,10.74,3.27,13.6,10.2,2.45,5.48,7.91,13.47,16.39,23.97h.03Z"/><path d="M456.6,453.75l-16.85-31.22c-10.01-18.57-41.8-66.22-68.6-63.88-18.29,1.61-30.75,27.92-37.98,49.7l-12.68-4.2c-.68,9.3-1.39,14.97-1.47,15.57l-16.22-2.13c.11-.9,7.44-59.87-3.82-117.84-.98-.16-1.99-.35-2.97-.55-34.79-6.65-69.99-28.57-101.8-63.36-23.75-25.98-37.22-49.76-37.79-50.74l-5.86-10.41,11.83-1.69c45.15-6.41,81.63,3.79,108.4,30.29,19.47,19.28,33.45,46.59,41.8,81.6,31.16,2.02,62.44-9.46,93.13-34.3,44.88-36.29,71.11-88.61,82.31-110.94,5.75-11.45,8.12-16.22,15.05-14.56,3,.71,6.54,3.46,6.54,8.81,0,7.66,1.91,74.81,67.67,74.81,4.83,0,7.77,3.22,8.56,6.38,1.66,6.71-3.19,9.27-12.02,13.96-79.64,42.1-120.02,95.29-120.02,158.13l2.78,66.58v-.03.02ZM316.02,301.46c1.99,11.26,3.46,23.23,4.44,35.85,1.64,21.7,1.39,41.39.71,56.08,12.41-32.14,28.71-49.29,48.58-51.04,18.65-1.58,38.66,10.41,59.55,35.77,2.97,3.6,5.73,7.2,8.26,10.66l-.05-1.31c0-65.93,38.74-121.44,115.19-165.47-34.13-9.05-50.25-36.89-56.33-62.6-14.01,26.86-39.83,71.13-80.29,103.85-32.64,26.39-66.17,39.18-100.01,38.14l-.05.05v.02ZM177.47,187.87c16.03,24.05,59.41,81.06,117.54,94.42-6.87-25.63-17.97-49.87-35.69-67.4-20.45-20.2-47.93-29.28-81.85-27.05v.03Z"/><path d="M436.9,678.04h.01c-8.86-5.54-16.52-8.24-23.04-8.11-2.54.05-4.85.55-6.95,1.47-7.69,3.19-13.47,9.43-17.29,18.79-3.82,9.35-6.05,19.47-6.71,30.35-.22,3.49-.3,6.84-.22,10.06.14,6.41.9,12.16,2.26,17.29,2.1,7.72,5.89,11.86,11.34,12.43.38.08.76.14,1.17.11,5.43-.11,12.6-5.21,21.51-15.32,5.59-6.52,9.54-13.25,11.86-20.2,2.32-6.93,4.23-14.37,5.7-22.25l.79-3.52-.46-21.1h.03Z"/><path d="M344.11,397.13c-154.11,0-279.05,124.93-279.05,279.05s124.94,279.05,279.05,279.05,279.05-124.93,279.05-279.05-124.93-279.05-279.05-279.05ZM251.33,717.94c-1.94,13.44-6.16,25.76-12.68,36.97s-15.08,19.25-25.76,24.13c-4.72,2.13-9.79,3.27-15.21,3.38-6.9.14-14.34-1.34-22.38-4.47-.38-.08-.74-.22-1.04-.41-1.17-.55-2.32-.98-3.38-1.23-.38-.08-.79-.14-1.17-.11-.57,0-1.12.16-1.58.46l-2.02,1.5c-1.64,1.2-3.22,2.24-4.74,3.08s-3.03,1.31-4.47,1.34c-5.04.11-9.05-1.06-12.02-3.52s-5.07-5.86-6.33-10.2c-1.15-4.06-1.8-8.59-1.88-13.63v-1.31c.08-21.95-.05-43.92-.44-65.95l-.35-23.86-.65-23.86c-.55-21.24-1.34-40-2.37-56.3h-.03l-.02.02c-.14-1.45-.22-2.94-.25-4.5-.05-3.11.05-6.27.38-9.46.49-4.85,1.99-8.92,4.55-12.19,2.45-3.24,6.49-4.93,12.13-5.07h.44c7.28.41,12.41,3.14,15.38,8.1,2.97,4.99,4.69,10.96,5.13,17.94.16,2.62.25,5.15.3,7.55.08,4.17.03,8.26-.16,12.24-.14,2.62-.25,5.02-.27,7.14-.14,7.47-.05,17.48.22,29.99.14,6.22.3,12.46.55,18.76.27,7.96.49,15.87.65,23.72,5.1-7.28,11.81-13.3,20.15-18.05,9.41-4.96,18.05-7.52,25.9-7.69,3.38-.08,6.65.3,9.79,1.09,10.44,2.78,17.89,11.89,22.27,27.32,1.58,6.19,2.45,12.62,2.59,19.3.14,5.73-.3,11.64-1.23,17.78ZM341.55,773.98c-2.97,2.15-6.38,3.74-10.22,4.8-3,.74-5.64,1.15-7.99,1.2-.79,0-1.5,0-2.18-.11-5.94-.85-11.01-3.44-15.24-7.74-4.23-4.34-7.66-9.38-10.31-15.13-2.64-5.78-4.61-11.26-5.89-16.47-2.26-9.84-3.79-20.04-4.58-30.54-.82-10.52-1.34-20.91-1.55-31.19-.14-1.64-.22-3.3-.25-4.93-.33-10.2-.57-20.37-.79-30.56l-.6-28.08c-.27-12.9-.65-24.24-1.17-34.05-.11-5.62.6-11.01,2.13-16.19,1.91-6.43,7.06-10.01,15.49-10.66h1.88l.03-.11v-.05c6.64.74,11.3,3.3,14,7.72,2.73,4.42,4.28,9.57,4.69,15.49.25,2.73.41,5.34.46,7.85.05,3.11,0,6.16-.25,9.19-.71,7.58-1.06,18.13-1.06,31.63-.11,8.94-.35,17.91-.74,26.94-.49,8.83-.79,17.69-.9,26.53v1.31c-.08,4.28-.03,10.74.16,19.36l.05,2.62c.16,7.85.74,16.06,1.69,24.57.98,9.49,2.73,17.61,5.26,24.35,2.51,6.73,6.08,10.36,10.63,10.82h.87c.68-.03,1.45-.11,2.32-.22,1.06-.22,2.07-.33,3.05-.35s1.88.05,2.78.22c1.74.35,2.7,1.74,2.86,4.17-.14,2.92-1.69,5.45-4.63,7.61ZM466.64,776.53l-4.06.08c-5.94-.95-10.66-3.35-14.12-7.28-3.34-2.53-6.66-7.63-9.92-15.32-2.91,4.03-5.93,7.45-9,10.23-3.08,2.78-6.79,5.4-11.12,7.8-9.41,4.96-18.08,7.52-26.04,7.69-3.41.08-6.65-.3-9.79-1.09-10.36-2.7-17.72-11.7-22.14-27.05-1.39-5.89-2.15-12.08-2.29-18.59-.14-6.49.35-13.3,1.45-20.42,2.13-14.31,6.79-27.26,14.01-38.88,7.23-11.61,17.15-19.25,29.8-22.9,3.19-.74,6.27-1.15,9.3-1.23,2.24-.05,4.36.11,6.41.44,4.85.68,8.92,1.5,12.13,2.51,2.45.74,4.2,1.06,5.26,1.06h.3s.3-.11.65-.3c.33-.19.74-.46,1.23-.76.76-.41,1.55-.82,2.37-1.23.82-.41,1.47-.71,1.94-.93,3.95-1.34,7.42-2.04,10.44-2.13,3.87-.08,6.95.98,9.24,3.16,3.95,3.9,6.05,10.31,6.24,19.22-.05,2.04-.05,4.12,0,6.27-.05,2.54-.08,5.1-.14,7.72.05,2.92.19,7.39.44,13.39.25,7.47.52,15.81.82,25.03l.19,8.89c.14,5.73.19,11.07.19,16,.85,8.12,1.64,12.98,2.34,14.5l1.25,4.06.05,2.32c-1.15,5.07-3.63,7.66-7.42,7.74ZM586.51,751.42c-2.75,5.29-5.26,9.24-7.52,11.81-6.16,6.35-13.55,10.63-22.14,12.84-3.57.95-7.2,1.47-10.88,1.55-4.85.11-9.68-.57-14.45-2.02-8.32-2.45-15.16-7.5-20.56-15.13-5.53-8.42-9.32-18.29-11.4-29.61-1.34-7.55-2.07-14.91-2.21-22.08-.08-3.49,0-6.98.22-10.5h-.07s0,0,0,.01h-.01s.01-.01.01-.01c1.94-18.67,7.25-32.41,16-41.24,7.8-7.74,18.76-11.75,32.94-12.05,1.85-.03,3.68-.03,5.53,0,8.56.41,15.65,2.56,21.32,6.54s9.38,10.96,11.15,21.02c.14,1.36.19,2.62.22,3.79.14,6.22-1.53,9.98-4.99,11.31-.68.3-1.36.46-2.02.49-3.49.08-7.14-3.14-10.99-9.65-2.24-4.31-5.1-7.5-8.64-9.57-2.15-1.23-4.44-1.8-6.87-1.74-1.55.03-3.19.33-4.93.85-4.34,1.64-7.82,4.47-10.52,8.45-2.67,3.98-4.66,8.32-5.92,13.01-.76,4.58-1.09,9.82-.98,15.73.05,2.81.22,5.73.49,8.72.79,9.49,2.84,18.29,6.16,26.36,3.33,8.07,8.26,13.28,14.83,15.54,1.36.35,2.64.52,3.79.49,1.94-.05,3.74-.6,5.34-1.72,2.67-1.72,4.96-4.14,6.84-7.28,1.31-2.26,2.56-4.61,3.79-7.06,0-.11.05-.19.14-.3.27-.68.6-1.42.98-2.21,1.47-3.82,3.49-7.44,6.03-10.91,1.69-2.26,3.65-3.44,5.89-3.46,1.17,0,2.37.25,3.65.79,3.24,1.96,4.91,4.93,4.99,8.92,0,.79,0,1.61-.08,2.48-.65,5.26-2.37,10.52-5.13,15.84Z"/><path d="M228.89,685.18c-2.78-7.99-7.31-12.35-13.52-13.11-.49-.08-1.01-.14-1.61-.11-6.03.14-13.47,5.18-22.38,15.19-5.59,6.52-9.57,13.25-11.94,20.2-2.37,6.95-4.25,14.31-5.64,22.11-.27,1.17-.52,2.4-.79,3.65v-.03h-.01l.44,20.97c8.94,5.64,16.88,8.37,23.77,8.23,2.43-.05,4.74-.49,6.95-1.31,8.37-3,14.86-9.02,19.41-18.1,4.55-9.08,7.25-19,8.1-29.8.22-3.22.3-6.27.25-9.19-.14-6.9-1.15-13.11-3.03-18.7Z"/><path d="M650.94,668.3l-.44-.57c-.6-.57-1.25-.95-1.99-1.12-.74-.16-1.5-.35-2.26-.55h-.3c-.98-.16-1.94-.3-2.92-.35-2.62-.14-5.02-.68-7.17-1.66s-3.6-3.14-4.36-6.52c-.11-.68-.16-1.31-.19-1.88-.08-3.3.95-5.64,3.05-7.06,2.59-1.69,5.62-2.78,9.11-3.24,4.36-.76,6.95-2.29,7.77-4.53.74-1.85,1.06-4.34,1.01-7.44l-.08-3.35c-.16-7.47.68-16.03,2.51-25.68,1.83-9.65,4.99-18.62,9.46-26.91,4.47-8.29,10.66-14.04,18.57-17.2,4.23-1.64,10.09-3.03,17.53-4.17,3.38-.55,6.63-.87,9.73-.93,3.79-.08,7.39.19,10.8.79,6.33,1.12,10.03,4.39,11.12,9.82v.87c.08,2.62-.76,4.53-2.48,5.73-1.91,1.31-4.23,2.04-6.95,2.18h-1.61c-2.13.08-4.09,0-5.83-.27-1.74-.16-3.41-.22-4.96-.19-4.47.11-8.04,1.09-10.71,3-3.54,2.51-6.24,7.23-8.15,14.15-1.01,3.22-1.91,8.32-2.73,15.27s-1.36,13.88-1.58,20.78c-.05,1.94-.05,3.74-.03,5.4.08,4.17.49,7.28,1.23,9.3.41,1.06,1.06,1.69,1.94,1.94.87.25,1.91.38,3.05.44l15-.33c2.81-.05,5.23.87,7.28,2.84,2.02,1.94,3.08,4.36,3.14,7.28.05,2.81-.87,5.23-2.84,7.28-1.94,2.02-4.34,3.08-7.14,3.14l-3.63.08c-1.36-.05-2.67-.08-3.93-.05-4.06.08-8.1.52-12.05,1.28,0,4.55.05,9.16.16,13.82.25,11.94.95,24.1,2.1,36.51.79,9.87,1.45,19.63,1.94,29.23.03,1.85.19,4.04.44,6.54.38,4.74.65,9.73.76,14.97.05,2.62.05,5.34.03,8.15,0,8.34-1.2,14.53-3.54,18.57-2.26,3.05-5.67,5.07-10.2,6.05-1.55.33-3.11.49-4.63.55-2.92.05-5.78-.41-8.62-1.42-4.42-1.66-7.47-4.8-9.22-9.41-.74-2.81-1.17-6.82-1.28-12.05s-.08-10.52.11-15.57c0-3.3.05-6.05.11-8.29,0-4.66-.05-9.32-.16-13.99-.41-18.73-1.45-37.38-3.11-55.97-.25-2.24-.57-4.77-.95-7.63-.41-2.86-1.01-5.34-1.83-7.47l-.05-.11-.03-.05Z"/><path d="M758.85,648.97c9.43-3.9,20.12-5.97,32.04-6.22,2.13-.05,4.28-.05,6.41,0,14.37.38,26.45,4.39,36.21,12.02,10.31,9.68,16.9,21.54,19.85,35.53,1.09,5.02,1.66,10.06,1.77,15.1.19,8.72-1.15,17.34-3.95,25.85-4.58,13.39-12.98,24.05-25.22,31.98-9.02,5.23-18.54,8.64-28.6,10.22-2.81.44-5.67.71-8.56.76-7.17.16-14.4-.9-21.62-3.16-11.53-3.93-20.72-11.26-27.56-21.97-6.84-10.71-10.88-22.77-12.13-36.13-.25-2.04-.38-4.06-.41-6.11-.25-11.07,1.77-21.54,6.03-31.44,5.1-11.67,13.69-20.48,25.79-26.47l-.03.03h-.02ZM798.49,752.79c10.96-.82,19.49-5.56,25.6-14.23,6.11-8.67,9.35-18.27,9.73-28.74l.08-3.22c-.16-7.47-1.53-14.61-4.09-21.46-3-7.91-7.63-13.96-13.93-18.19-4.44-3-9.76-4.44-15.95-4.31-2.62.05-5.37.41-8.29,1.06-11.48,2.97-19.47,8.86-23.94,17.69-3.35,6.49-4.96,13.6-4.77,21.35.05,2.81.35,5.73.93,8.72,1.55,9.49,5.18,18.43,10.85,26.86,5.67,8.42,13.6,13.25,23.83,14.48l-.05-.03v.02Z"/><path d="M647.86,826.21v38.28h-8.64v-38.28h8.64Z"/><path d="M666.21,826.21l18.59,24.59v-24.59h8.21v38.28h-7.88l-18.54-24.54v24.54h-8.26v-38.28h7.88Z"/><path d="M731.64,826.21v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/><path d="M767.44,826.21v7.17h-20.5v8.32h18.43v7.17h-18.43v8.48h21.1v7.17h-29.75v-38.28h29.15v-.03h0Z"/><path d="M785.49,826.21v30.73h16.39v7.55h-25.03v-38.28h8.64,0Z"/><path d="M817.66,826.21v30.73h16.39v7.55h-25.03v-38.28h8.64,0Z"/><path d="M849.86,826.21v38.28h-8.64v-38.28h8.64Z"/><path d="M886.04,845.19h7.5v14.7c-4.04,2.94-10.22,4.99-15.51,4.99-11.59,0-20.39-8.42-20.39-19.52s8.97-19.41,20.88-19.41c5.7,0,11.48,2.18,15.35,5.59l-4.88,6.19c-2.84-2.62-6.79-4.25-10.5-4.25-6.79,0-12.02,5.21-12.02,11.91s5.32,11.97,12.08,11.97c2.29,0,5.02-.82,7.5-2.07v-10.09h-.01Z"/><path d="M932.22,826.21v7.17h-20.5v8.32h18.43v7.17h-18.43v8.48h21.1v7.17h-29.75v-38.28h29.15v-.03h0Z"/><path d="M949.51,826.21l18.59,24.59v-24.59h8.21v38.28h-7.88l-18.54-24.54v24.54h-8.26v-38.28h7.88Z"/><path d="M1014.94,826.21v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/><path d="M664.9,902.44h7.5v14.7c-4.04,2.94-10.22,4.99-15.51,4.99-11.59,0-20.39-8.42-20.39-19.52s8.97-19.41,20.88-19.41c5.7,0,11.48,2.18,15.35,5.59l-4.88,6.19c-2.84-2.62-6.79-4.25-10.5-4.25-6.79,0-12.02,5.21-12.02,11.91s5.32,11.97,12.08,11.97c2.29,0,5.02-.82,7.5-2.07v-10.09h-.01Z"/><path d="M705.47,921.75l-6.08-10.93h-8.81v10.93h-8.64v-38.28h16.6c10.01,0,15.68,4.8,15.68,13.28,0,5.92-2.51,10.17-7.17,12.35l8.15,12.62h-9.79l.05.03h.01ZM690.61,903.59h7.99c4.77,0,7.5-2.18,7.5-6.57s-2.73-6.41-7.5-6.41h-7.99v12.98Z"/><path d="M761.93,902.61c0,11.04-8.86,19.52-20.56,19.52s-20.56-8.42-20.56-19.52,8.86-19.41,20.56-19.41,20.56,8.32,20.56,19.41ZM729.68,902.61c0,6.73,5.43,11.97,11.81,11.97s11.59-5.23,11.59-11.97-5.21-11.86-11.59-11.86-11.81,5.13-11.81,11.86Z"/><path d="M774.17,883.47l8.04,28.87,7.99-28.87h8.48l8.1,28.87,7.99-28.87h8.86l-12.68,38.28h-8.92l-7.72-27.26-7.88,27.26h-8.92l-12.62-38.28h9.3-.03,0Z"/><path d="M857.57,883.47v7.33h-11.7v30.94h-8.64v-30.94h-11.64v-7.33h31.98Z"/><path d="M872.87,883.47v15.95h17.34v-15.95h8.64v38.28h-8.64v-15.08h-17.34v15.08h-8.64v-38.28h8.64Z"/></g></svg>
+    </div>
+  </div>
+
+</div><!-- /.ebook-wrapper -->
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   CREATIVE OS — SLOT CLEANUP
+   Runs after DOM load. Removes any component slot that was not
+   filled by the Asset Production Agent, then collapses empty
+   parent wrappers so no blank space or orphaned chrome remains.
+
+   Rules:
+   1. Any element with data-component whose text content is
+      empty, whitespace-only, or still matches a placeholder
+      pattern is removed from the DOM.
+   2. Any element with data-hide-if-empty that has no visible
+      text content after child removal is also removed.
+   3. After individual slot removal, parent wrappers are
+      checked bottom-up. If a wrapper contains no remaining
+      data-component children, the wrapper is removed too.
+   4. Section-level containers (.preread-section, .page-inner
+      children, .page-section) that end up with no meaningful
+      content are hidden via display:none rather than preserved.
+   5. The script removes itself from the DOM after running.
+─────────────────────────────────────────────────────────────── */
+(function () {
+
+  var PLACEHOLDER_PATTERNS = [
+    /^\s*\[.*\]\s*$/,
+    /^\s*placeholder\s*$/i,
+    /^\s*lorem ipsum/i,
+  ];
+
+  function isPlaceholderText(text) {
+    var t = text.trim();
+    if (!t) return true;
+    for (var i = 0; i < PLACEHOLDER_PATTERNS.length; i++) {
+      if (PLACEHOLDER_PATTERNS[i].test(t)) return true;
+    }
+    return false;
+  }
+
+  function getVisibleText(el) {
+    var clone = el.cloneNode(true);
+    ['svg','script','style'].forEach(function(sel) {
+      try { clone.querySelectorAll(sel).forEach(function(n){ n.remove(); }); } catch(e){}
+    });
+    return clone.textContent || clone.innerText || '';
+  }
+
+  function removeEl(el) {
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+  }
+
+  // Pass 1 — remove empty data-component slots
+  Array.from(document.querySelectorAll('[data-component]')).forEach(function (el) {
+    if (isPlaceholderText(getVisibleText(el))) removeEl(el);
+  });
+
+  // Pass 2 — remove data-hide-if-empty with no content (repeat until stable)
+  var changed = true, safety = 0;
+  while (changed && safety++ < 10) {
+    changed = false;
+    Array.from(document.querySelectorAll('[data-hide-if-empty]')).forEach(function (el) {
+      if (isPlaceholderText(getVisibleText(el))) { removeEl(el); changed = true; }
+    });
+  }
+
+  // Pass 3 — collapse empty wrappers
+  ['.card-grid-2','.card-grid-3','.steps-list','.stats-section','.stats-inner',
+   '.hero-ctas','.flex-gap-12','.email-points','.cover-meta','.hero-quote-panel',
+   '.trust-bar','.footer-col ul','.callout-box'].forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el) {
+      if (isPlaceholderText(getVisibleText(el))) removeEl(el);
+    });
+  });
+
+  // Pass 4 — hide empty section containers
+  ['.preread-section','.page-section','.body-section'].forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el) {
+      if (isPlaceholderText(getVisibleText(el))) el.style.display = 'none';
+    });
+  });
+
+  // Pass 5 — remove orphaned spacers
+  document.querySelectorAll('.mt-section-head').forEach(function (spacer) {
+    var next = spacer.nextElementSibling;
+    if (!next || next.style.display === 'none') removeEl(spacer);
+  });
+
+  // Self-remove
+  var s = document.currentScript; if (s) removeEl(s);
+
+})();
+</script>
+</body>
+</html>
